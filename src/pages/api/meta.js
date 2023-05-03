@@ -7,9 +7,10 @@ export const config = {
 
 export default async function handler(request) {
   const hnStoryId = new URL(request.url).searchParams.get("storyId");
-  const hnStory = (await fetch(`https://hacker-news.firebaseio.com/v0/item/${hnStoryId}.json`)).json();
-  const url = (await hnStory).url;
-  return NextResponse.json(await findMetadata(url));
+  const hnStory = await (await fetch(`https://hacker-news.firebaseio.com/v0/item/${hnStoryId}.json`)).json();
+  const url = hnStory.url;
+  hnStory.meta = await findMetadata(url);
+  return NextResponse.json(hnStory);
 }
 
 async function findMetadata(url) {
