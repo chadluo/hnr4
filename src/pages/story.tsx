@@ -7,7 +7,7 @@ type StoryProps = {
 
 type Story = {
   story: { url: string; title: string };
-  meta: { title: string; description: string; image: string };
+  meta?: { title?: string; description?: string; image?: string };
 };
 
 export function Story(props: StoryProps) {
@@ -26,13 +26,13 @@ export function Story(props: StoryProps) {
   return story ? (
     <div className={styles.story} data-storyId={props.storyId}>
       {story.story.title}
-      {story.meta.image && (
+      {story.meta?.image && (
         <div className={styles.imageBox} style={{ backgroundImage: `url(${story.meta.image})` }}></div>
       )}
       <a href={story.story.url}>
-        <strong>{story.meta.title || story.story.title}</strong>
+        <strong>{story.meta?.title || story.story.title}</strong>
       </a>
-      {story.meta.description}
+      {story.meta?.description}
     </div>
   ) : (
     <></>
