@@ -1,11 +1,20 @@
 import styles from "@/styles/Home.module.css";
 import { Inter } from "next/font/google";
 import Head from "next/head";
+import { useEffect, useState } from "react";
 import { Story } from "./story";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const [stories, setStories] = useState([]);
+
+  useEffect(() => {
+    fetch(`https://hacker-news.firebaseio.com/v0/topstories.json?limitToFirst=12&orderBy="$priority"`)
+      .then((response) => response.json())
+      .then((json) => setStories(json));
+  }, []);
+
   return (
     <>
       <Head>
@@ -15,7 +24,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
-        <Story storyId="35798888"></Story>
+        {stories.map((story) => (
+          <Story storyId={story} key={story}></Story>
+        ))}
       </main>
     </>
   );

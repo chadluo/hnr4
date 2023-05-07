@@ -1,0 +1,14 @@
+.story {
+  display: flex;
+  flex-direction: column;
+}
+
+.imageBox {
+  height: 10em;
+  background-position: center;
+  background-size: cover;
+}
+
+.title {
+  display: block;
+}

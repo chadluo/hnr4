@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
+import styles from "../styles/Story.module.css";
 
-export type StoryProps = {
+type StoryProps = {
   storyId: string;
 };
 
+type Story = {
+  story: { url: string; title: string };
+  meta: { title: string; description: string; image: string };
+};
+
 export function Story(props: StoryProps) {
-  const [story, setStory] = useState({
-    url: "",
-    meta: { title: "", description: "", image: "" },
-  });
+  const [story, setStory] = useState<Story>();
 
   useEffect(() => {
     fetch(`/api/meta?storyId=${props.storyId}`)
@@ -20,13 +23,18 @@ export function Story(props: StoryProps) {
     return () => {};
   }, [props.storyId]);
 
-  return (
-    <div>
-      <a href={story.url}>
-        <strong>{story.meta.title}</strong>
+  return story ? (
+    <div className={styles.story} data-storyId={props.storyId}>
+      {story.story.title}
+      {story.meta.image && (
+        <div className={styles.imageBox} style={{ backgroundImage: `url(${story.meta.image})` }}></div>
+      )}
+      <a href={story.story.url}>
+        <strong>{story.meta.title || story.story.title}</strong>
       </a>
-      <img src={story.meta.image} />
       {story.meta.description}
     </div>
+  ) : (
+    <></>
   );
 }

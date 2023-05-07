@@ -6,15 +6,32 @@ export const config = {
 };
 
 export default async function handler(request) {
-  const hnStoryId = new URL(request.url).searchParams.get("storyId");
-  const hnStory = await (await fetch(`https://hacker-news.firebaseio.com/v0/item/${hnStoryId}.json`)).json();
-  const url = hnStory.url;
-  hnStory.meta = await findMetadata(url);
-  return NextResponse.json(hnStory);
+  const storyId = new URL(request.url).searchParams.get("storyId");
+  const story = await (await fetch(`https://hacker-news.firebaseio.com/v0/item/${storyId}.json`)).json();
+  const [meta] = await Promise.all([findMetadata(story.url)]);
+  return NextResponse.json({
+    story,
+    meta,
+  });
 }
 
+const DEFAULT_TIMEOUT_MS = 5000;
+
 async function findMetadata(url) {
-  const html = await fetch(url).then((response) => response.text());
+  const controller = new AbortController();
+  let html, abortTimeout;
+  try {
+    abortTimeout = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT_MS);
+    html = await fetch(url, { signal: controller.signal }).then((response) => response.text());
+  } catch (err) {
+    console.error({
+      error: "Cannot fetch html " + err,
+      storyId,
+      url,
+    });
+    return {};
+  }
+  clearTimeout(abortTimeout);
   const parsed = parse(html);
   const headNode = parsed.childNodes
     .find((node) => node.nodeName === "html")
