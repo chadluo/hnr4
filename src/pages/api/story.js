@@ -8,7 +8,7 @@ export const config = {
 export default async function handler(request) {
   const storyId = new URL(request.url).searchParams.get("storyId");
   const story = await (await fetch(`https://hacker-news.firebaseio.com/v0/item/${storyId}.json`)).json();
-  const [meta] = await Promise.all([findMetadata(story.url)]);
+  const [meta] = await Promise.all([findMetadata(storyId, story.url)]);
   return NextResponse.json({
     story,
     meta,
@@ -17,7 +17,7 @@ export default async function handler(request) {
 
 const DEFAULT_TIMEOUT_MS = 5000;
 
-async function findMetadata(url) {
+async function findMetadata(storyId, url) {
   const controller = new AbortController();
   let html, abortTimeout;
   try {

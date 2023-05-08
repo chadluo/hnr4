@@ -2,7 +2,7 @@ import styles from "@/styles/Home.module.css";
 import { Inter } from "next/font/google";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { Story } from "./story";
+import Story from "./story";
 
 const inter = Inter({ subsets: ["latin"] });
 

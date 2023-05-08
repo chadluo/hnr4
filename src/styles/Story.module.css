@@ -1,6 +1,8 @@
 .story {
   display: flex;
   flex-direction: column;
+  background: white;
+  padding: 1em;
 }
 
 .imageBox {

@@ -10,11 +10,11 @@ type Story = {
   meta?: { title?: string; description?: string; image?: string };
 };
 
-export function Story(props: StoryProps) {
+export default function Story(props: StoryProps) {
   const [story, setStory] = useState<Story>();
 
   useEffect(() => {
-    fetch(`/api/meta?storyId=${props.storyId}`)
+    fetch(`/api/story?storyId=${props.storyId}`)
       .then((response) => response.json())
       .then((s) => {
         setStory(s);
@@ -32,7 +32,7 @@ export function Story(props: StoryProps) {
       <a href={story.story.url}>
         <strong>{story.meta?.title || story.story.title}</strong>
       </a>
-      {story.meta?.description}
+      {story.meta?.description?.substring(0, 300)}
     </div>
   ) : (
     <></>
