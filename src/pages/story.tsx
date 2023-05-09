@@ -8,6 +8,7 @@ type StoryProps = {
 type Story = {
   story: { url: string; title: string };
   meta?: { title?: string; description?: string; image?: string };
+  summary: { text?: string[] };
 };
 
 export default function Story(props: StoryProps) {
@@ -33,8 +34,10 @@ export default function Story(props: StoryProps) {
         <strong>{story.meta?.title || story.story.title}</strong>
       </a>
       {story.meta?.description?.substring(0, 300)}
+      <hr />
+      {story.summary?.text && story.summary.text.join("")}
     </div>
   ) : (
-    <></>
+    <div>Loading</div>
   );
 }
