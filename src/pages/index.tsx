@@ -10,7 +10,7 @@ export default function Home() {
   const [stories, setStories] = useState([]);
 
   useEffect(() => {
-    fetch(`https://hacker-news.firebaseio.com/v0/topstories.json?limitToFirst=12&orderBy="$priority"`)
+    fetch(`https://hacker-news.firebaseio.com/v0/topstories.json?limitToFirst=15&orderBy="$priority"`)
       .then((response) => response.json())
       .then((json) => setStories(json));
   }, []);

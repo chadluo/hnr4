@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "../styles/Story.module.css";
 
 type StoryProps = {
@@ -24,8 +24,14 @@ export default function Story(props: StoryProps) {
     return () => {};
   }, [props.storyId]);
 
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  function showDialog() {
+    dialogRef.current?.showModal();
+  }
+
   return story ? (
-    <div className={styles.story} data-storyId={props.storyId}>
+    <div className={styles.story} data-storyId={props.storyId} onClick={showDialog}>
       {story.story.title}
       {story.meta?.image && (
         <div className={styles.imageBox} style={{ backgroundImage: `url(${story.meta.image})` }}></div>
@@ -34,8 +40,12 @@ export default function Story(props: StoryProps) {
         <strong>{story.meta?.title || story.story.title}</strong>
       </a>
       {story.meta?.description?.substring(0, 300)}
-      <hr />
-      {story.summary?.text && story.summary.text.join("")}
+      <dialog ref={dialogRef} className={styles.dialog} onClick={undefined}>
+        {story.summary?.text && story.summary.text.join("")}
+        <form method="dialog">
+          <button>OK</button>
+        </form>
+      </dialog>
     </div>
   ) : (
     <div>Loading</div>

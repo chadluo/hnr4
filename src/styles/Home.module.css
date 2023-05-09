@@ -1,7 +1,22 @@
 .main {
+  --column-width: 25rem;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 2rem;
-  max-width: calc(24rem * 3 + 4rem);
+  grid-template-columns: 1fr;
+  width: 100%;
+  max-width: var(--column-width);
   margin: auto;
+}
+
+@media screen and (min-width: 1400px) {
+  .main {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: calc(3 * var(--column-width));
+  }
+}
+
+@media screen and (min-width: 2400px) {
+  .main {
+    grid-template-columns: repeat(5, 1fr);
+    max-width: calc(5 * var(--column-width));
+  }
 }
