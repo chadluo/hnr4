@@ -1,4 +1,4 @@
-import styles from "@/styles/Home.module.css";
+import styles from "@/styles/index.module.css";
 import { Inter } from "next/font/google";
 import Head from "next/head";
 import { useEffect, useState } from "react";
@@ -10,7 +10,7 @@ export default function Home() {
   const [stories, setStories] = useState([]);
 
   useEffect(() => {
-    fetch(`https://hacker-news.firebaseio.com/v0/topstories.json?limitToFirst=15&orderBy="$priority"`)
+    fetch(`https://hacker-news.firebaseio.com/v0/topstories.json?limitToFirst=30&orderBy="$priority"`)
       .then((response) => response.json())
       .then((json) => setStories(json));
   }, []);

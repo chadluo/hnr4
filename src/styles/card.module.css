@@ -1,0 +1,31 @@
+.card {
+  display: block;
+  border: 1px gray solid;
+}
+
+.imageBox {
+  height: 10em;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+}
+
+.hostname {
+  position: absolute;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  width: 100%;
+  padding: 0.25lh 1ch;
+}
+
+.textBox {
+  padding: 1ch;
+}
+
+.description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+}

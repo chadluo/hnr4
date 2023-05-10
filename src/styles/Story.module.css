@@ -5,14 +5,9 @@
   padding: 1em;
 }
 
-.imageBox {
-  height: 10em;
-  background-position: center;
-  background-size: cover;
-}
-
-.title {
+.hnTitle {
   display: block;
+  height: 2lh;
 }
 
 .dialog {

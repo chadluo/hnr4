@@ -18,8 +18,8 @@ export default async function handler(request) {
   const lastUpdate = new Date().getTime();
   const story = await (await fetch(`https://hacker-news.firebaseio.com/v0/item/${storyId}.json`)).json();
   const [meta, summary] = await Promise.all([
-    findMetadata(storyId, story.url, lastUpdate),
-    findSummary(storyId, story.url, lastUpdate),
+    findMetadata(storyId, story, lastUpdate),
+    findSummary(storyId, story, lastUpdate),
   ]);
 
   return NextResponse.json({ story, meta, summary });
@@ -27,8 +27,9 @@ export default async function handler(request) {
 
 // meta
 
-async function findMetadata(storyId, url, lastUpdate) {
-  if (url.toLowerCase().endsWith("pdf")) {
+async function findMetadata(storyId, story, lastUpdate) {
+  const { url } = story;
+  if (!url || url.toLowerCase().endsWith("pdf")) {
     return {};
   }
   const key = `meta-${storyId}`;
@@ -81,7 +82,11 @@ function findRawMeta(html) {
 
 // summary
 
-async function findSummary(storyId, url, lastUpdate) {
+async function findSummary(storyId, story, lastUpdate) {
+  const { url, type } = story;
+  if (type === "job") {
+    return {};
+  }
   const key = `summary-${storyId}`;
   const existingSummary = await kv.get(key);
   if (existingSummary?.lastUpdate > lastUpdate - TIME_INTERVAL_1H * 24) {

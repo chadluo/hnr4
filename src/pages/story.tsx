@@ -1,5 +1,6 @@
+import styles from "@/styles/story.module.css";
 import { useEffect, useRef, useState } from "react";
-import styles from "../styles/Story.module.css";
+import Card from "./card";
 
 type StoryProps = {
   storyId: string;
@@ -8,39 +9,46 @@ type StoryProps = {
 type Story = {
   story: { url: string; title: string };
   meta?: { title?: string; description?: string; image?: string };
-  summary: { text?: string[] };
+  summary?: { text?: string[] };
 };
 
 export default function Story(props: StoryProps) {
+  const { storyId } = props;
+
   const [story, setStory] = useState<Story>();
 
   useEffect(() => {
-    fetch(`/api/story?storyId=${props.storyId}`)
+    fetch(`/api/story?storyId=${storyId}`)
       .then((response) => response.json())
       .then((s) => {
         setStory(s);
       });
 
     return () => {};
-  }, [props.storyId]);
+  }, [storyId]);
 
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   function showDialog() {
-    dialogRef.current?.showModal();
+    !dialogRef.current?.hasAttribute("open") && dialogRef.current?.showModal();
   }
 
+  const card = story && (
+    <Card
+      title={story.meta?.title || story.story.title}
+      url={story.story.url}
+      image={story.meta?.image}
+      description={story.meta?.description}
+    />
+  );
+
   return story ? (
-    <div className={styles.story} data-storyId={props.storyId} onClick={showDialog}>
-      {story.story.title}
-      {story.meta?.image && (
-        <div className={styles.imageBox} style={{ backgroundImage: `url(${story.meta.image})` }}></div>
-      )}
-      <a href={story.story.url}>
-        <strong>{story.meta?.title || story.story.title}</strong>
-      </a>
-      {story.meta?.description?.substring(0, 300)}
+    <div className={styles.story} data-storyId={storyId} onClick={showDialog}>
+      <div className={styles.hnTitle}>{story.story.title}</div>
+      {card}
       <dialog ref={dialogRef} className={styles.dialog} onClick={undefined}>
+        {story.story.title}
+        {card}
         {story.summary?.text && story.summary.text.join("")}
         <form method="dialog">
           <button>OK</button>
@@ -48,6 +56,6 @@ export default function Story(props: StoryProps) {
       </dialog>
     </div>
   ) : (
-    <div>Loading</div>
+    <center>Loading</center>
   );
 }
