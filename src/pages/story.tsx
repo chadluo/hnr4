@@ -12,23 +12,27 @@ type Story = {
   summary?: { text?: string[] };
 };
 
+const CACHE_KEY_STORIES = "CACHE_KEY_STORIES";
+
 export default function Story(props: StoryProps) {
   const { storyId } = props;
-
   const [story, setStory] = useState<Story>();
-
   useEffect(() => {
-    fetch(`/api/story?storyId=${storyId}`)
-      .then((response) => response.json())
-      .then((s) => {
-        setStory(s);
-      });
+    (async (storyId: string) => {
+      const cache = await caches.open(CACHE_KEY_STORIES);
+      const request = new Request(`/api/story?storyId=${storyId}`, { headers: { "Cache-Control": "max-age=300" } });
+      let response = await cache.match(request);
+      if (!response) {
+        await cache.add(request);
+        response = await cache.match(request);
+      }
+      setStory(await response?.json());
+    })(storyId).catch(console.error);
 
     return () => {};
   }, [storyId]);
 
   const dialogRef = useRef<HTMLDialogElement>(null);
-
   function showDialog() {
     !dialogRef.current?.hasAttribute("open") && dialogRef.current?.showModal();
   }

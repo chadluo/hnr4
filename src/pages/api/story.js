@@ -22,7 +22,9 @@ export default async function handler(request) {
     findSummary(storyId, story, lastUpdate),
   ]);
 
-  return NextResponse.json({ story, meta, summary });
+  return new NextResponse(JSON.stringify({ story, meta, summary, lastUpdate }), {
+    headers: { "Cache-Control": "s-maxage=300" },
+  });
 }
 
 // meta
