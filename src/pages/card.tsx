@@ -13,7 +13,7 @@ export default function Card(props: CardProps) {
   const source = url && extractSource(url);
 
   return (
-    <a href={url} title={url} className={styles.card}>
+    <a href={url} title={url} className={styles.card} target="_blank">
       <div className={styles.imageBox} style={{ backgroundImage: `url(${image})` }}>
         <span className={styles.hostname}>{source}</span>
       </div>

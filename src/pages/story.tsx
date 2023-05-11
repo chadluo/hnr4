@@ -1,6 +1,7 @@
 import styles from "@/styles/story.module.css";
 import { useEffect, useRef, useState } from "react";
 import Card from "./card";
+import Dialog from "./dialog";
 
 type StoryProps = {
   storyId: string;
@@ -33,34 +34,39 @@ export default function Story(props: StoryProps) {
   }, [storyId]);
 
   const dialogRef = useRef<HTMLDialogElement>(null);
-  function showDialog() {
+  function showDialog(event: MouseEvent) {
+    if ((event.target as Element).closest("a")) return;
     !dialogRef.current?.hasAttribute("open") && dialogRef.current?.showModal();
   }
   function closeDialog() {
     dialogRef.current?.close();
   }
 
-  const card = story && (
-    <Card
-      title={story.meta?.title || story.story.title}
-      url={story.story.url}
-      image={story.meta?.image}
-      description={story.meta?.description}
-    />
-  );
+  const card = () =>
+    story && (
+      <Card
+        title={story.meta?.title || story.story.title}
+        url={story.story.url}
+        image={story.meta?.image}
+        description={story.meta?.description}
+      />
+    );
 
   return story ? (
     <div className={styles.story} data-storyId={storyId} onClick={showDialog}>
       <div className={styles.hnTitle}>
-        <a href={`https://news.ycombinator.com/item?id=${storyId}`}>{story.story.title}</a>
+        <a href={`https://news.ycombinator.com/item?id=${storyId}`} target="_blank">
+          {story.story.title}
+        </a>
       </div>
-      {card}
-      <dialog ref={dialogRef} className={styles.dialog} onClick={undefined}>
-        {story.story.title}
-        {card}
-        {story.summary?.text && story.summary.text.join("")}
-        <a onClick={closeDialog}>❌</a>
-      </dialog>
+      {card()}
+      <Dialog
+        ref={dialogRef}
+        title={story.story.title}
+        card={card}
+        description={story.summary?.text && story.summary.text.join("")}
+        onClickClose={closeDialog}
+      />
     </div>
   ) : (
     <center data-storyId={storyId}>Loading</center>

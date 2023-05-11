@@ -19,8 +19,8 @@ export default function Home() {
     const [deg1, hue1] = [Math.random() * 360, Math.random() * 360];
     const [deg2, hue2] = [Math.random() * 360, Math.random() * 360];
     document.body.style.background = [
-      `linear-gradient(${deg1}deg, hsl(${hue1} 80% 50% / .3), rgba(0, 0, 0, 0))`,
-      `linear-gradient(${deg2}deg, hsl(${hue2} 80% 50% / .3), black)`,
+      `linear-gradient(${deg1}deg, hsl(${hue1} 80% 20%), 10%, rgba(0, 0, 0, 0))`,
+      `linear-gradient(${deg2}deg, hsl(${hue2} 80% 20%), 10%, rgba(0, 0, 0, 0))`,
       "black",
     ].join(",");
   }, []);

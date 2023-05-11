@@ -1,0 +1,17 @@
+.dialog {
+  max-width: 60rem;
+  margin: auto;
+  padding: 2rem;
+  cursor: default;
+  border: none;
+  background: black;
+  color: white;
+}
+
+.dialog a:hover {
+  cursor: pointer;
+}
+
+.dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
