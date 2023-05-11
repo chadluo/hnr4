@@ -79,9 +79,10 @@ async function findSummary(storyId, story) {
     },
     body: JSON.stringify({
       model: "text-davinci-003",
-      prompt: `Summarize ${url}`,
-      max_tokens: 256,
-      temperature: 0,
+      prompt: `Visit and summarize ${url}:`,
+      max_tokens: 128,
+      top_p: 0.5,
+      frequency_penalty: 1,
     }),
   });
   const json = await response.json();
