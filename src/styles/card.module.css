@@ -1,6 +1,12 @@
 .card {
+  background: #111;
   display: block;
-  border: 1px gray solid;
+  border: 1px solid #444;
+  flex-grow: 1;
+}
+
+.card:hover {
+  border-color: #f60;
 }
 
 .imageBox {
@@ -26,6 +32,6 @@
 .description {
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 3;
   overflow: hidden;
 }

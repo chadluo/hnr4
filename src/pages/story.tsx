@@ -36,6 +36,9 @@ export default function Story(props: StoryProps) {
   function showDialog() {
     !dialogRef.current?.hasAttribute("open") && dialogRef.current?.showModal();
   }
+  function closeDialog() {
+    dialogRef.current?.close();
+  }
 
   const card = story && (
     <Card
@@ -48,18 +51,18 @@ export default function Story(props: StoryProps) {
 
   return story ? (
     <div className={styles.story} data-storyId={storyId} onClick={showDialog}>
-      <div className={styles.hnTitle}>{story.story.title}</div>
+      <div className={styles.hnTitle}>
+        <a href={`https://news.ycombinator.com/item?id=${storyId}`}>{story.story.title}</a>
+      </div>
       {card}
       <dialog ref={dialogRef} className={styles.dialog} onClick={undefined}>
         {story.story.title}
         {card}
         {story.summary?.text && story.summary.text.join("")}
-        <form method="dialog">
-          <button>OK</button>
-        </form>
+        <a onClick={closeDialog}>❌</a>
       </dialog>
     </div>
   ) : (
-    <center>Loading</center>
+    <center data-storyId={storyId}>Loading</center>
   );
 }

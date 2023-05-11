@@ -1,17 +1,33 @@
 .story {
   display: flex;
   flex-direction: column;
-  background: white;
+  gap: 0.5em;
   padding: 1em;
+}
+
+.story:hover {
+  background: #222;
+  cursor: pointer;
 }
 
 .hnTitle {
   display: block;
-  height: 2lh;
+}
+
+.hnTitle a:hover {
+  color: #f60;
 }
 
 .dialog {
   max-width: 60rem;
   margin: auto;
   padding: 2rem;
+  cursor: default;
+  border: none;
+  background: black;
+  color: white;
+}
+
+.dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5);
 }

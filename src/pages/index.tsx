@@ -1,10 +1,10 @@
 import styles from "@/styles/index.module.css";
-import { Inter } from "next/font/google";
+import { Nunito_Sans } from "next/font/google";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import Story from "./story";
 
-const inter = Inter({ subsets: ["latin"] });
+const font = Nunito_Sans({ subsets: ["latin"] });
 
 export default function Home() {
   const [stories, setStories] = useState([]);
@@ -15,6 +15,16 @@ export default function Home() {
       .then((json) => setStories(json));
   }, []);
 
+  useEffect(() => {
+    const [deg1, hue1] = [Math.random() * 360, Math.random() * 360];
+    const [deg2, hue2] = [Math.random() * 360, Math.random() * 360];
+    document.body.style.background = [
+      `linear-gradient(${deg1}deg, hsl(${hue1} 80% 50% / .3), rgba(0, 0, 0, 0))`,
+      `linear-gradient(${deg2}deg, hsl(${hue2} 80% 50% / .3), black)`,
+      "black",
+    ].join(",");
+  }, []);
+
   return (
     <>
       <Head>
@@ -23,9 +33,9 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={`${styles.main} ${inter.className}`}>
+      <main className={`${styles.main} ${font.className}`}>
         {stories.map((story) => (
-          <Story storyId={story} key={story}></Story>
+          <Story storyId={story} key={story} />
         ))}
       </main>
     </>

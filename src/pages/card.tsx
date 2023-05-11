@@ -13,13 +13,15 @@ export default function Card(props: CardProps) {
   const source = url && extractSource(url);
 
   return (
-    <a href={url} className={styles.card}>
+    <a href={url} title={url} className={styles.card}>
       <div className={styles.imageBox} style={{ backgroundImage: `url(${image})` }}>
         <span className={styles.hostname}>{source}</span>
       </div>
       <div className={styles.textBox}>
         <strong>{title}</strong>
-        <div className={styles.description}>{description}</div>
+        <div className={styles.description} title={description}>
+          {description}
+        </div>
       </div>
     </a>
   );
@@ -29,6 +31,8 @@ function extractSource(url: string) {
   const { hostname, pathname } = new URL(url);
   if (hostname === "github.com") {
     return hostname + takePath(pathname, 3);
+  } else if (hostname === "twitter.com") {
+    return hostname + takePath(pathname, 2);
   } else {
     return hostname;
   }
