@@ -15,7 +15,7 @@ const Dialog = forwardRef(function Dialog(props: Props, ref: ForwardedRef<HTMLDi
     <dialog className={styles.dialog} ref={ref}>
       <a onClick={onClickClose}>❌</a>
       {title}
-      {card()}
+      {card?.()}
       {description}
     </dialog>
   );

@@ -1,5 +1,5 @@
 import styles from "@/styles/story.module.css";
-import { useEffect, useRef, useState } from "react";
+import { MouseEvent, useEffect, useRef, useState } from "react";
 import Card from "./card";
 import Dialog from "./dialog";
 
