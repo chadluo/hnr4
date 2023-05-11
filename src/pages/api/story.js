@@ -1,4 +1,3 @@
-import kv from "@vercel/kv";
 import { NextResponse } from "next/server";
 import { parse } from "parse5";
 
@@ -6,38 +5,24 @@ export const config = {
   runtime: "edge",
 };
 
-const DEFAULT_TIMEOUT_MS = 5000;
-const TIME_INTERVAL_1H = 1000 * 60 * 60;
+const DEFAULT_TIMEOUT_MS = 10000;
 
 export default async function handler(request) {
   const storyId = new URL(request.url).searchParams.get("storyId");
   if (!storyId) {
     return NextResponse.error();
   }
-
-  const lastUpdate = new Date().getTime();
   const story = await (await fetch(`https://hacker-news.firebaseio.com/v0/item/${storyId}.json`)).json();
-  const [meta, summary] = await Promise.all([
-    findMetadata(storyId, story, lastUpdate),
-    findSummary(storyId, story, lastUpdate),
-  ]);
-
-  return new NextResponse(JSON.stringify({ story, meta, summary, lastUpdate }), {
-    headers: { "Cache-Control": "s-maxage=300" },
-  });
+  const [meta, summary] = await Promise.all([findMetadata(storyId, story), findSummary(storyId, story)]);
+  return NextResponse.json({ story, meta, summary }, { headers: { "Cache-Control": "max-age=0, s-maxage=21600" } });
 }
 
 // meta
 
-async function findMetadata(storyId, story, lastUpdate) {
+async function findMetadata(storyId, story) {
   const { url } = story;
   if (!url || url.toLowerCase().endsWith("pdf")) {
     return {};
-  }
-  const key = `meta-${storyId}`;
-  const existingMetadata = await kv.get(key);
-  if (existingMetadata?.lastUpdate > lastUpdate - TIME_INTERVAL_1H) {
-    return existingMetadata;
   }
   const controller = new AbortController();
   let html, abortTimeout;
@@ -54,9 +39,7 @@ async function findMetadata(storyId, story, lastUpdate) {
     title: rawMeta["title"] || rawMeta["og:title"] || rawMeta["twitter:title"],
     description: rawMeta["description"] || rawMeta["og:description"] || rawMeta["twitter:description"],
     image: rawMeta["og:image"] || rawMeta["twitter:image"],
-    lastUpdate,
   };
-  await kv.set(key, metadata);
 
   return metadata;
 }
@@ -66,7 +49,7 @@ function findRawMeta(html) {
   const headNode = parsed.childNodes
     .find((node) => node.nodeName === "html")
     .childNodes.find((node) => node.nodeName === "head");
-  const rawMeta = Object.fromEntries(
+  return Object.fromEntries(
     headNode.childNodes
       .map((node) => {
         if (node.nodeName !== "meta") {
@@ -78,23 +61,15 @@ function findRawMeta(html) {
       })
       .filter((entry) => entry != null)
   );
-
-  return rawMeta;
 }
 
 // summary
 
-async function findSummary(storyId, story, lastUpdate) {
+async function findSummary(storyId, story) {
   const { url, type } = story;
-  if (type === "job") {
+  if (!url || type === "job") {
     return {};
   }
-  const key = `summary-${storyId}`;
-  const existingSummary = await kv.get(key);
-  if (existingSummary?.lastUpdate > lastUpdate - TIME_INTERVAL_1H * 24) {
-    return existingSummary;
-  }
-
   const response = await fetch("https://api.openai.com/v1/completions", {
     method: "POST",
     mode: "cors",
@@ -110,11 +85,7 @@ async function findSummary(storyId, story, lastUpdate) {
     }),
   });
   const json = await response.json();
-  const summary = {
+  return {
     text: json.choices.map((choice) => choice.text),
-    lastUpdate,
   };
-  await kv.set(key, summary);
-
-  return summary;
 }

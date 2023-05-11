@@ -20,11 +20,11 @@ export default function Story(props: StoryProps) {
   useEffect(() => {
     (async (storyId: string) => {
       const cache = await caches.open(CACHE_KEY_STORIES);
-      const request = new Request(`/api/story?storyId=${storyId}`, { headers: { "Cache-Control": "max-age=300" } });
-      let response = await cache.match(request);
+      const url = `/api/story?storyId=${storyId}`;
+      let response = await cache.match(url);
       if (!response) {
-        await cache.add(request);
-        response = await cache.match(request);
+        await cache.add(url);
+        response = await cache.match(url);
       }
       setStory(await response?.json());
     })(storyId).catch(console.error);
