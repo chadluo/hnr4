@@ -10,10 +10,10 @@
   cursor: pointer;
 }
 
-.hnTitle {
-  display: block;
+.hnTitle:hover {
+  color: #f60;
 }
 
-.hnTitle a:hover {
-  color: #f60;
+.shortSummarization {
+  font-size: calc(1em - 2px);
 }

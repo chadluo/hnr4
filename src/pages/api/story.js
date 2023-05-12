@@ -79,14 +79,15 @@ async function findSummary(storyId, story) {
     },
     body: JSON.stringify({
       model: "text-davinci-003",
-      prompt: `Visit and summarize ${url}:`,
-      max_tokens: 128,
+      prompt: `Visit and generate 2 summarizations of ${url},
+        the first of one sentence, the other being a proper summarization, separated by a forward slash:`,
+      max_tokens: 256,
       top_p: 0.5,
       frequency_penalty: 1,
     }),
   });
   const json = await response.json();
   return {
-    text: json.choices.map((choice) => choice.text),
+    text: json.choices.map((choice) => choice.text).join(""),
   };
 }

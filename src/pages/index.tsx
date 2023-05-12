@@ -4,7 +4,7 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import Story from "./story";
 
-const font = Nunito_Sans({ subsets: ["latin"] });
+const nunitoSans = Nunito_Sans({ subsets: ["latin"] });
 
 export default function Home() {
   const [stories, setStories] = useState([]);
@@ -33,7 +33,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={`${styles.main} ${font.className}`}>
+      <main className={`${styles.main} ${nunitoSans.className}`}>
         {stories.map((story) => (
           <Story storyId={story} key={story} />
         ))}

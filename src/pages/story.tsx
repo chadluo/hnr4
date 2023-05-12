@@ -1,7 +1,10 @@
 import styles from "@/styles/story.module.css";
+import { IBM_Plex_Mono } from "next/font/google";
 import { MouseEvent, useEffect, useRef, useState } from "react";
 import Card from "./card";
 import Dialog from "./dialog";
+
+const monoFont = IBM_Plex_Mono({ subsets: ["latin"], weight: "400", style: "italic" });
 
 type StoryProps = {
   storyId: string;
@@ -10,7 +13,7 @@ type StoryProps = {
 type Story = {
   story: { url: string; title: string };
   meta?: { title?: string; description?: string; image?: string };
-  summary?: { text?: string[] };
+  summary?: { text?: `${string}/${string}` };
 };
 
 const CACHE_KEY_STORIES = "CACHE_KEY_STORIES";
@@ -52,19 +55,21 @@ export default function Story(props: StoryProps) {
       />
     );
 
+  const text = story?.summary?.text;
+  const [shortSummarization, longSummarization] = (text && text.split("/")) || [undefined, undefined];
+
   return story ? (
     <div className={styles.story} data-storyId={storyId} onClick={showDialog}>
-      <div className={styles.hnTitle}>
-        <a href={`https://news.ycombinator.com/item?id=${storyId}`} target="_blank">
-          {story.story.title}
-        </a>
-      </div>
+      <a href={`https://news.ycombinator.com/item?id=${storyId}`} className={styles.hnTitle} target="_blank">
+        {story.story.title}
+      </a>
+      <span className={`${monoFont.className} ${styles.shortSummarization}`}>{shortSummarization}</span>
       {card()}
       <Dialog
         ref={dialogRef}
         title={story.story.title}
         card={card}
-        description={story.summary?.text && story.summary.text.join("")}
+        longSummarization={longSummarization}
         onClickClose={closeDialog}
       />
     </div>
