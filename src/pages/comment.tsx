@@ -7,11 +7,12 @@ type Props = {
 };
 
 type Comment = {
+  by: string;
   text: string;
   kids: number[] | undefined;
+  deleted: boolean | undefined;
+  dead: boolean | undefined;
 };
-
-const CACHE_KEY_COMMENTS = "CACHE_KEY_COMMENTS";
 
 export default function Comment(props: Props) {
   const { commentId, expand } = props;
@@ -20,17 +21,19 @@ export default function Comment(props: Props) {
   const [startRender, setStartRender] = useState(false);
 
   useEffect(() => {
-    (async (commentId) => {
-      const cache = await caches.open(CACHE_KEY_COMMENTS);
-      const url = `https://hacker-news.firebaseio.com/v0/item/${commentId}.json`;
-      let response = await cache.match(url);
-      if (!response) {
-        console.log("requesting", url);
-        await cache.add(url);
-        response = await cache.match(url);
+    const controller = new AbortController();
+    fetch(`https://hacker-news.firebaseio.com/v0/item/${commentId}.json`, { signal: controller.signal })
+      .then((response) => response.json())
+      .then((json) => {
+        setComment(json);
+      });
+    return () => {
+      try {
+        controller.abort();
+      } catch (err) {
+        console.error(err);
       }
-      setComment(await response?.json());
-    })(commentId).catch(console.error);
+    };
   }, [commentId]);
 
   function toggle(event: SyntheticEvent<HTMLDetailsElement, Event>) {
@@ -39,9 +42,18 @@ export default function Comment(props: Props) {
     }
   }
 
-  return comment ? (
-    <details open={expand} onToggle={(e) => toggle(e)} className={styles.comment}>
-      <summary dangerouslySetInnerHTML={{ __html: comment.text }} />
+  return comment && !comment.deleted && !comment.dead ? (
+    <details
+      data-commentid={commentId}
+      open={expand}
+      onToggle={(e) => toggle(e)}
+      className={`${styles.comment} ${comment.kids ? "" : styles.nokid}`}
+    >
+      <summary
+        dangerouslySetInnerHTML={{
+          __html: `${comment.text} [<a href="https://news.ycombinator.com/item?id=${commentId}">${comment.by}</a>]`,
+        }}
+      />
       {startRender && comment.kids?.map((kid) => <Comment key={kid} commentId={kid.toString()} expand={true} />)}
     </details>
   ) : (

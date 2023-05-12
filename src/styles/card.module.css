@@ -2,7 +2,6 @@
   background: #111;
   display: block;
   border: 1px solid #444;
-  flex-grow: 1;
 }
 
 .card:hover {
