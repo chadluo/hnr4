@@ -1,3 +1,14 @@
+.header {
+  padding: 2.8rem 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.header a:hover {
+  text-decoration: underline;
+}
+
 .main {
   --column-width: 25rem;
   display: grid;
