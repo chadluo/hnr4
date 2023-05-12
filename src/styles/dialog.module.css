@@ -1,11 +1,15 @@
 .dialog {
-  max-width: 60rem;
+  max-width: 40rem;
   margin: auto;
   padding: 2rem;
   cursor: default;
   border: none;
-  background: black;
+  background: rgba(0, 0, 0, 0.95);
   color: white;
+}
+
+.wideDialog {
+  max-width: 80rem;
 }
 
 .dialog a:hover {
@@ -16,6 +20,20 @@
   background: rgba(0, 0, 0, 0.5);
 }
 
+.dialogContent {
+  display: flex;
+  flex-direction: row;
+  gap: 2em;
+}
+
+.story {
+  flex: 1 0 40%;
+}
+
 .longSummarization {
   font-size: calc(1em - 2px);
+}
+
+.comments {
+  flex-grow: 0;
 }

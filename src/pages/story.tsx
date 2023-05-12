@@ -11,7 +11,7 @@ type StoryProps = {
 };
 
 type Story = {
-  story: { url: string; title: string };
+  story: { url: string; title: string; kids: number[] };
   meta?: { title?: string; description?: string; image?: string };
   summary?: { text?: `${string}/${string}` };
 };
@@ -36,13 +36,16 @@ export default function Story(props: StoryProps) {
     return () => {};
   }, [storyId]);
 
+  const [showKids, setShowKids] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
   function showDialog(event: MouseEvent) {
     if ((event.target as Element).closest("a")) return;
     !dialogRef.current?.hasAttribute("open") && dialogRef.current?.showModal();
+    setShowKids(true);
   }
   function closeDialog() {
     dialogRef.current?.close();
+    setShowKids(false);
   }
 
   const card = () =>
@@ -59,7 +62,7 @@ export default function Story(props: StoryProps) {
   const [shortSummarization, longSummarization] = (text && text.split("/")) || [undefined, undefined];
 
   return story ? (
-    <div className={styles.story} data-storyId={storyId} onClick={showDialog}>
+    <div className={styles.story} data-storyid={storyId} onClick={showDialog}>
       <a href={`https://news.ycombinator.com/item?id=${storyId}`} className={styles.hnTitle} target="_blank">
         {story.story.title}
       </a>
@@ -67,13 +70,15 @@ export default function Story(props: StoryProps) {
       {card()}
       <Dialog
         ref={dialogRef}
+        onClickClose={closeDialog}
+        showKids={() => showKids}
         title={story.story.title}
         card={card}
         longSummarization={longSummarization}
-        onClickClose={closeDialog}
+        kids={story.story.kids}
       />
     </div>
   ) : (
-    <center data-storyId={storyId}>Loading</center>
+    <center data-storyid={storyId}>Loading</center>
   );
 }

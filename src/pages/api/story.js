@@ -1,15 +1,13 @@
 import { NextResponse } from "next/server";
 import { parse } from "parse5";
 
-export const config = {
-  runtime: "edge",
-};
+export const config = { runtime: "edge" };
 
 const DEFAULT_TIMEOUT_MS = 10000;
 
 export default async function handler(request) {
   const storyId = new URL(request.url).searchParams.get("storyId");
-  if (!storyId) {
+  if (!storyId || !isFinite(storyId)) {
     return NextResponse.error();
   }
   const story = await (await fetch(`https://hacker-news.firebaseio.com/v0/item/${storyId}.json`)).json();
