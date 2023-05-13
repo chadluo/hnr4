@@ -10,27 +10,39 @@ type StoryProps = {
   storyId: string;
 };
 
-type Story = {
-  story: { url: string; title: string; kids: number[] };
-  meta?: { title?: string; description?: string; image?: string };
-  summary?: { text?: `${string}/${string}` };
+type HNStory = {
+  url: string;
+  title: string;
+  kids: number[];
 };
 
-const CACHE_KEY_STORIES = "CACHE_KEY_STORIES";
+type Meta = {
+  title?: string;
+  description?: string;
+  image?: string;
+};
+
+type Summary = {
+  text?: `${string}/${string}`;
+};
 
 export default function Story(props: StoryProps) {
   const { storyId } = props;
-  const [story, setStory] = useState<Story>();
+
+  const [hnStory, setHnStory] = useState<HNStory>();
+  const [meta, setMeta] = useState<Meta>();
+  const [summary, setSummary] = useState<Summary>();
+
   useEffect(() => {
     (async (storyId: string) => {
-      const cache = await caches.open(CACHE_KEY_STORIES);
-      const url = `/api/story?storyId=${storyId}`;
-      let response = await cache.match(url);
-      if (!response) {
-        await cache.add(url);
-        response = await cache.match(url);
-      }
-      setStory(await response?.json());
+      const hnStory: HNStory = await (await fetch(`/api/story?storyId=${storyId}`)).json();
+      setHnStory(hnStory);
+      const [meta, summary] = await Promise.all([
+        await (await fetch(`/api/meta?url=${hnStory.url}`)).json(),
+        await (await fetch(`/api/summary?url=${hnStory.url}`)).json(),
+      ]);
+      setMeta(meta);
+      setSummary(summary);
     })(storyId).catch(console.error);
 
     return () => {};
@@ -49,22 +61,20 @@ export default function Story(props: StoryProps) {
   }
 
   const card = () =>
-    story && (
-      <Card
-        title={story.meta?.title || story.story.title}
-        url={story.story.url}
-        image={story.meta?.image}
-        description={story.meta?.description}
-      />
-    );
+    hnStory &&
+    (meta ? (
+      <Card title={meta.title || hnStory.title} url={hnStory.url} image={meta.image} description={meta.description} />
+    ) : (
+      <Card title={hnStory.title} url={hnStory.url} />
+    ));
 
-  const text = story?.summary?.text;
+  const text = summary?.text;
   const [shortSummarization, longSummarization] = (text && text.split("/")) || [undefined, undefined];
 
-  return story ? (
+  return hnStory ? (
     <div className={styles.story} data-storyid={storyId} onClick={showDialog}>
       <a href={`https://news.ycombinator.com/item?id=${storyId}`} className={styles.hnTitle} target="_blank">
-        {story.story.title}
+        {hnStory.title}
       </a>
       {card()}
       <span className={`${monoFont.className} ${styles.shortSummarization}`}>{shortSummarization}</span>
@@ -73,10 +83,10 @@ export default function Story(props: StoryProps) {
         onClickClose={closeDialog}
         showKids={() => showKids}
         storyId={storyId}
-        title={story.story.title}
+        title={hnStory.title}
         card={card}
         longSummarization={longSummarization}
-        kids={story.story.kids}
+        kids={hnStory.kids}
       />
     </div>
   ) : (
