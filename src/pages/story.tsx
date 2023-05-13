@@ -66,12 +66,13 @@ export default function Story(props: StoryProps) {
       <a href={`https://news.ycombinator.com/item?id=${storyId}`} className={styles.hnTitle} target="_blank">
         {story.story.title}
       </a>
-      <span className={`${monoFont.className} ${styles.shortSummarization}`}>{shortSummarization}</span>
       {card()}
+      <span className={`${monoFont.className} ${styles.shortSummarization}`}>{shortSummarization}</span>
       <Dialog
         ref={dialogRef}
         onClickClose={closeDialog}
         showKids={() => showKids}
+        storyId={storyId}
         title={story.story.title}
         card={card}
         longSummarization={longSummarization}

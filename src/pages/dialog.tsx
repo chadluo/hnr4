@@ -8,6 +8,7 @@ const monoFont = IBM_Plex_Mono({ subsets: ["latin"], weight: "400", style: "ital
 type Props = {
   onClickClose: () => void;
   showKids: () => boolean;
+  storyId: string;
   title: string;
   card: () => JSX.Element | undefined;
   longSummarization: string | undefined;
@@ -15,7 +16,7 @@ type Props = {
 };
 
 const Dialog = forwardRef(function Dialog(props: Props, ref: ForwardedRef<HTMLDialogElement>) {
-  const { onClickClose, showKids, title, card, longSummarization, kids } = props;
+  const { onClickClose, showKids, storyId, title, card, longSummarization, kids } = props;
 
   const [startRender, setStartRender] = useState(showKids?.() || false);
   useEffect(() => {
@@ -27,7 +28,9 @@ const Dialog = forwardRef(function Dialog(props: Props, ref: ForwardedRef<HTMLDi
       <a onClick={onClickClose}>❌</a>
       <div className={styles.dialogContent}>
         <div className={styles.story}>
-          {title}
+          <a href={`https://news.ycombinator.com/item?id=${storyId}`} className={styles.hnTitle} target="_blank">
+            {title}
+          </a>
           {card?.()}
           <span className={`${monoFont.className} ${styles.longSummarization}`}>{longSummarization}</span>
         </div>

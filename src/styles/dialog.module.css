@@ -33,6 +33,10 @@
   gap: 0.7rem;
 }
 
+.hnTitle:hover {
+  color: #f60;
+}
+
 .longSummarization {
   font-size: calc(1em - 2px);
 }
