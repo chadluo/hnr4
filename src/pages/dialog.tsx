@@ -17,7 +17,7 @@ type Props = {
 const Dialog = forwardRef(function Dialog(props: Props, ref: ForwardedRef<HTMLDialogElement>) {
   const { onClickClose, showKids, title, card, longSummarization, kids } = props;
 
-  const [startRender, setStartRender] = useState(showKids());
+  const [startRender, setStartRender] = useState(showKids?.() || false);
   useEffect(() => {
     setStartRender(showKids());
   }, [showKids]);
