@@ -26,7 +26,7 @@ export default function Home() {
   }, []);
 
   const title = "Hacker News Reader";
-  const image = "hnr.adluo.ch/hnr.png";
+  const image = "https://hnr.adluo.ch/hnr.png";
   const description = "Yet another Hacker News Reader with metadata cards and some LLM summaries.";
 
   return (
@@ -42,7 +42,7 @@ export default function Home() {
         <meta property="og:image" content={image} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
-        <meta property="og:url" content="hnr.adluo.ch" />
+        <meta property="og:url" content="https://hnr.adluo.ch" />
       </Head>
       <header className={`${styles.header} ${nunitoSans.className}`}>
         <span>Hacker News Reader</span>
