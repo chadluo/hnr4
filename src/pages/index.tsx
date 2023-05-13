@@ -25,12 +25,24 @@ export default function Home() {
     ].join(",");
   }, []);
 
+  const title = "Hacker News Reader";
+  const image = "/hnr.png";
+  const description = "Yet another Hacker News Reader with metadata cards and some LLM summaries.";
+
   return (
     <>
       <Head>
         <title>Hacker News Reader</title>
-        <meta name="description" content="Hacker News Reader " />
+        <meta name="description" content={title} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:image" content={image} />
+        <meta property="twitter:title" content={title} />
+        <meta property="twitter:description" content={description} />
+        <meta property="og:image" content={image} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:url" content="https://hnr.adluo.ch" />
       </Head>
       <header className={`${styles.header} ${nunitoSans.className}`}>
         <span>Hacker News Reader</span>
