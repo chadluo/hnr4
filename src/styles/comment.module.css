@@ -1,5 +1,5 @@
 details .comment {
-  padding-left: 1em;
+  padding-left: 2em;
 }
 
 .comment a {
@@ -8,6 +8,14 @@ details .comment {
 
 .comment a:hover {
   color: hsl(24 80% 70%);
+}
+
+.comment p {
+  margin-top: var(--vg);
+}
+
+.comment pre {
+  overflow-x: auto;
 }
 
 .comment summary {

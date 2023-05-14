@@ -3,7 +3,8 @@ import { IBM_Plex_Mono } from "next/font/google";
 import { ForwardedRef, forwardRef, useEffect, useState } from "react";
 import Comment from "./comment";
 
-const monoFont = IBM_Plex_Mono({ subsets: ["latin"], weight: "400", style: "italic" });
+const summaryFont = IBM_Plex_Mono({ subsets: ["latin"], weight: "400", style: "italic" });
+const monoFont = IBM_Plex_Mono({ weight: "400", subsets: ["latin"] });
 
 type Props = {
   onClickClose: () => void;
@@ -25,6 +26,12 @@ const Dialog = forwardRef(function Dialog(props: Props, ref: ForwardedRef<HTMLDi
 
   return (
     <dialog className={`${styles.dialog} ${kids ? styles.wideDialog : ""}`} ref={ref}>
+      <style jsx global>{`
+        code {
+          font-family: ${monoFont.style.fontFamily};
+          font-size: calc(1rem - 2px);
+        }
+      `}</style>
       <div className={styles.dialogTitle}>
         <a href={`https://news.ycombinator.com/item?id=${storyId}`} className={styles.hnTitle} target="_blank">
           {title}
@@ -34,7 +41,7 @@ const Dialog = forwardRef(function Dialog(props: Props, ref: ForwardedRef<HTMLDi
       <div className={styles.dialogContent}>
         <div className={styles.story}>
           {card?.()}
-          <span className={`${monoFont.className} ${styles.longSummarization}`}>{longSummarization}</span>
+          <span className={`${summaryFont.className} ${styles.longSummarization}`}>{longSummarization}</span>
         </div>
         {startRender && (
           <div className={styles.comments}>
