@@ -1,4 +1,5 @@
 import styles from "@/styles/card.module.css";
+import { useState } from "react";
 
 type CardProps = {
   title: string;
@@ -12,7 +13,18 @@ export default function Card(props: CardProps) {
 
   const source = url && extractSource(url);
 
-  return (
+  const [embedTweet, setEmbedTweet] = useState();
+
+  if (source === "twitter.com") {
+    fetch(`https://publish.twitter.com/oembed?hide_thread=1&omit_script=1&theme=dark&dnt=true&url=${url}`)
+      .then((response) => response.json())
+      .then((json) => setEmbedTweet(json.html))
+      .catch(console.error);
+  }
+
+  return embedTweet ? (
+    <div dangerouslySetInnerHTML={embedTweet}></div>
+  ) : (
     <a href={url} title={url} className={styles.card} target="_blank">
       <div className={styles.imageBox} style={{ backgroundImage: `url(${image})` }}>
         <span className={styles.hostname}>{source}</span>
@@ -31,7 +43,7 @@ function extractSource(url: string) {
   const { hostname, pathname } = new URL(url);
   if (hostname === "github.com") {
     return hostname + takePath(pathname, 3);
-  } else if (hostname === "twitter.com") {
+  } else if (hostname === "gist.github.com") {
     return hostname + takePath(pathname, 2);
   } else {
     return hostname;

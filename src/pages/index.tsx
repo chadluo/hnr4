@@ -53,6 +53,7 @@ export default function Home() {
           <Story storyId={story} key={story} />
         ))}
       </main>
+      <script async src="https://platform.twitter.com/widgets.js"></script>
     </>
   );
 }

@@ -37,12 +37,15 @@ export default function Story(props: StoryProps) {
     (async (storyId: string) => {
       const hnStory: HNStory = await (await fetch(`/api/story?storyId=${storyId}`)).json();
       setHnStory(hnStory);
-      const [meta, summary] = await Promise.all([
-        await (await fetch(`/api/meta?url=${hnStory.url}`)).json(),
-        await (await fetch(`/api/summary?url=${hnStory.url}`)).json(),
-      ]);
-      setMeta(meta);
-      setSummary(summary);
+      const { hostname } = new URL(hnStory.url);
+      if (hostname !== "twitter.com") {
+        const [meta, summary] = await Promise.all([
+          await (await fetch(`/api/meta?url=${hnStory.url}`)).json(),
+          await (await fetch(`/api/summary?url=${hnStory.url}`)).json(),
+        ]);
+        setMeta(meta);
+        setSummary(summary);
+      }
     })(storyId).catch(console.error);
 
     return () => {};
