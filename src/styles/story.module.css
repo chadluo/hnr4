@@ -1,8 +1,8 @@
 .story {
+  padding: var(--vg) 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.7rem;
-  padding: 1.5rem;
+  gap: var(--vg);
 }
 
 .story:hover {

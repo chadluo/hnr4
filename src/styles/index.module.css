@@ -1,5 +1,5 @@
 .header {
-  padding: 2.8rem 0;
+  padding: calc(5 * var(--vg)) 0 calc(3 * var(--vg));
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
@@ -10,24 +10,29 @@
 }
 
 .main {
+  --column-count: 1;
   --column-width: 25rem;
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(var(--column-count), 1fr);
   width: 100%;
-  max-width: var(--column-width);
+  max-width: calc(var(--column-count) * var(--column-width));
   margin: auto;
 }
 
-@media screen and (min-width: 1400px) {
+@media screen and (min-width: 50rem) {
   .main {
-    grid-template-columns: repeat(3, 1fr);
-    max-width: calc(3 * var(--column-width));
+    --column-count: 2;
   }
 }
 
-@media screen and (min-width: 2400px) {
+@media screen and (min-width: 75rem) {
   .main {
-    grid-template-columns: repeat(5, 1fr);
-    max-width: calc(5 * var(--column-width));
+    --column-count: 3;
+  }
+}
+
+@media screen and (min-width: 125rem) {
+  .main {
+    --column-count: 5;
   }
 }
