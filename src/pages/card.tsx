@@ -1,4 +1,5 @@
 import styles from "@/styles/card.module.css";
+import Script from "next/script";
 import { useState } from "react";
 
 type CardProps = {
@@ -16,14 +17,19 @@ export default function Card(props: CardProps) {
   const [embedTweet, setEmbedTweet] = useState();
 
   if (source === "twitter.com") {
-    fetch(`https://publish.twitter.com/oembed?hide_thread=1&omit_script=1&theme=dark&dnt=true&url=${url}`)
+    fetch(`/api/tweet?url=${url}`)
       .then((response) => response.json())
-      .then((json) => setEmbedTweet(json.html))
+      .then((json) => {
+        setEmbedTweet(json.html);
+      })
       .catch(console.error);
   }
 
   return embedTweet ? (
-    <div dangerouslySetInnerHTML={embedTweet}></div>
+    <>
+      <div dangerouslySetInnerHTML={{ __html: embedTweet }}></div>
+      <Script src="https://platform.twitter.com/widgets.js" />
+    </>
   ) : (
     <a href={url} title={url} className={styles.card} target="_blank">
       <div className={styles.imageBox} style={{ backgroundImage: `url(${image})` }}>
