@@ -1,5 +1,6 @@
 import styles from "@/styles/story.module.css";
 import { IBM_Plex_Mono } from "next/font/google";
+import Script from "next/script";
 import { MouseEvent, useEffect, useRef, useState } from "react";
 import Card from "./card";
 import Dialog from "./dialog";
@@ -32,13 +33,21 @@ export default function Story(props: StoryProps) {
   const [hnStory, setHnStory] = useState<HNStory>();
   const [meta, setMeta] = useState<Meta>();
   const [summary, setSummary] = useState<Summary>();
+  const [embedTweet, setEmbedTweet] = useState();
 
   useEffect(() => {
     (async (storyId: string) => {
       const hnStory: HNStory = await (await fetch(`/api/story?storyId=${storyId}`)).json();
       setHnStory(hnStory);
       const { hostname } = new URL(hnStory.url);
-      if (hostname !== "twitter.com") {
+      if (hostname === "twitter.com") {
+        fetch(`/api/tweet?url=${hnStory.url}`)
+          .then((response) => response.json())
+          .then((json) => {
+            setEmbedTweet(json.html);
+          })
+          .catch(console.error);
+      } else {
         const [meta, summary] = await Promise.all([
           await (await fetch(`/api/meta?url=${hnStory.url}`)).json(),
           await (await fetch(`/api/summary?url=${hnStory.url}`)).json(),
@@ -65,7 +74,9 @@ export default function Story(props: StoryProps) {
 
   const card = () =>
     hnStory &&
-    (meta ? (
+    (embedTweet ? (
+      <div dangerouslySetInnerHTML={{ __html: embedTweet }}></div>
+    ) : meta ? (
       <Card title={meta.title || hnStory.title} url={hnStory.url} image={meta.image} description={meta.description} />
     ) : (
       <Card title={hnStory.title} url={hnStory.url} />
@@ -91,6 +102,7 @@ export default function Story(props: StoryProps) {
         longSummarization={longSummarization}
         kids={hnStory.kids}
       />
+      <Script src="https://platform.twitter.com/widgets.js" />
     </div>
   ) : (
     <center data-storyid={storyId}>Loading</center>
