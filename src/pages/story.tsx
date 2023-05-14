@@ -102,7 +102,7 @@ export default function Story(props: StoryProps) {
         longSummarization={longSummarization}
         kids={hnStory.kids}
       />
-      <Script src="https://platform.twitter.com/widgets.js" />
+      <Script strategy="lazyOnload" src="https://platform.twitter.com/widgets.js" />
     </div>
   ) : (
     <center data-storyid={storyId}>Loading</center>
