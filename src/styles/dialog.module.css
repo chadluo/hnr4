@@ -4,8 +4,9 @@
   padding: 2rem;
   cursor: default;
   border: none;
-  background: rgba(0, 0, 0, 0.95);
   color: white;
+  background: rgba(20, 20, 20, 0.95);
+  box-sizing: content-box;
 }
 
 .wideDialog {
@@ -20,14 +21,19 @@
   background: rgba(0, 0, 0, 0.5);
 }
 
-.dialogContent {
+.dialogTitle {
+  padding-bottom: calc(2 * var(--vg));
   display: flex;
-  flex-direction: row;
+  justify-content: space-between;
+}
+
+.dialogContent {
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 2rem;
 }
 
 .story {
-  flex: 1 0 40%;
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
@@ -41,6 +47,12 @@
   font-size: calc(1em - 2px);
 }
 
-.comments {
-  flex-grow: 0;
+@media screen and (min-width: 80rem) {
+  .dialogContent {
+    grid-template-columns: 1fr 2fr;
+  }
+  .comments {
+    max-height: 75vh;
+    overflow-y: auto;
+  }
 }

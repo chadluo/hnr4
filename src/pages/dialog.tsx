@@ -25,12 +25,14 @@ const Dialog = forwardRef(function Dialog(props: Props, ref: ForwardedRef<HTMLDi
 
   return (
     <dialog className={`${styles.dialog} ${kids ? styles.wideDialog : ""}`} ref={ref}>
-      <a onClick={onClickClose}>❌</a>
+      <div className={styles.dialogTitle}>
+        <a href={`https://news.ycombinator.com/item?id=${storyId}`} className={styles.hnTitle} target="_blank">
+          {title}
+        </a>
+        <a onClick={onClickClose}>❌</a>
+      </div>
       <div className={styles.dialogContent}>
         <div className={styles.story}>
-          <a href={`https://news.ycombinator.com/item?id=${storyId}`} className={styles.hnTitle} target="_blank">
-            {title}
-          </a>
           {card?.()}
           <span className={`${monoFont.className} ${styles.longSummarization}`}>{longSummarization}</span>
         </div>
