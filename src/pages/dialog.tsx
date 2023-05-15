@@ -1,4 +1,5 @@
 import styles from "@/styles/dialog.module.css";
+import classNames from "classnames";
 import { IBM_Plex_Mono } from "next/font/google";
 import { ForwardedRef, forwardRef, useEffect, useState } from "react";
 import Comment from "./comment";
@@ -25,7 +26,7 @@ const Dialog = forwardRef(function Dialog(props: Props, ref: ForwardedRef<HTMLDi
   }, [showKids]);
 
   return (
-    <dialog className={`${styles.dialog} ${kids ? styles.wideDialog : ""}`} ref={ref}>
+    <dialog className={classNames(styles.dialog, { [styles.wideDialog]: kids })} ref={ref}>
       <style jsx global>{`
         code {
           font-family: ${monoFont.style.fontFamily};
@@ -41,7 +42,7 @@ const Dialog = forwardRef(function Dialog(props: Props, ref: ForwardedRef<HTMLDi
       <div className={styles.dialogContent}>
         <div className={styles.story}>
           {card?.()}
-          <span className={`${summaryFont.className} ${styles.longSummarization}`}>{longSummarization}</span>
+          <span className={classNames(summaryFont.className, styles.longSummarization)}>{longSummarization}</span>
         </div>
         {startRender && (
           <div className={styles.comments}>

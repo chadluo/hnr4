@@ -1,4 +1,5 @@
 import styles from "@/styles/story.module.css";
+import classNames from "classnames";
 import { IBM_Plex_Mono } from "next/font/google";
 import Script from "next/script";
 import { MouseEvent, useEffect, useRef, useState } from "react";
@@ -91,7 +92,7 @@ export default function Story(props: StoryProps) {
         {hnStory.title}
       </a>
       {card()}
-      <span className={`${monoFont.className} ${styles.shortSummarization}`}>{shortSummarization}</span>
+      <span className={classNames(monoFont.className, styles.shortSummarization)}>{shortSummarization}</span>
       <Dialog
         ref={dialogRef}
         onClickClose={closeDialog}

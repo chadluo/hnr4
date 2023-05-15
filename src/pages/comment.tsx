@@ -1,4 +1,5 @@
 import styles from "@/styles/comment.module.css";
+import classNames from "classnames";
 import { SyntheticEvent, useEffect, useState } from "react";
 
 type Props = {
@@ -47,7 +48,7 @@ export default function Comment(props: Props) {
       data-commentid={commentId}
       open={expand}
       onToggle={(e) => toggle(e)}
-      className={`${styles.comment} ${comment.kids ? "" : styles.nokid}`}
+      className={classNames(styles.comment, { [styles.nokid]: !comment.kids })}
     >
       <summary
         dangerouslySetInnerHTML={{

@@ -1,10 +1,12 @@
 import styles from "@/styles/index.module.css";
-import { Nunito_Sans } from "next/font/google";
+import classNames from "classnames";
+import { IBM_Plex_Mono, Nunito_Sans } from "next/font/google";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import Story from "./story";
 
 const nunitoSans = Nunito_Sans({ subsets: ["latin"] });
+const ibmPlexMono = IBM_Plex_Mono({ weight: "400", subsets: ["latin"] });
 
 export default function Home() {
   const [stories, setStories] = useState([]);
@@ -44,11 +46,17 @@ export default function Home() {
         <meta property="og:description" content={description} />
         <meta property="og:url" content="https://hnr.adluo.ch" />
       </Head>
-      <header className={`${styles.header} ${nunitoSans.className}`}>
-        <span>Hacker News Reader</span>
-        <a href="https://github.com/chadluo/hnr4">chadluo/hnr4</a>
+      <header className={classNames(styles.header, ibmPlexMono.className)}>
+        <a href="https://github.com/chadluo/hnr4">🐙</a>
+        <span>HNR</span>
+        <a href="https://github.com/sponsors/chadluo">💰</a>
       </header>
-      <main className={`${styles.main} ${nunitoSans.className}`}>
+      <header className={classNames(styles.headerWide, ibmPlexMono.className)}>
+        <a href="https://github.com/chadluo/hnr4">chadluo/hnr4</a>
+        <span>Hacker News Reader</span>
+        <a href="https://github.com/sponsors/chadluo">sponsor</a>
+      </header>
+      <main className={classNames(styles.main, nunitoSans.className)}>
         {stories.map((story) => (
           <Story storyId={story} key={story} />
         ))}

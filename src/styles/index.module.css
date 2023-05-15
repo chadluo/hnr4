@@ -1,8 +1,21 @@
-.header {
+.header,
+.headerWide {
   padding: calc(5 * var(--vg)) 0 calc(3 * var(--vg));
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+}
+.headerWide {
+  display: none;
+}
+
+@media screen and (min-width: 30rem) {
+  .header {
+    display: none;
+  }
+  .headerWide {
+    display: flex;
+  }
 }
 
 .header a:hover {
