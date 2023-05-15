@@ -50,7 +50,7 @@ export default function Story(props: StoryProps) {
       } else {
         const [meta, summary] = await Promise.all([
           await (await fetch(`/api/meta?url=${hnStory.url}`)).json(),
-          await (await fetch(`/api/summary?url=${hnStory.url}`)).json(),
+          await (await fetch(`/api/summary?storyId=${storyId}&url=${hnStory.url}`)).json(),
         ]);
         setMeta(meta);
         setSummary(summary);
