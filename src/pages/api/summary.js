@@ -3,6 +3,8 @@ import { NextResponse } from "next/server";
 
 export const config = { runtime: "edge" };
 
+const responseOption = { headers: { "Cache-Control": "max-age=0, s-maxage=21600" } };
+
 export default async function hander(request, context) {
   const searchParams = new URL(request.url).searchParams;
   const url = searchParams.get("url");
@@ -16,7 +18,7 @@ export default async function hander(request, context) {
   const key = `summary-${storyId}`;
   const existingSummary = await kv.get(key);
   if (existingSummary) {
-    return existingSummary;
+    return NextResponse.json(existingSummary, responseOption);
   }
 
   const response = await fetch("https://api.openai.com/v1/completions", {
@@ -41,5 +43,5 @@ export default async function hander(request, context) {
   };
   context.waitUntil(kv.set(key, summary));
 
-  return NextResponse.json(summary, { headers: { "Cache-Control": "max-age=0, s-maxage=21600" } });
+  return NextResponse.json(summary, responseOption);
 }
