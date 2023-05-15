@@ -1,7 +1,6 @@
 import styles from "@/styles/story.module.css";
 import classNames from "classnames";
 import { IBM_Plex_Mono } from "next/font/google";
-import Script from "next/script";
 import { MouseEvent, useEffect, useRef, useState } from "react";
 import Card from "./card";
 import Dialog from "./dialog";
@@ -103,7 +102,6 @@ export default function Story(props: StoryProps) {
         longSummarization={longSummarization}
         kids={hnStory.kids}
       />
-      <Script strategy="lazyOnload" src="https://platform.twitter.com/widgets.js" />
     </div>
   ) : (
     <center data-storyid={storyId}>Loading</center>

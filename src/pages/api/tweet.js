@@ -14,8 +14,6 @@ export default async function hander(request) {
   }
 
   return NextResponse.json(
-    await (
-      await fetch(`https://publish.twitter.com/oembed?hide_thread=1&theme=dark&dnt=true&omit_script=1&url=${url}`)
-    ).json()
+    await (await fetch(`https://publish.twitter.com/oembed?hide_thread=1&theme=dark&dnt=true&url=${url}`)).json()
   );
 }
