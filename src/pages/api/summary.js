@@ -29,7 +29,7 @@ export default async function hander(request, context) {
     body: JSON.stringify({
       model: "text-davinci-003",
       prompt: `Visit and generate 2 summarizations of ${url},
-        the first of one sentence, the other being a proper summarization, separated by a forward slash:`,
+        the first of one sentence, the other being a proper summarization, separated by a vertical bar:`,
       max_tokens: 256,
       top_p: 0.5,
       frequency_penalty: 1,

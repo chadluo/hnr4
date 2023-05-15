@@ -83,7 +83,7 @@ export default function Story(props: StoryProps) {
     ));
 
   const text = summary?.text;
-  const [shortSummarization, longSummarization] = (text && text.split("/")) || [undefined, undefined];
+  const [shortSummarization, longSummarization] = (text && text.split("|")) || [undefined, undefined];
 
   return hnStory ? (
     <div className={styles.story} data-storyid={storyId} onClick={showDialog}>
