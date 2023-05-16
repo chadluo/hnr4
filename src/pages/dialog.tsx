@@ -26,7 +26,7 @@ const Dialog = forwardRef(function Dialog(props: Props, ref: ForwardedRef<HTMLDi
   }, [showKids]);
 
   return (
-    <dialog className={classNames(styles.dialog, { [styles.wideDialog]: kids })} ref={ref}>
+    <dialog className={classNames(styles.dialog, { [styles.hasComments]: kids })} ref={ref}>
       <style jsx global>{`
         code {
           font-family: ${monoFont.style.fontFamily};

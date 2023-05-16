@@ -20,7 +20,8 @@ export default function Home() {
       .then((json: number[]) => {
         const stories = json.map((id) => `${id}`);
         if (highlight && !stories.includes(highlight)) {
-          stories.splice(stories.length - 1, 1, highlight);
+          stories.pop();
+          stories.unshift(highlight);
         }
         return setStories(stories);
       });
