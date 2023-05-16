@@ -42,7 +42,6 @@ export default function Story(props: StoryProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   const showDialog = useCallback((event?: MouseEvent) => {
-    console.log("showDialog", dialogRef.current?.className);
     if (event && (event.target as Element).closest("a")) return;
     !dialogRef.current?.hasAttribute("open") && dialogRef.current?.showModal();
     setShowKids(true);

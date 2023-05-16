@@ -15,7 +15,7 @@ export default function Home() {
   const [stories, setStories] = useState<string[]>([]);
 
   useEffect(() => {
-    fetch(`https://hacker-news.firebaseio.com/v0/topstories.json?limitToFirst=6&orderBy="$priority"`)
+    fetch(`https://hacker-news.firebaseio.com/v0/topstories.json?limitToFirst=30&orderBy="$priority"`)
       .then((response) => response.json())
       .then((json: number[]) => {
         const stories = json.map((id) => `${id}`);
