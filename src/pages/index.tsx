@@ -1,13 +1,13 @@
 import styles from "@/styles/index.module.css";
 import classNames from "classnames";
-import { IBM_Plex_Mono, Nunito_Sans } from "next/font/google";
+import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import Head from "next/head";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Story from "./story";
 
-const nunitoSans = Nunito_Sans({ subsets: ["latin"] });
-const ibmPlexMono = IBM_Plex_Mono({ weight: "400", subsets: ["latin"] });
+const sans = IBM_Plex_Sans({ weight: ["400", "700"], style: ["normal", "italic"], subsets: ["latin"] });
+const mono = IBM_Plex_Mono({ weight: "400", subsets: ["latin"] });
 
 export default function Home() {
   const highlight = useSearchParams().get("i");
@@ -56,17 +56,17 @@ export default function Home() {
         <meta property="og:description" content={description} />
         <meta property="og:url" content="https://hnr.adluo.ch" />
       </Head>
-      <header className={classNames(styles.header, ibmPlexMono.className)}>
+      <header className={classNames(styles.header, mono.className)}>
         <a href="https://github.com/chadluo/hnr4">🐙</a>
         <span>HNR</span>
         <a href="https://github.com/sponsors/chadluo">💰</a>
       </header>
-      <header className={classNames(styles.headerWide, ibmPlexMono.className)}>
+      <header className={classNames(styles.headerWide, mono.className)}>
         <a href="https://github.com/chadluo/hnr4">chadluo/hnr4</a>
         <span>Hacker News Reader</span>
         <a href="https://github.com/sponsors/chadluo">sponsor</a>
       </header>
-      <main className={classNames(styles.main, nunitoSans.className)}>
+      <main className={classNames(styles.main, sans.className)}>
         {stories.map((story) => (
           <Story storyId={story} key={story} />
         ))}
