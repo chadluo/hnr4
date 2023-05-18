@@ -1,13 +1,27 @@
 .story {
   padding: var(--vg) 1rem;
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: var(--vg);
 }
 
 .story:hover {
   background: rgba(0, 0, 0, 0.5);
   cursor: pointer;
+}
+
+.storyInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--vg);
+}
+
+@media screen and (min-width: 900px) {
+  .story {
+    grid-template-columns: 1fr 2fr;
+  }
+  .storyInfo {
+    padding-right: 1rem;
+  }
 }
 
 .hnTitle:hover {

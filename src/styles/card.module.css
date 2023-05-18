@@ -1,30 +1,26 @@
+/* card */
+
 .card {
   background: rgba(0, 0, 0, 0.7);
-  display: block;
   border: 1px solid #444;
+  display: flex;
+  flex-direction: column-reverse;
 }
 
 .card:hover {
   border-color: #666;
 }
 
-.imageBox {
-  height: 10em;
-  background-position: center;
-  background-size: cover;
-  position: relative;
-}
-
-.hostname {
-  position: absolute;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
-  width: 100%;
-  padding: 0.25lh 1ch;
-}
+/* text box*/
 
 .textBox {
   padding: 1ch;
+  display: flex;
+  flex-direction: column;
+}
+
+.hostname {
+  color: gray;
 }
 
 .description {
@@ -32,4 +28,26 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   overflow: hidden;
+}
+
+/* image box */
+
+.imageBox {
+  flex: 0 0 calc(16 * var(--vg));
+  background-position: center;
+  background-size: cover;
+}
+
+/* wide image card */
+
+@media screen and (min-width: 900px) {
+  .horizontal.card {
+    flex-direction: row;
+  }
+  .horizontal.imageCard .textBox {
+    flex-basis: 60%;
+  }
+  .horizontal.imageCard .imageBox {
+    flex-basis: 40%;
+  }
 }

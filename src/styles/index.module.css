@@ -9,7 +9,7 @@
   display: none;
 }
 
-@media screen and (min-width: 30rem) {
+@media screen and (min-width: 600px) {
   .header {
     display: none;
   }
@@ -23,29 +23,6 @@
 }
 
 .main {
-  --column-count: 1;
-  --column-width: 25rem;
-  display: grid;
-  grid-template-columns: repeat(var(--column-count), 1fr);
-  width: 100%;
-  max-width: calc(var(--column-count) * var(--column-width));
+  max-width: 62rem;
   margin: auto;
-}
-
-@media screen and (min-width: 50rem) {
-  .main {
-    --column-count: 2;
-  }
-}
-
-@media screen and (min-width: 75rem) {
-  .main {
-    --column-count: 3;
-  }
-}
-
-@media screen and (min-width: 125rem) {
-  .main {
-    --column-count: 5;
-  }
 }

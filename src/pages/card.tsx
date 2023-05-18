@@ -1,6 +1,10 @@
 import styles from "@/styles/card.module.css";
+import classNames from "classnames";
+
+export type CardDirection = "horizontal" | "vertical";
 
 type CardProps = {
+  dir: CardDirection;
   title: string;
   url?: string;
   image?: string;
@@ -8,21 +12,29 @@ type CardProps = {
 };
 
 export default function Card(props: CardProps) {
-  const { title, url, image, description } = props;
+  const { dir, title, url, image, description } = props;
 
   const source = url && extractSource(url);
 
   return (
-    <a href={url} title={url} className={styles.card} target="_blank">
-      <div className={styles.imageBox} style={{ backgroundImage: `url(${image})` }}>
-        <span className={styles.hostname}>{source}</span>
-      </div>
+    <a
+      href={url}
+      title={url}
+      className={classNames(styles.card, {
+        [styles.imageCard]: image,
+        [styles.vertical]: dir === "vertical",
+        [styles.horizontal]: dir === "horizontal",
+      })}
+      target="_blank"
+    >
       <div className={styles.textBox}>
+        <span className={styles.hostname}>{source}</span>
         <strong>{title}</strong>
         <div className={styles.description} title={description}>
           {description}
         </div>
       </div>
+      {image && <div className={styles.imageBox} style={{ backgroundImage: `url(${image})` }}></div>}
     </a>
   );
 }
