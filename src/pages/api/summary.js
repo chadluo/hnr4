@@ -14,6 +14,10 @@ export default async function hander(request, context) {
     return NextResponse.error();
   }
 
+  if (process.env.mode === "dev") {
+    return NextResponse.json({ text: "fake summary | long fake summary" });
+  }
+
   const storyId = searchParams.get("storyId");
   const key = `summary-${storyId}`;
   const existingSummary = await kv.get(key);
