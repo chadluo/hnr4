@@ -4,6 +4,7 @@ details .comment {
 
 .comment a {
   color: #f60; /* hsl 24, 100, 50*/
+  word-break: break-word;
 }
 
 .comment a:hover {
