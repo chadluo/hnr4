@@ -1,16 +1,18 @@
 .dialog {
-  max-width: 30rem;
-  margin: auto;
-  padding: 2rem;
+  height: 100dvh;
+  max-width: 600px;
+  margin: auto auto 0;
+  padding: 0;
   cursor: default;
   border: none;
   color: white;
-  background: rgba(10, 10, 10, 0.95);
+  --b: #111;
+  background-color: var(--b);
   box-sizing: content-box;
 }
 
-.hasComments {
-  max-width: 80rem;
+.dialog.hasComments {
+  max-width: 1200px;
 }
 
 .dialog a:hover {
@@ -22,12 +24,16 @@
 }
 
 .dialogTitle {
-  padding-bottom: calc(2 * var(--vg));
+  position: sticky;
+  top: 0;
+  background-color: var(--b);
+  padding: calc(1 * var(--vg)) 1rem;
   display: flex;
   justify-content: space-between;
 }
 
 .dialogContent {
+  padding: calc(1 * var(--vg)) 1rem;
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
@@ -47,11 +53,21 @@
   font-size: calc(1em - 2px);
 }
 
-@media screen and (min-width: 80rem) {
-  .hasComments .dialogContent {
+@media screen and (min-width: 900px) {
+  .dialog {
+    height: fit-content;
+    margin: auto;
+  }
+  .dialogTitle {
+    padding: calc(2 * var(--vg)) 2rem;
+  }
+  .dialogContent {
+    padding: 0 2rem calc(2 * var(--vg));
+  }
+  .dialog.hasComments .dialogContent {
     grid-template-columns: 1fr 2fr;
   }
-  .comments {
+  .discussions {
     max-height: 75vh;
     overflow-y: auto;
   }
