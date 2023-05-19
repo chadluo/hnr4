@@ -13,8 +13,9 @@ type StoryProps = {
 };
 
 type HNStory = {
-  url: string;
+  url?: string;
   title: string;
+  text?: string;
   kids: number[];
 };
 
@@ -52,27 +53,38 @@ export default function Story(props: StoryProps) {
   }, []);
 
   useEffect(() => {
+    const controller = new AbortController();
     (async (storyId: string) => {
-      const hnStory: HNStory = await (await fetch(`/api/story?storyId=${storyId}`)).json();
+      const hnStory: HNStory = await (
+        await fetch(`/api/story?storyId=${storyId}`, { signal: controller.signal })
+      ).json();
       setHnStory(hnStory);
-      if (storyId === highlight) {
-        showDialog();
-      }
+      if (!hnStory.url) return;
       const { hostname } = new URL(hnStory.url);
       if (hostname === "twitter.com") {
-        setEmbedTweet((await (await fetch(`/api/tweet?url=${hnStory.url}`)).json()).html);
+        setEmbedTweet(
+          (await (await fetch(`/api/tweet?url=${hnStory.url}`, { signal: controller.signal })).json()).html
+        );
       } else {
-        const [meta, summary] = await Promise.all([
-          await (await fetch(`/api/meta?url=${hnStory.url}`)).json(),
-          await (await fetch(`/api/summary?storyId=${storyId}&url=${hnStory.url}`)).json(),
-        ]);
-        setMeta(meta);
-        setSummary(summary);
+        fetch(`/api/meta?url=${hnStory.url}`, { signal: controller.signal })
+          .then((response) => response.json())
+          .then(setMeta);
+        fetch(`/api/summary?storyId=${storyId}&url=${hnStory.url}`, { signal: controller.signal })
+          .then((response) => response.json())
+          .then(setSummary);
       }
-    })(storyId).catch(console.error);
+    })(storyId).catch((err) => console.error(`failed fetching story ${storyId}`, err));
 
-    return () => {};
+    if (storyId === highlight) {
+      showDialog();
+    }
+
+    return () => {
+      controller.abort();
+    };
   }, [storyId, showDialog, highlight]);
+
+  const hnUrl = `https://news.ycombinator.com/item?id=${storyId}`;
 
   const card = (dir: CardDirection) =>
     hnStory &&
@@ -82,12 +94,12 @@ export default function Story(props: StoryProps) {
       <Card
         dir={dir}
         title={meta.title || hnStory.title}
-        url={hnStory.url}
+        url={hnStory.url || hnUrl}
         image={meta.image}
         description={meta.description}
       />
     ) : (
-      <Card dir={dir} title={hnStory.title} url={hnStory.url} />
+      <Card dir={dir} title={hnStory.title} url={hnStory.url || hnUrl} />
     ));
 
   const text = summary?.text;
@@ -96,7 +108,7 @@ export default function Story(props: StoryProps) {
   return hnStory ? (
     <div className={styles.story} data-storyid={storyId} onClick={showDialog}>
       <div className={styles.storyInfo}>
-        <a href={`https://news.ycombinator.com/item?id=${storyId}`} className={styles.hnTitle} target="_blank">
+        <a href={hnUrl} className={styles.hnTitle} target="_blank">
           {hnStory.title}
         </a>
         <span className={classNames(monoFont.className, styles.shortSummarization)}>{shortSummarization}</span>
@@ -110,6 +122,7 @@ export default function Story(props: StoryProps) {
         title={hnStory.title}
         card={() => card("vertical")}
         longSummarization={longSummarization}
+        storyText={hnStory.text}
         kids={hnStory.kids}
       />
     </div>

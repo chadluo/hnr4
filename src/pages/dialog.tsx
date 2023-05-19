@@ -14,11 +14,12 @@ type Props = {
   title: string;
   card: () => JSX.Element | undefined;
   longSummarization: string | undefined;
+  storyText: string | undefined;
   kids: number[] | undefined;
 };
 
 const Dialog = forwardRef(function Dialog(props: Props, ref: ForwardedRef<HTMLDialogElement>) {
-  const { onClickClose, showKids, storyId, title, card, longSummarization, kids } = props;
+  const { onClickClose, showKids, storyId, title, card, longSummarization, storyText, kids } = props;
 
   const [startRender, setStartRender] = useState(showKids?.() || false);
   useEffect(() => {
@@ -33,24 +34,27 @@ const Dialog = forwardRef(function Dialog(props: Props, ref: ForwardedRef<HTMLDi
           font-size: calc(1rem - 2px);
         }
       `}</style>
-      <div className={styles.dialogTitle}>
+      <header className={styles.dialogTitle}>
         <a href={`https://news.ycombinator.com/item?id=${storyId}`} className={styles.hnTitle} target="_blank">
           {title}
         </a>
         <a onClick={onClickClose}>❌</a>
-      </div>
+      </header>
       <div className={styles.dialogContent}>
         <div className={styles.story}>
           {card?.()}
           <span className={classNames(summaryFont.className, styles.longSummarization)}>{longSummarization}</span>
         </div>
-        {startRender && (
-          <div className={styles.comments}>
-            {kids?.map((kid) => (
-              <Comment key={kid} commentId={kid.toString()} expand={false} />
-            ))}
-          </div>
-        )}
+        <div>
+          {storyText && <div dangerouslySetInnerHTML={{ __html: storyText }}></div>}
+          {startRender && (
+            <div className={styles.comments}>
+              {kids?.map((kid) => (
+                <Comment key={kid} commentId={kid.toString()} expand={false} />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </dialog>
   );
