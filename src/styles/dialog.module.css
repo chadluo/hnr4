@@ -1,6 +1,6 @@
 .dialog {
   height: 100dvh;
-  min-width: 600px;
+  width: 600px;
   margin: auto auto 0;
   padding: 0;
   cursor: default;
@@ -12,6 +12,7 @@
 }
 
 .dialog.hasComments {
+  width: 100vw;
   max-width: 1200px;
 }
 
