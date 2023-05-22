@@ -17,6 +17,7 @@ type HNStory = {
   title: string;
   text?: string;
   kids: number[];
+  type: "job" | "story" | "comment" | "poll" | "pollopt";
 };
 
 type Meta = {
@@ -69,9 +70,11 @@ export default function Story(props: StoryProps) {
         fetch(`/api/meta?url=${hnStory.url}`, { signal: controller.signal })
           .then((response) => response.json())
           .then(setMeta);
-        fetch(`/api/summary?storyId=${storyId}&url=${hnStory.url}`, { signal: controller.signal })
-          .then((response) => response.json())
-          .then(setSummary);
+        if (hnStory.type !== "job") {
+          fetch(`/api/summary?storyId=${storyId}&url=${hnStory.url}`, { signal: controller.signal })
+            .then((response) => response.json())
+            .then(setSummary);
+        }
       }
     })(storyId).catch((err) => console.error(`failed fetching story ${storyId}`, err));
 
