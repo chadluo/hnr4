@@ -1,6 +1,6 @@
 .dialog {
   height: 100dvh;
-  max-width: 600px;
+  min-width: 600px;
   margin: auto auto 0;
   padding: 0;
   cursor: default;
@@ -24,6 +24,7 @@
 }
 
 .dialogTitle {
+  font-weight: bold;
   position: sticky;
   top: 0;
   background-color: var(--b);
@@ -53,6 +54,15 @@
   font-size: calc(1em - 2px);
 }
 
+.storyText {
+  margin-bottom: var(--vg);
+}
+
+.discussions > details {
+  border-top: 1px solid #444;
+  padding-top: var(--vg);
+}
+
 @media screen and (min-width: 900px) {
   .dialog {
     height: fit-content;
@@ -68,7 +78,7 @@
     grid-template-columns: 1fr 2fr;
   }
   .discussions {
-    max-height: 75vh;
+    height: 75vh;
     overflow-y: auto;
   }
 }

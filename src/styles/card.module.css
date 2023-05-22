@@ -19,8 +19,12 @@
   flex-direction: column;
 }
 
-.hostname {
+.source {
   color: gray;
+}
+
+.title {
+  font-weight: bold;
 }
 
 .description {

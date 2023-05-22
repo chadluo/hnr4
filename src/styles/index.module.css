@@ -1,28 +1,26 @@
 .header,
-.headerWide {
-  padding: calc(5 * var(--vg)) 0 calc(3 * var(--vg));
+.main,
+.footer {
+  max-width: 62rem;
+  margin: auto;
+}
+
+.header {
+  padding: calc(5 * var(--vg)) 1rem calc(3 * var(--vg));
+}
+
+.footer {
+  padding: calc(3 * var(--vg)) 1rem calc(5 * var(--vg));
   display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-}
-.headerWide {
-  display: none;
+  justify-content: space-between;
 }
 
-@media screen and (min-width: 600px) {
-  .header {
-    display: none;
-  }
-  .headerWide {
-    display: flex;
-  }
-}
-
-.header a:hover {
+.footer a:hover {
   text-decoration: underline;
 }
 
 .main {
-  max-width: 62rem;
-  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--vg);
 }

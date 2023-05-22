@@ -44,7 +44,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Hacker News Reader</title>
+        <title>{title}</title>
         <meta name="description" content={title} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta property="twitter:card" content="summary_large_image" />
@@ -57,20 +57,17 @@ export default function Home() {
         <meta property="og:url" content="https://hnr.adluo.ch" />
       </Head>
       <header className={classNames(styles.header, mono.className)}>
-        <a href="https://github.com/chadluo/hnr4">🐙</a>
-        <span>HNR</span>
-        <a href="https://github.com/sponsors/chadluo">💰</a>
-      </header>
-      <header className={classNames(styles.headerWide, mono.className)}>
-        <a href="https://github.com/chadluo/hnr4">chadluo/hnr4</a>
-        <span>Hacker News Reader</span>
-        <a href="https://github.com/sponsors/chadluo">sponsor</a>
+        <span>{title}</span>
       </header>
       <main className={classNames(styles.main, sans.className)}>
         {stories.map((story) => (
           <Story storyId={story} key={story} />
         ))}
       </main>
+      <footer className={classNames(styles.footer, mono.className)}>
+        <a href="https://github.com/chadluo/hnr4">chadluo/hnr4</a>
+        <a href="https://github.com/sponsors/chadluo">sponsor</a>
+      </footer>
     </>
   );
 }

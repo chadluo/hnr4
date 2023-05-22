@@ -27,7 +27,7 @@ type Meta = {
 };
 
 type Summary = {
-  text?: `${string}/${string}`;
+  text?: string;
 };
 
 export default function Story(props: StoryProps) {

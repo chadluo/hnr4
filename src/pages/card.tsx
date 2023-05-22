@@ -28,8 +28,8 @@ export default function Card(props: CardProps) {
       target="_blank"
     >
       <div className={styles.textBox}>
-        <span className={styles.hostname}>{source}</span>
-        <strong>{title}</strong>
+        <span className={styles.source}>{source}</span>
+        <span className={styles.title}>{title}</span>
         <div className={styles.description} title={description}>
           {description}
         </div>
