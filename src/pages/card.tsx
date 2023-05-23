@@ -49,7 +49,7 @@ function extractSource(url: string) {
   } else if (hostname === "gist.github.com") {
     return hostname + takePath(pathname, 2);
   } else {
-    return hostname;
+    return hostname.replace(/^www\./, "");
   }
 }
 
