@@ -24,6 +24,7 @@ type Meta = {
   title?: string;
   description?: string;
   image?: string;
+  authors?: string;
 };
 
 type Summary = {
@@ -99,6 +100,7 @@ export default function Story(props: StoryProps) {
         title={meta.title || hnStory.title}
         url={hnStory.url || hnUrl}
         image={meta.image}
+        authors={meta.authors}
         description={meta.description}
       />
     ) : (

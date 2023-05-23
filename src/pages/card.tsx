@@ -8,13 +8,14 @@ type CardProps = {
   title: string;
   url?: string;
   image?: string;
+  authors?: string;
   description?: string;
 };
 
 export default function Card(props: CardProps) {
-  const { dir, title, url, image, description } = props;
+  const { dir, title, url, image, authors, description } = props;
 
-  const source = url && extractSource(url);
+  const source = authors ? authors : url && extractSource(url);
 
   return (
     <a
@@ -28,7 +29,9 @@ export default function Card(props: CardProps) {
       target="_blank"
     >
       <div className={styles.textBox}>
-        <span className={styles.source}>{source}</span>
+        <span className={styles.source} title={source}>
+          {source}
+        </span>
         <span className={styles.title}>{title}</span>
         <div className={styles.description} title={description}>
           {description}

@@ -25,9 +25,10 @@ export default async function hander(request) {
   clearTimeout(abortTimeout);
   const rawMeta = findRawMeta(html);
   const metadata = {
-    title: rawMeta["title"] || rawMeta["og:title"] || rawMeta["twitter:title"],
-    description: rawMeta["description"] || rawMeta["og:description"] || rawMeta["twitter:description"],
-    image: rawMeta["og:image"] || rawMeta["twitter:image"],
+    title: (rawMeta.get("title") || rawMeta.get("og:title") || rawMeta.get("twitter:title"))[0],
+    description: (rawMeta.get("description") || rawMeta.get("og:description") || rawMeta.get("twitter:description"))[0],
+    image: (rawMeta.get("og:image") || rawMeta.get("twitter:image"))[0],
+    authors: rawMeta.get("citation_author")?.join(" | "),
   };
 
   return NextResponse.json(metadata, { headers: { "Cache-Control": "max-age=0, s-maxage=21600" } });
@@ -38,16 +39,22 @@ function findRawMeta(html) {
   const headNode = parsed.childNodes
     .find((node) => node.nodeName === "html")
     .childNodes.find((node) => node.nodeName === "head");
-  return Object.fromEntries(
-    headNode.childNodes
-      .map((node) => {
-        if (node.nodeName !== "meta") {
-          return;
-        }
-        const key = node.attrs.find((attr) => attr.name === "property" || attr.name === "name")?.value;
-        const value = node.attrs.find((attr) => attr.name === "content")?.value;
-        return [key, value];
-      })
-      .filter((entry) => entry != null)
-  );
+  return headNode.childNodes
+    .map((node) => {
+      if (node.nodeName !== "meta") {
+        return;
+      }
+      const key = node.attrs.find((attr) => attr.name === "property" || attr.name === "name")?.value;
+      const value = node.attrs.find((attr) => attr.name === "content")?.value;
+      return [key, value];
+    })
+    .filter((entry) => entry != null)
+    .reduce((map, [key, value]) => {
+      if (map.has(key)) {
+        map.get(key).push(value);
+      } else {
+        map.set(key, [value]);
+      }
+      return map;
+    }, new Map());
 }
