@@ -45,16 +45,18 @@ const Dialog = forwardRef(function Dialog(props: Props, ref: ForwardedRef<HTMLDi
           {card?.()}
           <span className={classNames(summaryFont.className, styles.longSummarization)}>{longSummarization}</span>
         </div>
-        <div className={styles.discussions}>
-          {storyText && <div className={styles.storyText} dangerouslySetInnerHTML={{ __html: storyText }}></div>}
-          {startRender && (
-            <>
-              {kids?.map((kid) => (
-                <Comment key={kid} commentId={kid.toString()} expand={false} />
-              ))}
-            </>
-          )}
-        </div>
+        {(storyText || kids) && (
+          <div className={styles.discussions}>
+            {storyText && <div className={styles.storyText} dangerouslySetInnerHTML={{ __html: storyText }}></div>}
+            {startRender && (
+              <>
+                {kids?.map((kid) => (
+                  <Comment key={kid} commentId={kid.toString()} expand={false} />
+                ))}
+              </>
+            )}
+          </div>
+        )}
       </div>
     </dialog>
   );

@@ -9,6 +9,7 @@
   --b: #111;
   background-color: var(--b);
   box-sizing: content-box;
+  overscroll-behavior: none;
 }
 
 .dialog.hasComments {
@@ -79,7 +80,8 @@
     grid-template-columns: 1fr 2fr;
   }
   .discussions {
-    height: 75vh;
+    max-height: 75vh;
     overflow-y: auto;
+    overscroll-behavior: contain;
   }
 }
