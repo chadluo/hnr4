@@ -25,9 +25,11 @@ export default async function hander(request) {
   clearTimeout(abortTimeout);
   const rawMeta = findRawMeta(html);
   const metadata = {
-    title: (rawMeta.get("title") || rawMeta.get("og:title") || rawMeta.get("twitter:title"))[0],
-    description: (rawMeta.get("description") || rawMeta.get("og:description") || rawMeta.get("twitter:description"))[0],
-    image: (rawMeta.get("og:image") || rawMeta.get("twitter:image"))[0],
+    title: (rawMeta.get("title") || rawMeta.get("og:title") || rawMeta.get("twitter:title"))?.[0],
+    description: (rawMeta.get("description") ||
+      rawMeta.get("og:description") ||
+      rawMeta.get("twitter:description"))?.[0],
+    image: (rawMeta.get("og:image") || rawMeta.get("twitter:image"))?.[0],
     authors: rawMeta.get("citation_author")?.join(" | "),
   };
 
