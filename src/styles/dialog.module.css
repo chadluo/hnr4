@@ -1,6 +1,6 @@
 .dialog {
   height: 100dvh;
-  width: 600px;
+  max-width: 600px;
   margin: auto auto 0;
   padding: 0;
   cursor: default;
@@ -25,18 +25,21 @@
   background: rgba(0, 0, 0, 0.5);
 }
 
+.dialogTitle,
+.dialogContent {
+  padding: calc(1 * var(--vg)) 1rem;
+}
+
 .dialogTitle {
   font-weight: bold;
   position: sticky;
   top: 0;
   background-color: var(--b);
-  padding: calc(1 * var(--vg)) 1rem;
   display: flex;
   justify-content: space-between;
 }
 
 .dialogContent {
-  padding: calc(1 * var(--vg)) 1rem;
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
