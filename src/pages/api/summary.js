@@ -40,6 +40,8 @@ export default async function hander(request, context) {
       top_p: 0.5,
       frequency_penalty: 1,
     }),
+  }).catch((err) => {
+    console.log(`Failed summarizing [${url}]`, err);
   });
   const json = await response.json();
   const summary = {
