@@ -68,7 +68,13 @@ export default async function hander(request, context) {
     return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 
-  const summary = JSON.parse(json.choices[0].message.content);
+  let summary;
+  try {
+    summary = JSON.parse(json.choices[0].message.content);
+  } catch (error) {
+    console.error("Failed parsing response", error, json.choices[0].message.content);
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
+  }
   context.waitUntil(kv.set(key, summary));
 
   return NextResponse.json(summary, responseOption);
