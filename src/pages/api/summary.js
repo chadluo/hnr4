@@ -37,11 +37,14 @@ export default async function hander(request, context) {
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
         messages: [
-          { role: "system", content: "You are an assistant good at extracting core information out of texts." },
+          {
+            role: "system",
+            content: `You are an assistant good at extracting core information out of texts. You should only generate valid JSON and no normal texts.`,
+          },
           {
             role: "user",
             content: `Visit and generate 2 summarizations of ${url}, the first of one short sentence, the other
-             being a long proper summarization, putting them in following JSON structure:\n\n{'short': '...', 'long': '...' }`,
+             being a long proper summarization. Return them in a JSON object of keys 'short' and 'long'.`,
           },
         ],
         max_tokens: 256,
