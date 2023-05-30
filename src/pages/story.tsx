@@ -74,7 +74,10 @@ export default function Story(props: StoryProps) {
         if (hnStory.type !== "job") {
           fetch(`/api/summary?storyId=${storyId}&url=${hnStory.url}`, { signal: controller.signal })
             .then((response) => response.json())
-            .then(setSummary);
+            .then(setSummary)
+            .catch((error) => {
+              console.error(`Failed getting summary for [${hnStory.url}]`, error);
+            });
         }
       }
     })(storyId).catch((err) => console.error(`failed fetching story ${storyId}`, err));
