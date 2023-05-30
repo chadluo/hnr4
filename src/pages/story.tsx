@@ -28,7 +28,8 @@ type Meta = {
 };
 
 type Summary = {
-  text?: string;
+  short: string;
+  long: string;
 };
 
 export default function Story(props: StoryProps) {
@@ -38,7 +39,7 @@ export default function Story(props: StoryProps) {
 
   const [hnStory, setHnStory] = useState<HNStory>();
   const [meta, setMeta] = useState<Meta>();
-  const [summary, setSummary] = useState<Summary>();
+  const [summary, setSummary] = useState<Summary>({ short: "", long: "" });
   const [embedTweet, setEmbedTweet] = useState();
 
   const [showKids, setShowKids] = useState(false);
@@ -110,8 +111,7 @@ export default function Story(props: StoryProps) {
       <Card dir={dir} title={hnStory.title} url={hnStory.url || hnUrl} />
     ));
 
-  const text = summary?.text;
-  const [shortSummarization, longSummarization] = (text && text.split("|")) || [undefined, undefined];
+  const { short, long } = summary;
 
   return hnStory ? (
     <div className={styles.story} data-storyid={storyId} onClick={showDialog}>
@@ -119,7 +119,7 @@ export default function Story(props: StoryProps) {
         <a href={hnUrl} className={styles.hnTitle} target="_blank">
           {hnStory.title}
         </a>
-        <span className={classNames(monoFont.className, styles.shortSummarization)}>{shortSummarization}</span>
+        <span className={classNames(monoFont.className, styles.shortSummarization)}>{short}</span>
       </div>
       {card("horizontal")}
       <Dialog
@@ -129,7 +129,7 @@ export default function Story(props: StoryProps) {
         storyId={storyId}
         title={hnStory.title}
         card={() => card("vertical")}
-        longSummarization={longSummarization}
+        longSummarization={long}
         storyText={hnStory.text}
         kids={hnStory.kids}
       />

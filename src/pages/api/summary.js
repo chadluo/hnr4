@@ -15,7 +15,7 @@ export default async function hander(request, context) {
   }
 
   if (process.env.mode === "dev") {
-    return NextResponse.json({ text: "fake summary | long fake summary" });
+    return NextResponse.json({ short: "short summary", long: "long summary" });
   }
 
   const storyId = searchParams.get("storyId");
@@ -27,7 +27,7 @@ export default async function hander(request, context) {
 
   let response;
   try {
-    response = await fetch("https://api.openai.com/v1/completions", {
+    response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -35,9 +35,15 @@ export default async function hander(request, context) {
         Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "text-davinci-003",
-        prompt: `Visit and generate 2 summarizations of ${url},
-        the first of one sentence, the other being a proper summarization, separated by a vertical bar:`,
+        model: "gpt-3.5-turbo",
+        messages: [
+          { role: "system", content: "You are an assistant good at extracting core information out of texts." },
+          {
+            role: "user",
+            content: `Visit and generate 2 summarizations of ${url}, the first of one short sentence, the other
+             being a long proper summarization, putting them in following JSON structure:\n\n{'short': '...', 'long': '...' }`,
+          },
+        ],
         max_tokens: 256,
         top_p: 0.5,
         frequency_penalty: 1,
@@ -62,9 +68,7 @@ export default async function hander(request, context) {
     return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 
-  const summary = {
-    text: json.choices.map((choice) => choice.text).join(""),
-  };
+  const summary = JSON.parse(json.choices[0].message.content);
   context.waitUntil(kv.set(key, summary));
 
   return NextResponse.json(summary, responseOption);
