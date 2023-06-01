@@ -14,7 +14,7 @@
 /* text box */
 
 .textBox {
-  padding: 1ch;
+  padding: var(--vg) 1ch;
   display: flex;
   flex-direction: column;
 }
@@ -45,6 +45,7 @@
   flex: 0 0 calc(16 * var(--vg));
   background-position: center;
   background-size: cover;
+  min-height: 9rem;
 }
 
 /* wide image card */
