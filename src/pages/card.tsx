@@ -29,7 +29,7 @@ export default function Card(props: CardProps) {
       target="_blank"
     >
       <div className={styles.textBox}>
-        <span className={styles.source} title={source}>
+        <span className={styles.source} title={url}>
           {source}
         </span>
         <span className={styles.title}>{title}</span>
@@ -44,8 +44,8 @@ export default function Card(props: CardProps) {
 
 function extractSource(url: string) {
   const { hostname, pathname } = new URL(url);
-  if (hostname === "github.com") {
-    return hostname + takePath(pathname, 3);
+  if (hostname === "github.com" || hostname.includes("reddit.com")) {
+    return takePath(pathname, 3);
   } else if (hostname === "gist.github.com") {
     return hostname + takePath(pathname, 2);
   } else {
