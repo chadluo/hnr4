@@ -1,3 +1,5 @@
+"use client";
+
 import styles from "@/styles/story.module.css";
 import classNames from "classnames";
 import { IBM_Plex_Mono } from "next/font/google";
@@ -35,7 +37,7 @@ type Summary = {
 export default function Story(props: StoryProps) {
   const { storyId } = props;
 
-  const highlight = useSearchParams().get("i");
+  const highlight = useSearchParams()?.get("i");
 
   const [hnStory, setHnStory] = useState<HNStory>();
   const [meta, setMeta] = useState<Meta>();
