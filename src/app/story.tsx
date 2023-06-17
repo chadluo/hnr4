@@ -3,8 +3,9 @@
 import styles from "@/styles/story.module.css";
 import classNames from "classnames";
 import { IBM_Plex_Mono } from "next/font/google";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { MouseEvent, useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Card, { CardDirection } from "./card";
 import Dialog from "./dialog";
 
@@ -47,12 +48,6 @@ export default function Story(props: StoryProps) {
   const [showKids, setShowKids] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
 
-  const showDialog = useCallback((event?: MouseEvent) => {
-    if (event && (event.target as Element).closest("a")) return;
-    !dialogRef.current?.hasAttribute("open") && dialogRef.current?.showModal();
-    setShowKids(true);
-  }, []);
-
   const closeDialog = useCallback(() => {
     dialogRef.current?.close();
   }, []);
@@ -85,14 +80,10 @@ export default function Story(props: StoryProps) {
       }
     })(storyId).catch((err) => console.error(`failed fetching story ${storyId}`, err));
 
-    if (storyId === highlight) {
-      showDialog();
-    }
-
     return () => {
       controller.abort();
     };
-  }, [storyId, showDialog, highlight]);
+  }, [storyId, highlight]);
 
   const hnUrl = `https://news.ycombinator.com/item?id=${storyId}`;
 
@@ -116,7 +107,7 @@ export default function Story(props: StoryProps) {
   const { short, long } = summary;
 
   return hnStory ? (
-    <div className={styles.story} data-storyid={storyId} onClick={showDialog}>
+    <Link href={`/story/${storyId}`} className={styles.story} >
       <div className={styles.storyInfo}>
         <a href={hnUrl} className={styles.hnTitle} target="_blank">
           {hnStory.title}
@@ -135,7 +126,7 @@ export default function Story(props: StoryProps) {
         storyText={hnStory.text}
         kids={hnStory.kids}
       />
-    </div>
+    </Link>
   ) : (
     <center data-storyid={storyId}>Loading</center>
   );
