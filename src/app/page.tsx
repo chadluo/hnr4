@@ -1,6 +1,7 @@
 import styles from "@/styles/index.module.css";
 import classNames from "classnames";
 import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
+import Footer from "./footer";
 import Story from "./story";
 
 const sans = IBM_Plex_Sans({ weight: ["400", "700"], style: ["normal", "italic"], subsets: ["latin"] });
@@ -24,10 +25,7 @@ export default async function HomeClient() {
           <Story storyId={story} key={story} />
         ))}
       </main>
-      <footer className={classNames(styles.footer, mono.className)}>
-        <a href="https://github.com/chadluo/hnr4">chadluo/hnr4</a>
-        <a href="https://github.com/sponsors/chadluo">sponsor</a>
-      </footer>
+      <Footer />
     </>
   );
 }

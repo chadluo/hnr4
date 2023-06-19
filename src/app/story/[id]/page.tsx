@@ -2,6 +2,7 @@
 
 import Card, { CardDirection } from "@/app/card";
 import Comment from "@/app/comment";
+import Footer from "@/app/footer";
 import styles from "@/styles/index.module.css";
 import storyStyles from "@/styles/story.module.css";
 import classNames from "classnames";
@@ -120,11 +121,8 @@ export default function Page({ params }: { params: { id: string } }) {
             ))}
           </div>
         )}
-        <footer className={classNames(styles.footer, mono.className)}>
-          <a href="https://github.com/chadluo/hnr4">chadluo/hnr4</a>
-          <a href="https://github.com/sponsors/chadluo">sponsor</a>
-        </footer>
       </section>
+      <Footer />
     </>
   );
 }

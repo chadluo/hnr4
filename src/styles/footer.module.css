@@ -1,0 +1,11 @@
+.footer {
+    max-width: var(--w);
+    margin: auto;
+    padding: calc(3 * var(--vg)) 1rem calc(5 * var(--vg));
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}

@@ -1,22 +1,11 @@
 .header,
-.main,
-.footer {
+.main {
   max-width: 74rem;
   margin: auto;
 }
 
 .header {
   padding: calc(5 * var(--vg)) 1rem calc(3 * var(--vg));
-}
-
-.footer {
-  padding: calc(3 * var(--vg)) 1rem calc(5 * var(--vg));
-  display: flex;
-  justify-content: space-between;
-}
-
-.footer a:hover {
-  text-decoration: underline;
 }
 
 .main {
