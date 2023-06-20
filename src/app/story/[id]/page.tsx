@@ -4,6 +4,7 @@ import Card from "@/app/card";
 import Comment from "@/app/comment";
 import Footer from "@/app/footer";
 import styles from "@/styles/index.module.css";
+import storyPage from '@/styles/storyPage.module.css';
 import classNames from "classnames";
 import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import { useEffect, useState } from "react";
@@ -48,9 +49,9 @@ export default function Page({ params }: { params: { id: string } }) {
       if (!hnStory.url) return;
       const { hostname } = new URL(hnStory.url);
       if (hostname === "twitter.com") {
-        setEmbedTweet(
-          (await (await fetch(`/api/tweet?url=${hnStory.url}`, { signal: controller.signal })).json()).html
-        );
+        fetch(`/api/tweet?url=${hnStory.url}`, { signal: controller.signal })
+          .then(response => response.json())
+          .then(json => setEmbedTweet(json.html));
       } else {
         fetch(`/api/meta?url=${hnStory.url}`, { signal: controller.signal })
           .then((response) => response.json())
@@ -65,7 +66,6 @@ export default function Page({ params }: { params: { id: string } }) {
         }
       }
     })(params.id).catch((err) => console.error(`failed fetching story ${params.id}`, err));
-
 
     return () => {
       controller.abort();
@@ -101,15 +101,15 @@ export default function Page({ params }: { params: { id: string } }) {
           font-size: calc(1rem - 2px);
         }
       `}</style>
-      <section className={classNames(styles.main, sans.className)}>
-        <header className={styles.dialogTitle}>
-          <a href={hnUrl} className={styles.hnTitle} target="_blank">
-            {hnStory?.title}
-          </a>
-        </header>
-        {card}
-        <div className={styles.story}>
+      <header className={styles.header}>
+        <a href={hnUrl} className={classNames(styles.hnTitle, sans.className)} target="_blank">
+          {hnStory?.title}
+        </a>
+      </header>
+      <section className={classNames(styles.article, sans.className)}>
+        <div className={storyPage.story}>
           <span className={classNames(styles.longSummarization, mono.className)}>{summary.long}</span>
+          {card}
         </div>
         {(storyText || kids) && (
           <div className={styles.discussions}>

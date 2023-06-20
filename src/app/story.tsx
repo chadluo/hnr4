@@ -54,9 +54,9 @@ export default function Story(props: StoryProps) {
       if (!hnStory.url) return;
       const { hostname } = new URL(hnStory.url);
       if (hostname === "twitter.com") {
-        setEmbedTweet(
-          (await (await fetch(`/api/tweet?url=${hnStory.url}`, { signal: controller.signal })).json()).html
-        );
+        fetch(`/api/tweet?url=${hnStory.url}`, { signal: controller.signal })
+          .then(response => response.json())
+          .then(json => setEmbedTweet(json.html));
       } else {
         fetch(`/api/meta?url=${hnStory.url}`, { signal: controller.signal })
           .then((response) => response.json())

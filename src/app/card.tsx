@@ -1,9 +1,10 @@
 import styles from "@/styles/card.module.css";
 import classNames from "classnames";
+import Link from "next/link";
 
 type CardProps = {
   title: string;
-  url?: string;
+  url: string;
   image?: string;
   authors?: string;
   description?: string;
@@ -15,12 +16,7 @@ export default function Card(props: CardProps) {
   const source = authors ? authors : url && extractSource(url);
 
   return (
-    <a
-      href={url}
-      title={url}
-      className={classNames(styles.card, { [styles.imageCard]: image })}
-      target="_blank"
-    >
+    <Link href={url} title={url} className={classNames(styles.card, { [styles.imageCard]: image })} target="_blank" >
       <div className={styles.textBox}>
         <span className={styles.source} title={url}>
           {source}
@@ -31,7 +27,7 @@ export default function Card(props: CardProps) {
         </div>
       </div>
       {image && <div className={styles.imageBox} style={{ backgroundImage: `url(${image})` }}></div>}
-    </a>
+    </Link>
   );
 }
 
