@@ -1,10 +1,9 @@
 "use client"
 
-import Card, { CardDirection } from "@/app/card";
+import Card from "@/app/card";
 import Comment from "@/app/comment";
 import Footer from "@/app/footer";
 import styles from "@/styles/index.module.css";
-import storyStyles from "@/styles/story.module.css";
 import classNames from "classnames";
 import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import { useEffect, useState } from "react";
@@ -77,13 +76,12 @@ export default function Page({ params }: { params: { id: string } }) {
   const kids = hnStory?.kids;
   const hnUrl = `https://news.ycombinator.com/item?id=${params.id}`;
 
-  const card = (dir: CardDirection) =>
+  const card =
     hnStory &&
     (embedTweet ? (
       <div dangerouslySetInnerHTML={{ __html: embedTweet }}></div>
     ) : meta ? (
       <Card
-        dir={dir}
         title={meta.title || hnStory.title}
         url={hnStory.url || hnUrl}
         image={meta.image}
@@ -91,7 +89,7 @@ export default function Page({ params }: { params: { id: string } }) {
         description={meta.description}
       />
     ) : (
-      <Card dir={dir} title={hnStory.title} url={hnStory.url || hnUrl} />
+      <Card title={hnStory.title} url={hnStory.url || hnUrl} />
     ));
 
 
@@ -103,13 +101,13 @@ export default function Page({ params }: { params: { id: string } }) {
           font-size: calc(1rem - 2px);
         }
       `}</style>
-      <section className={classNames(storyStyles.container, sans.className)}>
+      <section className={classNames(styles.main, sans.className)}>
         <header className={styles.dialogTitle}>
           <a href={hnUrl} className={styles.hnTitle} target="_blank">
             {hnStory?.title}
           </a>
         </header>
-        {card("horizontal")}
+        {card}
         <div className={styles.story}>
           <span className={classNames(styles.longSummarization, mono.className)}>{summary.long}</span>
         </div>

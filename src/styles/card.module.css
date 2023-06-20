@@ -51,13 +51,15 @@
 /* wide image card */
 
 @media screen and (min-width: 900px) {
-  .horizontal.card {
+  .card {
     flex-direction: row;
   }
-  .horizontal.imageCard .textBox {
+
+  .imageCard .textBox {
     flex-basis: 60%;
   }
-  .horizontal.imageCard .imageBox {
+
+  .imageCard .imageBox {
     flex-basis: 40%;
   }
 }

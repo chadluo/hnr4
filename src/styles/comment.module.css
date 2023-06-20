@@ -3,12 +3,12 @@ details .comment {
 }
 
 .comment a {
-  color: #f60; /* hsl 24, 100, 50*/
+  color: var(--hn);
   word-break: break-word;
 }
 
 .comment a:hover {
-  color: hsl(24 80% 70%);
+  color: var(--hn2);
 }
 
 .comment p {

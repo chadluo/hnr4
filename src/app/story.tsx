@@ -5,9 +5,8 @@ import classNames from "classnames";
 import { IBM_Plex_Mono } from "next/font/google";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
-import Card, { CardDirection } from "./card";
-import Dialog from "./dialog";
+import { useEffect, useState } from "react";
+import Card from "./card";
 
 const monoFont = IBM_Plex_Mono({ subsets: ["latin"], weight: "400", style: "italic" });
 
@@ -45,13 +44,6 @@ export default function Story(props: StoryProps) {
   const [summary, setSummary] = useState<Summary>({ short: "", long: "" });
   const [embedTweet, setEmbedTweet] = useState();
 
-  const [showKids, setShowKids] = useState(false);
-  const dialogRef = useRef<HTMLDialogElement>(null);
-
-  const closeDialog = useCallback(() => {
-    dialogRef.current?.close();
-  }, []);
-
   useEffect(() => {
     const controller = new AbortController();
     (async (storyId: string) => {
@@ -87,13 +79,12 @@ export default function Story(props: StoryProps) {
 
   const hnUrl = `https://news.ycombinator.com/item?id=${storyId}`;
 
-  const card = (dir: CardDirection) =>
+  const card =
     hnStory &&
     (embedTweet ? (
       <div dangerouslySetInnerHTML={{ __html: embedTweet }}></div>
     ) : meta ? (
       <Card
-        dir={dir}
         title={meta.title || hnStory.title}
         url={hnStory.url || hnUrl}
         image={meta.image}
@@ -101,7 +92,7 @@ export default function Story(props: StoryProps) {
         description={meta.description}
       />
     ) : (
-      <Card dir={dir} title={hnStory.title} url={hnStory.url || hnUrl} />
+      <Card title={hnStory.title} url={hnStory.url || hnUrl} />
     ));
 
   const { short, long } = summary;
@@ -114,18 +105,7 @@ export default function Story(props: StoryProps) {
         </a>
         <span className={classNames(monoFont.className, styles.shortSummarization)}>{short}</span>
       </div>
-      {card("horizontal")}
-      <Dialog
-        ref={dialogRef}
-        onClickClose={closeDialog}
-        showKids={() => showKids}
-        storyId={storyId}
-        title={hnStory.title}
-        card={() => card("vertical")}
-        longSummarization={long}
-        storyText={hnStory.text}
-        kids={hnStory.kids}
-      />
+      {card}
     </Link>
   ) : (
     <center data-storyid={storyId}>Loading</center>

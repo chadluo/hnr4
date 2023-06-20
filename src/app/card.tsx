@@ -1,10 +1,7 @@
 import styles from "@/styles/card.module.css";
 import classNames from "classnames";
 
-export type CardDirection = "horizontal" | "vertical";
-
 type CardProps = {
-  dir: CardDirection;
   title: string;
   url?: string;
   image?: string;
@@ -13,7 +10,7 @@ type CardProps = {
 };
 
 export default function Card(props: CardProps) {
-  const { dir, title, url, image, authors, description } = props;
+  const { title, url, image, authors, description } = props;
 
   const source = authors ? authors : url && extractSource(url);
 
@@ -21,11 +18,7 @@ export default function Card(props: CardProps) {
     <a
       href={url}
       title={url}
-      className={classNames(styles.card, {
-        [styles.imageCard]: image,
-        [styles.vertical]: dir === "vertical",
-        [styles.horizontal]: dir === "horizontal",
-      })}
+      className={classNames(styles.card, { [styles.imageCard]: image })}
       target="_blank"
     >
       <div className={styles.textBox}>
