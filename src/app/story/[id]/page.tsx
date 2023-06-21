@@ -7,7 +7,8 @@ import styles from "@/styles/index.module.css";
 import storyPage from '@/styles/storyPage.module.css';
 import classNames from "classnames";
 import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import React from "react";
 
 type HNStory = {
   url?: string;
@@ -29,17 +30,18 @@ type Summary = {
   long: string;
 };
 
+
 const mono = IBM_Plex_Mono({ weight: "400", subsets: ["latin"] });
-const sans = IBM_Plex_Sans({ weight: "400", subsets: ["latin"] })
+const sans = IBM_Plex_Sans({ weight: ["400", "700"], subsets: ["latin"] })
 
 export default function Page({ params }: { params: { id: string } }) {
 
-  const [hnStory, setHnStory] = useState<HNStory>();
-  const [meta, setMeta] = useState<Meta>();
-  const [summary, setSummary] = useState<Summary>({ short: "", long: "" });
-  const [embedTweet, setEmbedTweet] = useState();
+  const [hnStory, setHnStory] = React.useState<HNStory>();
+  const [meta, setMeta] = React.useState<Meta>();
+  const [summary, setSummary] = React.useState<Summary>({ short: "", long: "" });
+  const [embedTweet, setEmbedTweet] = React.useState();
 
-  useEffect(() => {
+  React.useEffect(() => {
     const controller = new AbortController();
     (async (storyId: string) => {
       const hnStory: HNStory = await (
@@ -102,18 +104,20 @@ export default function Page({ params }: { params: { id: string } }) {
         }
       `}</style>
       <header className={styles.header}>
-        <a href={hnUrl} className={classNames(styles.hnTitle, sans.className)} target="_blank">
-          {hnStory?.title}
-        </a>
+        <h1 className={storyPage.title}>
+          <Link href="/">🡨</Link> <Link href={hnUrl} className={classNames(storyPage.hnTitle, sans.className)} target="_blank">
+            {hnStory?.title}
+          </Link>
+        </h1>
       </header>
       <section className={classNames(styles.article, sans.className)}>
         <div className={storyPage.story}>
-          <span className={classNames(styles.longSummarization, mono.className)}>{summary.long}</span>
+          <span className={classNames(storyPage.summary, mono.className)}>{summary.long}</span>
           {card}
         </div>
         {(storyText || kids) && (
-          <div className={styles.discussions}>
-            {storyText && <div className={styles.storyText} dangerouslySetInnerHTML={{ __html: storyText }}></div>}
+          <div className={storyPage.discussions}>
+            {storyText && <div className={storyPage.storyText} dangerouslySetInnerHTML={{ __html: storyText }}></div>}
             {kids?.map((kid) => (
               <Comment key={kid} commentId={kid.toString()} expand={false} />
             ))}

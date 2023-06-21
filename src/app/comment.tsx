@@ -1,3 +1,5 @@
+'use client';
+
 import styles from "@/styles/comment.module.css";
 import classNames from "classnames";
 import { SyntheticEvent, useEffect, useState } from "react";

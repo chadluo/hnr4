@@ -1,3 +1,5 @@
+"use client";
+
 import styles from "@/styles/card.module.css";
 import classNames from "classnames";
 import Link from "next/link";

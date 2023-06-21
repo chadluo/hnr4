@@ -1,3 +1,7 @@
+.title {
+  font-size: 1rem
+}
+
 .story {
   display: grid;
   grid-template-columns: 1fr;
@@ -10,4 +14,25 @@
     grid-template-columns: 3fr 5fr;
     gap: 0
   }
+}
+
+.hnTitle {
+  font-weight: bold;
+}
+
+.hnTitle:hover {
+  color: #f60;
+}
+
+.summary {
+  padding-right: 1rem;
+}
+
+.storyText {
+  margin-bottom: var(--vg);
+}
+
+.discussions>details {
+  border-top: 1px solid #444;
+  padding-top: var(--vg);
 }

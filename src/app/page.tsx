@@ -7,7 +7,7 @@ import Story from "./story";
 const sans = IBM_Plex_Sans({ weight: ["400", "700"], style: ["normal", "italic"], subsets: ["latin"] });
 const mono = IBM_Plex_Mono({ weight: "400", subsets: ["latin"] });
 
-export default async function HomeClient() {
+export default async function Home() {
   const response = await fetch(
     `https://hacker-news.firebaseio.com/v0/topstories.json?limitToFirst=30&orderBy="$priority"`
   );
