@@ -30,11 +30,12 @@ type Summary = {
   long: string;
 };
 
+type Props = { params: { id: string } };
 
 const mono = IBM_Plex_Mono({ weight: "400", subsets: ["latin"] });
 const sans = IBM_Plex_Sans({ weight: ["400", "700"], subsets: ["latin"] })
 
-export default function Page({ params }: { params: { id: string } }) {
+export default function Page({ params }: Props) {
 
   const [hnStory, setHnStory] = React.useState<HNStory>();
   const [meta, setMeta] = React.useState<Meta>();
@@ -103,11 +104,10 @@ export default function Page({ params }: { params: { id: string } }) {
           font-size: calc(1rem - 2px);
         }
       `}</style>
-      <header className={styles.header}>
+      <header className={classNames(styles.header, storyPage.header)}>
         <h1 className={storyPage.title}>
-          <Link href="/">🡨</Link> <Link href={hnUrl} className={classNames(storyPage.hnTitle, sans.className)} target="_blank">
-            {hnStory?.title}
-          </Link>
+          <Link href="/" className={storyPage.back}>🡨</Link>
+          <Link href={hnUrl} className={classNames(storyPage.hnTitle, sans.className)} target="_blank">{hnStory?.title}</Link>
         </h1>
       </header>
       <section className={classNames(styles.article, sans.className)}>

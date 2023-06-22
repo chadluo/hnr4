@@ -1,5 +1,18 @@
+.header {
+  padding: calc(5 * var(--vg)) calc(1rem - var(--vg)) calc(3 * var(--vg));
+}
+
 .title {
   font-size: 1rem
+}
+
+.back {
+  padding: var(--vg);
+  margin-right: .5rem;
+}
+
+.back:hover {
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .story {
@@ -32,7 +45,7 @@
   margin-bottom: var(--vg);
 }
 
-.discussions>details {
+.discussions>details:not(:first-of-type) {
   border-top: 1px solid #444;
   padding-top: var(--vg);
 }
