@@ -4,11 +4,6 @@
   margin: auto;
 }
 
-.article {
-  max-width: 72rem;
-  margin: auto;
-}
-
 .header {
   padding: calc(5 * var(--vg)) 1rem calc(3 * var(--vg));
 }
