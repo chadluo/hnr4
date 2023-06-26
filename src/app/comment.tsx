@@ -1,5 +1,3 @@
-'use client';
-
 import styles from "@/styles/comment.module.css";
 import classNames from "classnames";
 import { SyntheticEvent, useEffect, useState } from "react";
@@ -25,7 +23,9 @@ export default function Comment(props: Props) {
 
   useEffect(() => {
     const controller = new AbortController();
-    fetch(`https://hacker-news.firebaseio.com/v0/item/${commentId}.json`, { signal: controller.signal })
+    fetch(`https://hacker-news.firebaseio.com/v0/item/${commentId}.json`, {
+      signal: controller.signal,
+    })
       .then((response) => response.json())
       .then((json) => {
         setComment(json);
@@ -57,7 +57,10 @@ export default function Comment(props: Props) {
           __html: `${comment.text} [<a href="https://news.ycombinator.com/item?id=${commentId}">${comment.by}</a>]`,
         }}
       />
-      {startRender && comment.kids?.map((kid) => <Comment key={kid} commentId={kid.toString()} expand={true} />)}
+      {startRender &&
+        comment.kids?.map((kid) => (
+          <Comment key={kid} commentId={kid.toString()} expand={true} />
+        ))}
     </details>
   ) : (
     <></>

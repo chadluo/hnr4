@@ -1,5 +1,3 @@
-"use client";
-
 import styles from "@/styles/story.module.css";
 import classNames from "classnames";
 import { IBM_Plex_Mono } from "next/font/google";
@@ -8,7 +6,11 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Card from "./card";
 
-const monoFont = IBM_Plex_Mono({ subsets: ["latin"], weight: "400", style: "italic" });
+const monoFont = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: "400",
+  style: "italic",
+});
 
 type StoryProps = {
   storyId: string;
@@ -48,29 +50,38 @@ export default function Story(props: StoryProps) {
     const controller = new AbortController();
     (async (storyId: string) => {
       const hnStory: HNStory = await (
-        await fetch(`/api/story?storyId=${storyId}`, { signal: controller.signal })
+        await fetch(`/api/story?storyId=${storyId}`, {
+          signal: controller.signal,
+        })
       ).json();
       setHnStory(hnStory);
       if (!hnStory.url) return;
       const { hostname } = new URL(hnStory.url);
       if (hostname === "twitter.com") {
         fetch(`/api/tweet?url=${hnStory.url}`, { signal: controller.signal })
-          .then(response => response.json())
-          .then(json => setEmbedTweet(json.html));
+          .then((response) => response.json())
+          .then((json) => setEmbedTweet(json.html));
       } else {
         fetch(`/api/meta?url=${hnStory.url}`, { signal: controller.signal })
           .then((response) => response.json())
           .then(setMeta);
         if (hnStory.type !== "job") {
-          fetch(`/api/summary?storyId=${storyId}&url=${hnStory.url}`, { signal: controller.signal })
+          fetch(`/api/summary?storyId=${storyId}&url=${hnStory.url}`, {
+            signal: controller.signal,
+          })
             .then((response) => response.json())
             .then(setSummary)
             .catch((error) => {
-              console.error(`Failed getting summary for [${hnStory.url}]`, error);
+              console.error(
+                `Failed getting summary for [${hnStory.url}]`,
+                error
+              );
             });
         }
       }
-    })(storyId).catch((err) => console.error(`failed fetching story ${storyId}`, err));
+    })(storyId).catch((err) =>
+      console.error(`failed fetching story ${storyId}`, err)
+    );
 
     return () => {
       controller.abort();
@@ -98,12 +109,16 @@ export default function Story(props: StoryProps) {
   const { short, long } = summary;
 
   return hnStory ? (
-    <Link href={`/story/${storyId}`} className={styles.story} >
+    <Link href={`/story/${storyId}`} className={styles.story}>
       <div className={styles.storyInfo}>
         <a href={hnUrl} className={styles.hnTitle} target="_blank">
           {hnStory.title}
         </a>
-        <span className={classNames(monoFont.className, styles.shortSummarization)}>{short}</span>
+        <span
+          className={classNames(monoFont.className, styles.shortSummarization)}
+        >
+          {short}
+        </span>
       </div>
       {card}
     </Link>
