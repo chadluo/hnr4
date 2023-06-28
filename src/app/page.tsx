@@ -1,5 +1,3 @@
-"use client";
-
 import styles from "@/styles/index.module.css";
 import classNames from "classnames";
 import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
@@ -16,9 +14,9 @@ const mono = IBM_Plex_Mono({ weight: "400", subsets: ["latin"] });
 export default async function Home() {
   const TOP_STORIES_ENDPOINT = `https://hacker-news.firebaseio.com/v0/topstories.json?limitToFirst=30&orderBy="$priority"`;
   const stories = (
-    await(
+    (await (
       await fetch(TOP_STORIES_ENDPOINT, { cache: "no-store" })
-    ).json() as number[]
+    ).json()) as number[]
   ).map((id) => `${id}`);
 
   const title = "Hacker News Reader";

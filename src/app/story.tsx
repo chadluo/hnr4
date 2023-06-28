@@ -1,3 +1,5 @@
+"use client";
+
 import styles from "@/styles/story.module.css";
 import classNames from "classnames";
 import { IBM_Plex_Mono } from "next/font/google";

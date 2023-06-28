@@ -3,7 +3,8 @@ import { Analytics } from "@vercel/analytics/react";
 import { Metadata } from "next";
 
 const title = "Hacker News Reader";
-const description = "Yet another Hacker News Reader with metadata cards and some LLM summaries.";
+const description =
+  "Yet another Hacker News Reader with metadata cards and some LLM summaries.";
 const image = "https://hnr.adluo.ch/hnr.png";
 
 export const metadata: Metadata = {
@@ -21,7 +22,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [deg1, hue1] = [Math.random() * 360, Math.random() * 360];
   const [deg2, hue2] = [Math.random() * 360, Math.random() * 360];
   const background = [
