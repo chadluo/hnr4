@@ -36,7 +36,10 @@ export default function Card(props: CardProps) {
           {icon}
           {source}
         </span>
-        <span className={styles.title}>{title}</span>
+        <h2
+          className={styles.title}
+          dangerouslySetInnerHTML={{ __html: title.replaceAll("/", "<wbr>/") }}
+        ></h2>
         <div className={styles.description} title={description}>
           {description}
         </div>
