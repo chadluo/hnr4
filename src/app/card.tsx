@@ -19,7 +19,6 @@ export default function Card(props: CardProps) {
   const website = findWebsite(url);
   const icon = website ? (
     <>
-      {" "}
       <i className={classNames("fa", `fa-${mapIcon(website)}`)}></i>{" "}
     </>
   ) : undefined;

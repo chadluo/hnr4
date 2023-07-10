@@ -2,13 +2,18 @@
 
 import styles from "@/styles/story.module.css";
 import classNames from "classnames";
-import { IBM_Plex_Mono } from "next/font/google";
+import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Card from "./card";
 
-const monoFont = IBM_Plex_Mono({
+const sans = IBM_Plex_Sans({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
+
+const mono = IBM_Plex_Mono({
   subsets: ["latin"],
   weight: "400",
   style: "italic",
@@ -111,19 +116,26 @@ export default function Story(props: StoryProps) {
   const { short, long } = summary;
 
   return hnStory ? (
-    <Link href={`/story/${storyId}`} className={styles.story}>
+    <div className={styles.story}>
       <div className={styles.storyInfo}>
-        <a href={hnUrl} className={styles.hnTitle} target="_blank">
-          {hnStory.title}
-        </a>
-        <span
-          className={classNames(monoFont.className, styles.shortSummarization)}
-        >
+        <h2>
+          <Link
+            href={hnUrl}
+            className={classNames(styles.hnTitle, sans)}
+            target="_blank"
+          >
+            {hnStory.title}
+          </Link>
+        </h2>
+        <span className={classNames(mono.className, styles.shortSummarization)}>
           {short}
         </span>
+        <Link href={`/story/${storyId}`} className={styles.link}>
+          {hnStory.kids?.length || 0} discussions
+        </Link>
       </div>
       {card}
-    </Link>
+    </div>
   ) : (
     <center data-storyid={storyId}>Loading</center>
   );

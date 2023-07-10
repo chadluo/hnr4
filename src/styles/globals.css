@@ -2,7 +2,7 @@
 @import url("https://cdn.jsdelivr.net/npm/fork-awesome/css/fork-awesome.min.css");
 
 :root {
-  --w: 74rem;
+  --w: clamp(16rem, calc(100% - 2rem), 72rem);
   --vg: 0.7rem;
   --hn: hsl(24 100% 50%);
   --hn2: hsl(24 80% 70%);

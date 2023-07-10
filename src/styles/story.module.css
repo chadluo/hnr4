@@ -1,12 +1,6 @@
 .story {
-  padding: var(--vg) 1rem;
   display: grid;
   gap: var(--vg);
-}
-
-.story:hover {
-  background: rgba(0, 0, 0, 0.5);
-  cursor: pointer;
 }
 
 .storyInfo {
@@ -14,8 +8,16 @@
   flex-direction: column;
 }
 
-.storyInfo a {
-  font-weight: bold;
+.storyInfo h2 {
+  font-size: 1rem;
+}
+
+.link {
+  color: lightgray;
+}
+
+.link:hover {
+  color: white;
 }
 
 @media screen and (min-width: 900px) {

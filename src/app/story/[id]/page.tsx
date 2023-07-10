@@ -32,7 +32,11 @@ type Summary = {
 
 type Props = { params: { id: string } };
 
-const mono = IBM_Plex_Mono({ weight: "400", subsets: ["latin"] });
+const mono = IBM_Plex_Mono({
+  weight: "400",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+});
 const sans = IBM_Plex_Sans({ weight: ["400", "700"], subsets: ["latin"] });
 
 export default function Page({ params }: Props) {

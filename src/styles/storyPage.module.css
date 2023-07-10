@@ -1,9 +1,9 @@
 .header {
-  padding: calc(5 * var(--vg)) calc(1rem - var(--vg)) calc(3 * var(--vg));
+  padding: calc(5 * var(--vg)) 0 calc(3 * var(--vg));
 }
 
 .article {
-  max-width: 72rem;
+  width: var(--w);
   margin: auto;
 }
 
@@ -13,6 +13,7 @@
 
 .back {
   padding: var(--vg);
+  margin-left: calc(-1 * var(--vg));
   margin-right: 0.5rem;
 }
 
@@ -43,6 +44,8 @@
 }
 
 .summary {
+  font-size: calc(1rem - 2px);
+  font-style: italic;
   padding-right: 1rem;
 }
 
@@ -50,7 +53,7 @@
   margin-bottom: var(--vg);
 }
 
-.discussions > details:not(:first-of-type) {
+.discussions>details:not(:first-of-type) {
   border-top: 1px solid #444;
   padding-top: var(--vg);
 }
