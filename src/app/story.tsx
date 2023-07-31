@@ -56,11 +56,7 @@ export default function Story(props: StoryProps) {
   useEffect(() => {
     const controller = new AbortController();
     (async (storyId: string) => {
-      const hnStory: HNStory = await (
-        await fetch(`/api/story?storyId=${storyId}`, {
-          signal: controller.signal,
-        })
-      ).json();
+      const hnStory: HNStory = await getHnStory(controller, storyId);
       setHnStory(hnStory);
       if (!hnStory.url) return;
       const { hostname } = new URL(hnStory.url);
@@ -69,21 +65,9 @@ export default function Story(props: StoryProps) {
           .then((response) => response.json())
           .then((json) => setEmbedTweet(json.html));
       } else {
-        fetch(`/api/meta?url=${hnStory.url}`, { signal: controller.signal })
-          .then((response) => response.json())
-          .then(setMeta);
+        setMeta(await getMeta(controller, hnStory.url));
         if (hnStory.type !== "job") {
-          fetch(`/api/summary?storyId=${storyId}&url=${hnStory.url}`, {
-            signal: controller.signal,
-          })
-            .then((response) => response.json())
-            .then(setSummary)
-            .catch((error) => {
-              console.error(
-                `Failed getting summary for [${hnStory.url}]`,
-                error
-              );
-            });
+          setSummary(await getSummary(controller, storyId, hnStory.url));
         }
       }
     })(storyId).catch((err) =>
@@ -113,7 +97,7 @@ export default function Story(props: StoryProps) {
       <Card title={hnStory.title} url={hnStory.url || hnUrl} />
     ));
 
-  const { short, long } = summary;
+  const { short } = summary;
 
   return hnStory ? (
     <div className={styles.story}>
@@ -139,4 +123,28 @@ export default function Story(props: StoryProps) {
   ) : (
     <center data-storyid={storyId}>Loading</center>
   );
+}
+
+async function getHnStory(controller: AbortController, storyId: string) {
+  return (await (
+    await fetch(`/api/story?storyId=${storyId}`, { signal: controller.signal })
+  ).json()) as HNStory;
+}
+
+async function getMeta(controller: AbortController, url: string) {
+  return (await (
+    await fetch(`/api/meta?url=${url}`, { signal: controller.signal })
+  ).json()) as Meta;
+}
+
+async function getSummary(
+  controller: AbortController,
+  storyId: string,
+  url: string
+) {
+  return (await (
+    await fetch(`/api/summary?storyId=${storyId}&url=${url}`, {
+      signal: controller.signal,
+    })
+  ).json()) as Summary;
 }
