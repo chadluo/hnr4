@@ -1,7 +1,6 @@
 "use client";
 
 import Card from "@/app/card";
-import Comment from "@/app/comment";
 import Footer from "@/app/footer";
 import styles from "@/styles/index.module.css";
 import storyPage from "@/styles/storyPage.module.css";
@@ -9,6 +8,7 @@ import classNames from "classnames";
 import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import Link from "next/link";
 import React from "react";
+import Comment from "./comment";
 
 type HNStory = {
   url?: string;
