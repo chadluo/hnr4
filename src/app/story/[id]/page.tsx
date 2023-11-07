@@ -37,7 +37,11 @@ const mono = IBM_Plex_Mono({
   subsets: ["latin"],
   style: ["normal", "italic"],
 });
-const sans = IBM_Plex_Sans({ weight: ["400", "700"], subsets: ["latin"] });
+const sans = IBM_Plex_Sans({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+});
 
 export default function Page({ params }: Props) {
   const [hnStory, setHnStory] = React.useState<HNStory>();
