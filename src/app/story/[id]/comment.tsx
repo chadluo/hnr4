@@ -1,17 +1,18 @@
-'use client';
+"use client";
 
 import styles from "@/styles/comment.module.css";
 import classNames from "classnames";
-import { SyntheticEvent, useEffect, useState } from "react";
+import type { SyntheticEvent } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
   commentId: string;
   expand: boolean;
 };
 
-type Comment = {
-  by: string;
+type CommentContent = {
   text: string;
+  by: string;
   kids: number[] | undefined;
   deleted: boolean | undefined;
   dead: boolean | undefined;
@@ -20,7 +21,7 @@ type Comment = {
 export default function Comment(props: Props) {
   const { commentId, expand } = props;
 
-  const [comment, setComment] = useState<Comment>();
+  const [comment, setComment] = useState<CommentContent>();
   const [startRender, setStartRender] = useState(false);
 
   useEffect(() => {
@@ -55,6 +56,7 @@ export default function Comment(props: Props) {
       className={classNames(styles.comment, { [styles.nokid]: !comment.kids })}
     >
       <summary
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
         dangerouslySetInnerHTML={{
           __html: `${comment.text} [<a href="https://news.ycombinator.com/item?id=${commentId}">${comment.by}</a>]`,
         }}

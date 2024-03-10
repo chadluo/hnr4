@@ -84,7 +84,8 @@ export default function Story(props: StoryProps) {
   const card =
     hnStory &&
     (embedTweet ? (
-      <div dangerouslySetInnerHTML={{ __html: embedTweet }}></div>
+      // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+      <div dangerouslySetInnerHTML={{ __html: embedTweet }} />
     ) : meta ? (
       <Card
         title={meta.title || hnStory.title}
