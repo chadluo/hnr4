@@ -1,32 +1,14 @@
-"use client";
-
 import styles from "@/styles/story.module.css";
 import classNames from "classnames";
 import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import Card from "./card";
 
-const sans = IBM_Plex_Sans({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-});
-
-const mono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: "400",
-  style: "italic",
-});
-
 type StoryProps = {
-  storyId: string;
-};
-
-type HNStory = {
-  url?: string;
+  storyId: number;
   title: string;
-  text?: string;
+  url: string | undefined;
+  text: string | undefined;
   kids: number[];
   type: "job" | "story" | "comment" | "poll" | "pollopt";
 };
@@ -43,64 +25,53 @@ type Summary = {
   long: string;
 };
 
-export default function Story(props: StoryProps) {
-  const { storyId } = props;
+const sans = IBM_Plex_Sans({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
 
-  const highlight = useSearchParams()?.get("i");
+const mono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: "400",
+  style: "italic",
+});
 
-  const [hnStory, setHnStory] = useState<HNStory>();
-  const [meta, setMeta] = useState<Meta>();
-  const [summary, setSummary] = useState<Summary>({ short: "", long: "" });
-  const [embedTweet, setEmbedTweet] = useState();
+export default async function Story(props: StoryProps) {
+  const { storyId, title, url, text, kids, type } = props;
 
-  useEffect(() => {
-    const controller = new AbortController();
-    (async (storyId: string) => {
-      const hnStory: HNStory = await getHnStory(controller, storyId);
-      setHnStory(hnStory);
-      if (!hnStory.url) return;
-      const { hostname } = new URL(hnStory.url);
-      if (hostname === "twitter.com") {
-        fetch(`/api/tweet?url=${hnStory.url}`, { signal: controller.signal })
-          .then((response) => response.json())
-          .then((json) => setEmbedTweet(json.html));
-      } else {
-        setMeta(await getMeta(controller, hnStory.url));
-        if (hnStory.type !== "job") {
-          setSummary(await getSummary(controller, storyId, hnStory.url));
-        }
-      }
-    })(storyId).catch((err) =>
-      console.error(`failed fetching story ${storyId}`, err)
-    );
-
-    return () => {
-      controller.abort();
-    };
-  }, [storyId, highlight]);
+  if (!url) return <>no url {storyId}</>;
+  const { hostname } = new URL(url);
+  let meta: Meta | undefined, summary: Summary | undefined, embedTweet;
+  if (hostname === "twitter.com") {
+    const response = await (
+      await fetch(`http://localhost:4000/api/tweet?url=${url}`)
+    ).json();
+    embedTweet = response.html;
+  } else {
+    meta = await getMeta(url);
+    if (type !== "job") {
+      summary = await getSummary(storyId, url);
+    }
+  }
 
   const hnUrl = `https://news.ycombinator.com/item?id=${storyId}`;
 
-  const card =
-    hnStory &&
-    (embedTweet ? (
-      // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
-      <div dangerouslySetInnerHTML={{ __html: embedTweet }} />
-    ) : meta ? (
-      <Card
-        title={meta.title || hnStory.title}
-        url={hnStory.url || hnUrl}
-        image={meta.image}
-        authors={meta.authors}
-        description={meta.description}
-      />
-    ) : (
-      <Card title={hnStory.title} url={hnStory.url || hnUrl} />
-    ));
+  const card = embedTweet ? (
+    // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+    <div dangerouslySetInnerHTML={{ __html: embedTweet }} />
+  ) : meta ? (
+    <Card
+      title={meta.title || title}
+      url={url || hnUrl}
+      image={meta.image}
+      authors={meta.authors}
+      description={meta.description}
+    />
+  ) : (
+    <Card title={title} url={url || hnUrl} />
+  );
 
-  const { short } = summary;
-
-  return hnStory ? (
+  return (
     <div className={styles.story}>
       <div className={styles.storyInfo}>
         <h2>
@@ -109,43 +80,35 @@ export default function Story(props: StoryProps) {
             className={classNames(styles.hnTitle, sans)}
             target="_blank"
           >
-            {hnStory.title}
+            {title}
           </Link>
         </h2>
-        <span className={classNames(mono.className, styles.shortSummarization)}>
-          {short}
-        </span>
+        {summary != null && (
+          <span
+            className={classNames(mono.className, styles.shortSummarization)}
+          >
+            {summary.short}
+          </span>
+        )}
         <Link href={`/story/${storyId}`} className={styles.link}>
-          {hnStory.kids?.length || 0} discussions
+          {kids?.length || 0} discussions
         </Link>
       </div>
       {card}
     </div>
-  ) : (
-    <center data-storyid={storyId}>Loading</center>
   );
 }
 
-async function getHnStory(controller: AbortController, storyId: string) {
+async function getMeta(url: string) {
   return (await (
-    await fetch(`/api/story?storyId=${storyId}`, { signal: controller.signal })
-  ).json()) as HNStory;
-}
-
-async function getMeta(controller: AbortController, url: string) {
-  return (await (
-    await fetch(`/api/meta?url=${url}`, { signal: controller.signal })
+    await fetch(`http://localhost:4000/api/meta?url=${url}`)
   ).json()) as Meta;
 }
 
-async function getSummary(
-  controller: AbortController,
-  storyId: string,
-  url: string
-) {
+async function getSummary(storyId: number, url: string) {
   return (await (
-    await fetch(`/api/summary?storyId=${storyId}&url=${url}`, {
-      signal: controller.signal,
-    })
+    await fetch(
+      `http://localhost:4000/api/summary?storyId=${storyId}&url=${url}`
+    )
   ).json()) as Summary;
 }
