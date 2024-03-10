@@ -2,16 +2,8 @@ import styles from "@/styles/index.module.css";
 import classNames from "classnames";
 import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import Footer from "./footer";
+import { getHnStory } from "./hnStory";
 import Story from "./story";
-
-type HNStory = {
-  id: number;
-  title: string;
-  url?: string;
-  text?: string;
-  kids: number[];
-  type: "job" | "story" | "comment" | "poll" | "pollopt";
-};
 
 const sans = IBM_Plex_Sans({
   weight: ["400", "700"],
@@ -41,6 +33,7 @@ export default async function Home() {
             text={text}
             kids={kids}
             type={type}
+            longSummary={false}
           />
         ))}
       </main>
@@ -57,11 +50,4 @@ async function getStoryIds() {
   const storyIds = (await storesResponse.json()) as number[];
 
   return storyIds;
-}
-
-async function getHnStory(storyId: number) {
-  const response = await fetch(
-    `http://localhost:4000/api/story?storyId=${storyId}`
-  );
-  return { id: storyId, ...(await response.json()) } as HNStory;
 }

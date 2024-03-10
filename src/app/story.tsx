@@ -11,6 +11,7 @@ type StoryProps = {
   text: string | undefined;
   kids: number[];
   type: "job" | "story" | "comment" | "poll" | "pollopt";
+  longSummary: boolean;
 };
 
 type Meta = {
@@ -37,11 +38,12 @@ const mono = IBM_Plex_Mono({
 });
 
 export default async function Story(props: StoryProps) {
-  const { storyId, title, url, text, kids, type } = props;
+  const { storyId, title, url, text, kids, type, longSummary } = props;
 
   if (!url) return <>no url {storyId}</>;
-  const { hostname } = new URL(url);
+
   let meta: Meta | undefined, summary: Summary | undefined, embedTweet;
+  const { hostname } = new URL(url);
   if (hostname === "twitter.com") {
     const response = await (
       await fetch(`http://localhost:4000/api/tweet?url=${url}`)
@@ -57,7 +59,6 @@ export default async function Story(props: StoryProps) {
   const hnUrl = `https://news.ycombinator.com/item?id=${storyId}`;
 
   const card = embedTweet ? (
-    // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
     <div dangerouslySetInnerHTML={{ __html: embedTweet }} />
   ) : meta ? (
     <Card
@@ -87,7 +88,7 @@ export default async function Story(props: StoryProps) {
           <span
             className={classNames(mono.className, styles.shortSummarization)}
           >
-            {summary.short}
+            {longSummary ? summary.long : summary.short}
           </span>
         )}
         <Link href={`/story/${storyId}`} className={styles.link}>
