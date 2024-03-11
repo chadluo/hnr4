@@ -1,16 +1,9 @@
 import styles from "@/styles/index.module.css";
+import { mono, sans } from "@/styles/typography";
 import classNames from "classnames";
-import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import Footer from "./footer";
 import { getHnStory } from "./hnStory";
 import Story from "./story";
-
-const sans = IBM_Plex_Sans({
-  weight: ["400", "700"],
-  style: ["normal", "italic"],
-  subsets: ["latin"],
-});
-const mono = IBM_Plex_Mono({ weight: "400", subsets: ["latin"] });
 
 export default async function Home() {
   const storyIds = await getStoryIds();

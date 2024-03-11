@@ -6,7 +6,7 @@ import type { SyntheticEvent } from "react";
 import { useEffect, useState } from "react";
 
 type Props = {
-  commentId: string;
+  commentId: number;
   expand: boolean;
 };
 
@@ -63,7 +63,7 @@ export default function Comment(props: Props) {
       />
       {startRender &&
         comment.kids?.map((kid) => (
-          <Comment key={kid} commentId={kid.toString()} expand={true} />
+          <Comment key={kid} commentId={kid} expand={true} />
         ))}
     </details>
   ) : (

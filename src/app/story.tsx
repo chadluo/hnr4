@@ -1,6 +1,6 @@
 import styles from "@/styles/story.module.css";
+import { mono, sans } from "@/styles/typography";
 import classNames from "classnames";
-import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import Link from "next/link";
 import Card from "./card";
 
@@ -25,17 +25,6 @@ type Summary = {
   short: string;
   long: string;
 };
-
-const sans = IBM_Plex_Sans({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-});
-
-const mono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: "400",
-  style: "italic",
-});
 
 export default async function Story(props: StoryProps) {
   const { storyId, title, url, text, kids, type, longSummary } = props;

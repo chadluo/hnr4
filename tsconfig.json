@@ -21,6 +21,9 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@/typography": [
+        "./styles/typography"
       ]
     },
     "plugins": [
