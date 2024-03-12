@@ -9,7 +9,7 @@ export type HNStory = {
 
 export async function getHnStory(storyId: number) {
   const response = await fetch(
-    `http://localhost:4000/api/story?storyId=${storyId}`
+    `https://hacker-news.firebaseio.com/v0/item/${storyId}.json`
   );
   return { id: storyId, ...(await response.json()) } as HNStory;
 }
