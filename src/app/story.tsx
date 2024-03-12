@@ -1,7 +1,10 @@
 import styles from "@/styles/story.module.css";
 import { mono, sans } from "@/styles/typography";
 import classNames from "classnames";
+import { unstable_cache } from "next/cache";
 import Link from "next/link";
+import { EmbeddedTweet, TweetNotFound } from "react-tweet";
+import { getTweet as _getTweet } from "react-tweet/api";
 import Card from "./card";
 
 type StoryProps = {
@@ -32,12 +35,11 @@ export default async function Story(props: StoryProps) {
   if (!url) return <>no url {storyId}</>;
 
   let meta: Meta | undefined, summary: Summary | undefined, embedTweet;
-  const { hostname } = new URL(url);
+  const { hostname, pathname } = new URL(url);
+
+  let tweetId;
   if (hostname === "twitter.com") {
-    const response = await (
-      await fetch(`http://localhost:4000/api/tweet?url=${url}`)
-    ).json();
-    embedTweet = response.html;
+    tweetId = pathname.split("/").slice(-1)[0];
   } else {
     meta = await getMeta(url);
     if (type !== "job") {
@@ -47,8 +49,8 @@ export default async function Story(props: StoryProps) {
 
   const hnUrl = `https://news.ycombinator.com/item?id=${storyId}`;
 
-  const card = embedTweet ? (
-    <div dangerouslySetInnerHTML={{ __html: embedTweet }} />
+  const card = tweetId ? (
+    <TweetPage id={tweetId} />
   ) : meta ? (
     <Card
       title={meta.title || title}
@@ -102,3 +104,19 @@ async function getSummary(storyId: number, url: string) {
     )
   ).json()) as Summary;
 }
+
+const getTweet = unstable_cache(
+  async (id: string) => _getTweet(id),
+  ["tweet"],
+  { revalidate: 3600 * 24 }
+);
+
+const TweetPage = async ({ id }: { id: string }) => {
+  try {
+    const tweet = await getTweet(id);
+    return tweet ? <EmbeddedTweet tweet={tweet} /> : <TweetNotFound />;
+  } catch (error) {
+    console.error(error);
+    return <TweetNotFound error={error} />;
+  }
+};
