@@ -1,39 +1,37 @@
-import { NextResponse } from "next/server";
 import { parse } from "parse5";
-
-export const config = { runtime: "edge" };
 
 const DEFAULT_TIMEOUT_MS = 10000;
 
-export default async function hander(request) {
-  const url = new URL(request.url).searchParams.get("url");
+export async function getMeta(url) {
   try {
     new URL(url);
   } catch (err) {
-    return NextResponse.error();
+    return {};
   }
 
   const controller = new AbortController();
   let html, abortTimeout;
   try {
     abortTimeout = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT_MS);
-    html = await fetch(url, { signal: controller.signal }).then((response) => response.text());
+    html = await fetch(url, { signal: controller.signal }).then((response) =>
+      response.text()
+    );
   } catch (err) {
     console.error({ error: "Cannot fetch html: " + err, url });
-    return NextResponse.error();
+    return {};
   }
   clearTimeout(abortTimeout);
   const rawMeta = findRawMeta(html);
-  const metadata = {
-    title: (rawMeta.get("title") || rawMeta.get("og:title") || rawMeta.get("twitter:title"))?.[0],
+  return {
+    title: (rawMeta.get("title") ||
+      rawMeta.get("og:title") ||
+      rawMeta.get("twitter:title"))?.[0],
     description: (rawMeta.get("description") ||
       rawMeta.get("og:description") ||
       rawMeta.get("twitter:description"))?.[0],
     image: (rawMeta.get("og:image") || rawMeta.get("twitter:image"))?.[0],
     authors: rawMeta.get("citation_author")?.join(" | "),
   };
-
-  return NextResponse.json(metadata, { headers: { "Cache-Control": "max-age=0, s-maxage=21600" } });
 }
 
 function findRawMeta(html) {
@@ -46,7 +44,9 @@ function findRawMeta(html) {
       if (node.nodeName !== "meta") {
         return;
       }
-      const key = node.attrs.find((attr) => attr.name === "property" || attr.name === "name")?.value;
+      const key = node.attrs.find(
+        (attr) => attr.name === "property" || attr.name === "name"
+      )?.value;
       const value = node.attrs.find((attr) => attr.name === "content")?.value;
       return [key, value];
     })

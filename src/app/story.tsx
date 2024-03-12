@@ -6,6 +6,7 @@ import Link from "next/link";
 import { EmbeddedTweet, TweetNotFound } from "react-tweet";
 import { getTweet as _getTweet } from "react-tweet/api";
 import Card from "./card";
+import { getMeta } from "./meta";
 
 type StoryProps = {
   storyId: number;
@@ -91,17 +92,9 @@ export default async function Story(props: StoryProps) {
   );
 }
 
-async function getMeta(url: string) {
-  return (await (
-    await fetch(`http://localhost:4000/api/meta?url=${url}`)
-  ).json()) as Meta;
-}
-
 async function getSummary(storyId: number, url: string) {
   return (await (
-    await fetch(
-      `http://localhost:4000/api/summary?storyId=${storyId}&url=${url}`
-    )
+    await fetch(`${process.env.HOST}/api/summary?storyId=${storyId}&url=${url}`)
   ).json()) as Summary;
 }
 
