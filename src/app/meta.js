@@ -1,6 +1,6 @@
 import { parse } from "parse5";
 
-const DEFAULT_TIMEOUT_MS = 10000;
+const DEFAULT_TIMEOUT_MS = 5000;
 
 export async function getMeta(url) {
   try {

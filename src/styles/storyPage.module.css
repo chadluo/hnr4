@@ -49,16 +49,7 @@
   padding-right: 1rem;
 }
 
-.storyText {
-  margin-bottom: var(--vg);
-}
-
-.storyText code {
-  font-family: var(--font-mono);
-  font-size: calc(1rem - 2px);
-}
-
-.discussions > details:not(:first-of-type) {
+.discussions > details:not(:first-of-type)
   border-top: 1px solid #444;
   padding-top: var(--vg);
 }

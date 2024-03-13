@@ -105,5 +105,8 @@ function mapIcon(icon: Website) {
 }
 
 function takePath(pathname: string, parts: number) {
-  return Array.from(pathname.split("/")).slice(0, parts).join("/");
+  return Array.from(pathname.split("/"))
+    .slice(0, parts)
+    .filter((s) => s !== "")
+    .join("/");
 }

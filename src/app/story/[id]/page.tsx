@@ -3,6 +3,7 @@ import { getHnStory } from "@/app/hnStory";
 import Story from "@/app/story";
 import styles from "@/styles/index.module.css";
 import storyPage from "@/styles/storyPage.module.css";
+import comment from "@/styles/comment.module.css";
 import { mono, sans } from "@/styles/typography";
 import classNames from "classnames";
 import Link from "next/link";
@@ -14,8 +15,6 @@ export default async function Page({ params }: Props) {
   const { id } = params;
   const hnStory = await getHnStory(id);
   const { title, url, text, kids, type } = hnStory;
-
-  if (!hnStory.url) return <></>;
 
   const hnUrl = `https://news.ycombinator.com/item?id=${id}`;
 
@@ -55,7 +54,7 @@ export default async function Page({ params }: Props) {
           >
             {text && (
               <div
-                className={storyPage.storyText}
+                className={comment.comment}
                 dangerouslySetInnerHTML={{ __html: text }}
               ></div>
             )}
