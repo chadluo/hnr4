@@ -10,7 +10,13 @@ type CardProps = {
   description?: string;
 };
 
-export type Website = "apple" | "github" | "reddit" | "wikipedia" | "youtube";
+export type Website =
+  | "apple"
+  | "github"
+  | "reddit"
+  | "wikipedia"
+  | "youtube"
+  | "ycombinator";
 
 export default function Card(props: CardProps) {
   const { title, url, image, authors, description } = props;
@@ -76,6 +82,8 @@ function findWebsite(url: string): Website | undefined {
     return "wikipedia";
   } else if (hostname.endsWith("youtube.com")) {
     return "youtube";
+  } else if (hostname.endsWith("ycombinator.com")) {
+    return "ycombinator";
   } else {
     return undefined;
   }
@@ -89,6 +97,8 @@ function mapIcon(icon: Website) {
       return "wikipedia-w";
     case "youtube":
       return "youtube-play";
+    case "ycombinator":
+      return "y-combinator";
     default:
       return icon;
   }

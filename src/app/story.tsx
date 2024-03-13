@@ -33,9 +33,31 @@ type Summary = {
 export default async function Story(props: StoryProps) {
   const { storyId, title, url, text, kids, type, longSummary } = props;
 
-  if (!url) return <>no url {storyId}</>;
+  const hnUrl = `https://news.ycombinator.com/item?id=${storyId}`;
 
-  let meta: Meta | undefined, summary: Summary | undefined, embedTweet;
+  if (!url) {
+    return (
+      <div className={styles.story}>
+        <div className={styles.storyInfo}>
+          <h2>
+            <Link
+              href={hnUrl}
+              className={classNames(styles.hnTitle, sans)}
+              target="_blank"
+            >
+              {title}
+            </Link>
+          </h2>
+          <Link href={`/story/${storyId}`} className={styles.link}>
+            {kids?.length || 0} discussions
+          </Link>
+        </div>
+        <Card title={title} url={hnUrl} description={text} />
+      </div>
+    );
+  }
+
+  let meta: Meta | undefined, summary: Summary | undefined;
   const { hostname, pathname } = new URL(url);
 
   let tweetId;
@@ -47,8 +69,6 @@ export default async function Story(props: StoryProps) {
       summary = await getSummary(storyId, url);
     }
   }
-
-  const hnUrl = `https://news.ycombinator.com/item?id=${storyId}`;
 
   const card = tweetId ? (
     <TweetPage id={tweetId} />
