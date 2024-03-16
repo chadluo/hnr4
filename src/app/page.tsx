@@ -1,13 +1,12 @@
 import styles from "@/styles/index.module.css";
 import { mono, sans } from "@/styles/typography";
 import classNames from "classnames";
+import { Suspense } from "react";
 import Footer from "./footer";
-import { getHnStory } from "./hnStory";
 import Story from "./story";
 
 export default async function Home() {
   const storyIds = await getStoryIds();
-  const stories = await Promise.all(storyIds.map(getHnStory));
 
   const title = "Hacker News Reader";
 
@@ -17,20 +16,13 @@ export default async function Home() {
         <span>{title}</span>
       </header>
       <main className={classNames(styles.main, sans.className)}>
-        {stories.map(({ id, title, url, text, kids, type }) => (
-          <Story
-            key={id}
-            storyId={id}
-            title={title}
-            url={url}
-            text={text}
-            kids={kids}
-            type={type}
-            longSummary={false}
-          />
+        {storyIds.map((storyId) => (
+          <Suspense key={storyId}>
+            <Story storyId={storyId} full={false} />
+          </Suspense>
         ))}
+        <Footer />
       </main>
-      <Footer />
     </>
   );
 }
@@ -40,7 +32,6 @@ async function getStoryIds() {
   const storesResponse = await fetch(TOP_STORIES_ENDPOINT, {
     cache: "no-store",
   });
-  const storyIds = (await storesResponse.json()) as number[];
 
-  return storyIds;
+  return (await storesResponse.json()) as number[];
 }

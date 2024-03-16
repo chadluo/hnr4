@@ -1,21 +1,21 @@
+import Comment from "@/app/comment";
+import comment from "@/styles/comment.module.css";
 import styles from "@/styles/story.module.css";
+import storyPage from "@/styles/storyPage.module.css";
 import { mono, sans } from "@/styles/typography";
 import classNames from "classnames";
 import { unstable_cache } from "next/cache";
 import Link from "next/link";
+import { Suspense } from "react";
 import { EmbeddedTweet, TweetNotFound } from "react-tweet";
 import { getTweet as _getTweet } from "react-tweet/api";
 import Card from "./card";
+import { getHnStory } from "./hnStory";
 import { getMeta } from "./meta";
 
 type StoryProps = {
   storyId: number;
-  title: string;
-  url: string | undefined;
-  text: string | undefined;
-  kids: number[];
-  type: "job" | "story" | "comment" | "poll" | "pollopt";
-  longSummary: boolean;
+  full: boolean;
 };
 
 type Meta = {
@@ -31,12 +31,35 @@ type Summary = {
 };
 
 export default async function Story(props: StoryProps) {
-  const { storyId, title, url, text, kids, type, longSummary } = props;
+  const { storyId, full } = props;
+  const { title, url, text, kids, type } = await getHnStory(storyId);
 
   const hnUrl = `https://news.ycombinator.com/item?id=${storyId}`;
 
+  let storyBody;
+
+  const discussions = (text || kids) && (
+    <div
+      className={classNames(
+        storyPage.discussions,
+        mono.variable,
+        sans.variable
+      )}
+    >
+      {text && (
+        <div
+          className={comment.comment}
+          dangerouslySetInnerHTML={{ __html: text }}
+        ></div>
+      )}
+      {kids?.map((kid) => (
+        <Comment key={kid} commentId={kid} expand={false} />
+      ))}
+    </div>
+  );
+
   if (!url) {
-    return (
+    storyBody = (
       <div className={styles.story}>
         <div className={styles.storyInfo}>
           <h2>
@@ -54,6 +77,15 @@ export default async function Story(props: StoryProps) {
         </div>
         <Card title={title} url={hnUrl} description={text} />
       </div>
+    );
+
+    return full ? (
+      <section className={classNames(storyPage.article, sans.className)}>
+        {storyBody}
+        {discussions}
+      </section>
+    ) : (
+      <>{storyBody}</>
     );
   }
 
@@ -73,18 +105,20 @@ export default async function Story(props: StoryProps) {
   const card = tweetId ? (
     <TweetPage id={tweetId} />
   ) : meta ? (
-    <Card
-      title={meta.title || title}
-      url={url || hnUrl}
-      image={meta.image}
-      authors={meta.authors}
-      description={meta.description}
-    />
+    <Suspense>
+      <Card
+        title={meta.title || title}
+        url={url || hnUrl}
+        image={meta.image}
+        authors={meta.authors}
+        description={meta.description}
+      />
+    </Suspense>
   ) : (
     <Card title={title} url={url || hnUrl} />
   );
 
-  return (
+  storyBody = (
     <div className={styles.story}>
       <div className={styles.storyInfo}>
         <h2>
@@ -100,15 +134,26 @@ export default async function Story(props: StoryProps) {
           <span
             className={classNames(mono.className, styles.shortSummarization)}
           >
-            {longSummary ? summary.long : summary.short}
+            {full ? summary.long : summary.short}
           </span>
         )}
-        <Link href={`/story/${storyId}`} className={styles.link}>
-          {kids?.length || 0} discussions
-        </Link>
+        {!full && (
+          <Link href={`/story/${storyId}`} className={styles.link}>
+            {kids?.length || 0} discussions
+          </Link>
+        )}
       </div>
       {card}
     </div>
+  );
+
+  return full ? (
+    <section className={classNames(storyPage.article, sans.className)}>
+      {storyBody}
+      {discussions}
+    </section>
+  ) : (
+    <>{storyBody}</>
   );
 }
 
