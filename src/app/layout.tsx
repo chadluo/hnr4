@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Metadata } from "next";
 import Script from "next/script";
 
@@ -41,6 +42,7 @@ export default function RootLayout({
     <html lang="en">
       <body style={{ background }}>{children}</body>
       <Script src="https://kit.fontawesome.com/8c38f2aa0a.js"></Script>
+      <SpeedInsights />
       <Analytics />
     </html>
   );
