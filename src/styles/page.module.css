@@ -11,5 +11,5 @@
 .main {
   display: flex;
   flex-direction: column;
-  gap: var(--vg);
+  gap: calc(2 * var(--vg));
 }

@@ -1,12 +1,10 @@
 import Comment from "@/app/comment";
 import comment from "@/styles/comment.module.css";
 import styles from "@/styles/story.module.css";
-import storyPage from "@/styles/storyPage.module.css";
 import { mono, sans } from "@/styles/typography";
 import classNames from "classnames";
 import { unstable_cache } from "next/cache";
 import Link from "next/link";
-import { Suspense } from "react";
 import { EmbeddedTweet, TweetNotFound } from "react-tweet";
 import { getTweet as _getTweet } from "react-tweet/api";
 import Card from "./card";
@@ -36,15 +34,21 @@ export default async function Story(props: StoryProps) {
 
   const hnUrl = `https://news.ycombinator.com/item?id=${storyId}`;
 
-  let storyBody;
+  const hnLink = (
+    <h2>
+      <Link
+        href={hnUrl}
+        className={classNames(styles.hnTitle, sans)}
+        target="_blank"
+      >
+        {title}
+      </Link>
+    </h2>
+  );
 
   const discussions = (text || kids) && (
     <div
-      className={classNames(
-        storyPage.discussions,
-        mono.variable,
-        sans.variable
-      )}
+      className={classNames(styles.discussions, mono.variable, sans.variable)}
     >
       {text && (
         <div
@@ -52,40 +56,25 @@ export default async function Story(props: StoryProps) {
           dangerouslySetInnerHTML={{ __html: text }}
         ></div>
       )}
-      {kids?.map((kid) => (
-        <Comment key={kid} commentId={kid} expand={false} />
-      ))}
+      {kids &&
+        kids.map((kid) => <Comment key={kid} commentId={kid} expand={false} />)}
     </div>
   );
 
   if (!url) {
-    storyBody = (
-      <div className={styles.story}>
-        <div className={styles.storyInfo}>
-          <h2>
-            <Link
-              href={hnUrl}
-              className={classNames(styles.hnTitle, sans)}
-              target="_blank"
-            >
-              {title}
+    return (
+      <>
+        <div className={styles.story}>
+          <div className={styles.storyInfo}>
+            {!full && hnLink}
+            <Link href={`/story/${storyId}`} className={styles.link}>
+              {kids?.length || 0} discussion
             </Link>
-          </h2>
-          <Link href={`/story/${storyId}`} className={styles.link}>
-            {kids?.length || 0} discussions
-          </Link>
+          </div>
+          <Card title={title} url={hnUrl} description={text} />
         </div>
-        <Card title={title} url={hnUrl} description={text} />
-      </div>
-    );
-
-    return full ? (
-      <section className={classNames(storyPage.article, sans.className)}>
-        {storyBody}
-        {discussions}
-      </section>
-    ) : (
-      <>{storyBody}</>
+        {full && discussions}
+      </>
     );
   }
 
@@ -105,55 +94,37 @@ export default async function Story(props: StoryProps) {
   const card = tweetId ? (
     <TweetPage id={tweetId} />
   ) : meta ? (
-    <Suspense>
-      <Card
-        title={meta.title || title}
-        url={url || hnUrl}
-        image={meta.image}
-        authors={meta.authors}
-        description={meta.description}
-      />
-    </Suspense>
+    <Card
+      title={meta.title || title}
+      url={url || hnUrl}
+      image={meta.image}
+      authors={meta.authors}
+      description={meta.description}
+    />
   ) : (
     <Card title={title} url={url || hnUrl} />
   );
 
-  storyBody = (
-    <div className={styles.story}>
-      <div className={styles.storyInfo}>
-        <h2>
-          <Link
-            href={hnUrl}
-            className={classNames(styles.hnTitle, sans)}
-            target="_blank"
-          >
-            {title}
-          </Link>
-        </h2>
-        {summary != null && (
-          <span
-            className={classNames(mono.className, styles.shortSummarization)}
-          >
-            {full ? summary.long : summary.short}
-          </span>
-        )}
-        {!full && (
-          <Link href={`/story/${storyId}`} className={styles.link}>
-            {kids?.length || 0} discussions
-          </Link>
-        )}
+  return (
+    <>
+      <div className={styles.story}>
+        <div className={styles.storyInfo}>
+          {!full && hnLink}
+          {summary != null && (
+            <span className={classNames(mono.className, styles.summary)}>
+              {full ? summary.long : summary.short}
+            </span>
+          )}
+          {!full && (
+            <Link href={`/story/${storyId}`} className={styles.link}>
+              {kids?.length || 0} discussions
+            </Link>
+          )}
+        </div>
+        {card}
       </div>
-      {card}
-    </div>
-  );
-
-  return full ? (
-    <section className={classNames(storyPage.article, sans.className)}>
-      {storyBody}
-      {discussions}
-    </section>
-  ) : (
-    <>{storyBody}</>
+      {full && discussions}
+    </>
   );
 }
 

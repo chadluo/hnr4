@@ -1,4 +1,4 @@
-import styles from "@/styles/index.module.css";
+import page from "@/styles/page.module.css";
 import { mono, sans } from "@/styles/typography";
 import classNames from "classnames";
 import { Suspense } from "react";
@@ -12,17 +12,17 @@ export default async function Home() {
 
   return (
     <>
-      <header className={classNames(styles.header, mono.className)}>
+      <header className={classNames(page.header, mono.className)}>
         <span>{title}</span>
       </header>
-      <main className={classNames(styles.main, sans.className)}>
+      <main className={classNames(page.main, sans.className)}>
         {storyIds.map((storyId) => (
           <Suspense key={storyId}>
             <Story storyId={storyId} full={false} />
           </Suspense>
         ))}
-        <Footer />
       </main>
+      <Footer />
     </>
   );
 }

@@ -8,18 +8,6 @@
   flex-direction: column;
 }
 
-.storyInfo h2 {
-  font-size: 1rem;
-}
-
-.link {
-  color: lightgray;
-}
-
-.link:hover {
-  color: white;
-}
-
 @media screen and (min-width: 900px) {
   .story {
     grid-template-columns: 3fr 5fr;
@@ -31,10 +19,29 @@
   }
 }
 
-.hnTitle:hover {
-  color: #f60;
+.hnTitle {
+  font-size: 1rem;
 }
 
-.shortSummarization {
-  font-size: calc(1em - 2px);
+.hnTitle:hover {
+  color: var(--hn);
+}
+
+.link {
+  color: lightgray;
+}
+
+.link:hover {
+  color: white;
+}
+
+.summary {
+  font-size: calc(1rem - 2px);
+  font-style: italic;
+  padding-right: 1rem;
+}
+
+.discussions > details:not(:first-of-type) {
+  border-top: 1px solid #444;
+  padding-top: var(--vg);
 }
