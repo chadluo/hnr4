@@ -20,6 +20,7 @@ export type Website =
 
 export default function Card(props: CardProps) {
   const { title, url, image, authors, description } = props;
+  const imageUrl = checkImageUrl(image);
 
   const source = authors ? authors : url && extractSource(url);
   const website = findWebsite(url);
@@ -33,7 +34,7 @@ export default function Card(props: CardProps) {
     <Link
       href={url}
       title={url}
-      className={classNames(styles.card, { [styles.imageCard]: image })}
+      className={classNames(styles.card, { [styles.imageCard]: imageUrl })}
       target="_blank"
     >
       <div className={styles.textBox}>
@@ -49,10 +50,10 @@ export default function Card(props: CardProps) {
           {description}
         </div>
       </div>
-      {image && (
+      {imageUrl && (
         <div
           className={styles.imageBox}
-          style={{ backgroundImage: `url(${image})` }}
+          style={{ backgroundImage: `url(${imageUrl})` }}
         ></div>
       )}
     </Link>
@@ -68,6 +69,13 @@ function extractSource(url: string) {
   } else {
     return hostname.replace(/^www\./, "");
   }
+}
+
+function takePath(pathname: string, parts: number) {
+  return Array.from(pathname.split("/"))
+    .slice(0, parts)
+    .filter((s) => s !== "")
+    .join("/");
 }
 
 function findWebsite(url: string): Website | undefined {
@@ -104,9 +112,11 @@ function mapIcon(icon: Website) {
   }
 }
 
-function takePath(pathname: string, parts: number) {
-  return Array.from(pathname.split("/"))
-    .slice(0, parts)
-    .filter((s) => s !== "")
-    .join("/");
+function checkImageUrl(image?: string) {
+  if (image) {
+    try {
+      new URL(image);
+      return image;
+    } catch (e) {}
+  }
 }
