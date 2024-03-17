@@ -1,7 +1,6 @@
 .header,
 .main {
   width: var(--w);
-  margin: auto;
 }
 
 .header {

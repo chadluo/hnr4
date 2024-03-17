@@ -18,7 +18,7 @@ export default async function Page({ params }: Props) {
 
   return (
     <>
-      <header className={classNames(page.header)}>
+      <header className={classNames(page.header, "mx-auto")}>
         <h1 className={storyPage.title}>
           <Link href="/" className={storyPage.back}>
             🡨
@@ -32,7 +32,7 @@ export default async function Page({ params }: Props) {
           </Link>
         </h1>
       </header>
-      <main className={classNames(page.main, sans.className)}>
+      <main className={classNames(page.main, sans.className, "mx-auto")}>
         <Story storyId={id} full={true} />
       </main>
       <Footer />

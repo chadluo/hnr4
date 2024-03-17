@@ -12,10 +12,10 @@ export default async function Home() {
 
   return (
     <>
-      <header className={classNames(page.header, mono.className)}>
+      <header className={classNames(page.header, mono.className, 'mx-auto')}>
         <span>{title}</span>
       </header>
-      <main className={classNames(page.main, sans.className)}>
+      <main className={classNames(page.main, sans.className, 'mx-auto')}>
         {storyIds.map((storyId) => (
           <Suspense key={storyId}>
             <Story storyId={storyId} full={false} />

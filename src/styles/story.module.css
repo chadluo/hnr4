@@ -1,22 +1,5 @@
 .story {
-  display: grid;
   gap: var(--vg);
-}
-
-.storyInfo {
-  display: flex;
-  flex-direction: column;
-}
-
-@media screen and (min-width: 900px) {
-  .story {
-    grid-template-columns: 3fr 5fr;
-    gap: 0;
-  }
-
-  .storyInfo {
-    padding-right: 1rem;
-  }
 }
 
 .hnTitle {
@@ -25,14 +8,6 @@
 
 .hnTitle:hover {
   color: var(--hn);
-}
-
-.link {
-  color: lightgray;
-}
-
-.link:hover {
-  color: white;
 }
 
 .summary {

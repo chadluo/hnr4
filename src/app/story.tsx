@@ -38,7 +38,7 @@ export default async function Story(props: StoryProps) {
     <h2>
       <Link
         href={hnUrl}
-        className={classNames(styles.hnTitle, sans)}
+        className={classNames(styles.hnTitle, sans, 'font-bold')}
         target="_blank"
       >
         {title}
@@ -64,10 +64,13 @@ export default async function Story(props: StoryProps) {
   if (!url) {
     return (
       <>
-        <div className={styles.story}>
-          <div className={styles.storyInfo}>
+        <div className={classNames("grid", "lg:grid-cols-8", "gap-4")}>
+          <div className={classNames("flex", "flex-col", "lg:col-span-3")}>
             {!full && hnLink}
-            <Link href={`/story/${storyId}`} className={styles.link}>
+            <Link
+              href={`/story/${storyId}`}
+              className={classNames("text-gray-300", "hover:text-white")}
+            >
               {kids?.length || 0} discussion
             </Link>
           </div>
@@ -91,24 +94,27 @@ export default async function Story(props: StoryProps) {
     }
   }
 
-  const card = tweetId ? (
-    <TweetPage id={tweetId} />
-  ) : meta ? (
-    <Card
-      title={meta.title || title}
-      url={url || hnUrl}
-      image={meta.image}
-      authors={meta.authors}
-      description={meta.description}
-    />
-  ) : (
-    <Card title={title} url={url || hnUrl} />
+  const card = (
+    <div className={classNames("lg:col-span-5")}>
+      {tweetId ? (
+        <TweetPage id={tweetId} />
+      ) : meta ? (
+        <Card
+          title={meta.title || title}
+          url={url || hnUrl}
+          image={meta.image}
+          authors={meta.authors}
+          description={meta.description}
+        />
+      ) : (
+        <Card title={title} url={url || hnUrl} />
+      )}
+    </div>
   );
-
   return (
     <>
-      <div className={styles.story}>
-        <div className={styles.storyInfo}>
+      <div className={classNames("grid", "lg:grid-cols-8", "gap-4")}>
+        <div className={classNames("flex", "flex-col", "lg:col-span-3")}>
           {!full && hnLink}
           {summary != null && (
             <span className={classNames(mono.className, styles.summary)}>
@@ -116,7 +122,10 @@ export default async function Story(props: StoryProps) {
             </span>
           )}
           {!full && (
-            <Link href={`/story/${storyId}`} className={styles.link}>
+            <Link
+              href={`/story/${storyId}`}
+              className={classNames("text-gray-300", "hover:text-white")}
+            >
               {kids?.length || 0} discussions
             </Link>
           )}

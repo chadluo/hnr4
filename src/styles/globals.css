@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --w: clamp(16rem, calc(100% - 2rem), 72rem);
   --vg: 0.7rem;
