@@ -1,42 +1,9 @@
-/* card */
-
-.card {
-  background: rgba(0, 0, 0, 0.7);
-  border: 1px solid #444;
-  display: flex;
-  flex-direction: column-reverse;
-}
-
-.card:hover {
-  border-color: #666;
-}
-
 /* text box */
 
 .textBox {
   padding: var(--vg) 1ch;
   display: flex;
   flex-direction: column;
-}
-
-.source {
-  color: gray;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-}
-
-.title {
-  font-size: 1rem;
-}
-
-.description {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  overflow: hidden;
-  word-break: break-word;
 }
 
 /* image box */
@@ -51,10 +18,6 @@
 /* wide image card */
 
 @media screen and (min-width: 900px) {
-  .card {
-    flex-direction: row;
-  }
-
   .imageCard .textBox {
     flex-basis: 60%;
   }

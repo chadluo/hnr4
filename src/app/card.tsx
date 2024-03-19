@@ -34,19 +34,27 @@ export default function Card(props: CardProps) {
     <Link
       href={url}
       title={url}
-      className={classNames(styles.card, { [styles.imageCard]: imageUrl })}
+      className={classNames(
+        { [styles.imageCard]: imageUrl },
+        "flex",
+        "flex-col-reverse",
+        "lg:flex-row",
+        "bg-neutral-900/70",
+        "border-neutral-700",
+        "hover:border-neutral-500",
+      )}
       target="_blank"
     >
       <div className={styles.textBox}>
-        <span className={styles.source} title={url}>
+        <span className={classNames('line-clamp-2','text-neutral-500')} title={url}>
           {icon}
           {source}
         </span>
         <h2
-          className={styles.title}
+          className={classNames("text-base", "font-bold")}
           dangerouslySetInnerHTML={{ __html: title.replaceAll("/", "<wbr>/") }}
         ></h2>
-        <div className={styles.description} title={description}>
+        <div className="line-clamp-3" title={description}>
           {description}
         </div>
       </div>
