@@ -40,7 +40,12 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body style={{ background }}>{children}</body>
+      <body
+        style={{ background }}
+        className="min-h-screen max-w-full overflow-x-hidden text-white"
+      >
+        {children}
+      </body>
       <Script src="https://kit.fontawesome.com/8c38f2aa0a.js"></Script>
       <SpeedInsights />
       <Analytics />

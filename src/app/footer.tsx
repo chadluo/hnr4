@@ -1,4 +1,3 @@
-import styles from "@/styles/footer.module.css";
 import classNames from "classnames";
 import { IBM_Plex_Mono } from "next/font/google";
 import Link from "next/link";
@@ -9,11 +8,8 @@ export default function Footer() {
   return (
     <footer
       className={classNames(
-        styles.footer,
         mono.className,
-        "mx-auto",
-        "flex",
-        "justify-between"
+        "mx-auto flex w-5/6 min-w-64 max-w-6xl justify-between pb-12 pt-8",
       )}
     >
       <Link

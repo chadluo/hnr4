@@ -1,4 +1,3 @@
-import styles from "@/styles/card.module.css";
 import classNames from "classnames";
 import Link from "next/link";
 
@@ -34,36 +33,43 @@ export default function Card(props: CardProps) {
     <Link
       href={url}
       title={url}
-      className={classNames(
-        { [styles.imageCard]: imageUrl },
-        "flex",
-        "flex-col-reverse",
-        "lg:flex-row",
-        "bg-neutral-900/70",
-        "border-neutral-700",
-        "hover:border-neutral-500",
-      )}
+      className="flex flex-col border border-neutral-700 bg-neutral-900/70 hover:border-neutral-500 lg:flex-row-reverse"
       target="_blank"
     >
-      <div className={styles.textBox}>
-        <span className={classNames('line-clamp-2','text-neutral-500')} title={url}>
+      {imageUrl && (
+        <div
+          className={classNames(
+            "bg-center",
+            "bg-cover",
+            "min-h-36",
+            "peer",
+            "basis-2/5",
+          )}
+          style={{ backgroundImage: `url(${imageUrl})` }}
+        ></div>
+      )}
+      <div
+        className={classNames(
+          "flex",
+          "flex-col",
+          "px-3",
+          "py-2",
+          "basis-full",
+          "peer-[]:basis-3/5",
+        )}
+      >
+        <span className="line-clamp-2 text-neutral-500" title={url}>
           {icon}
           {source}
         </span>
         <h2
-          className={classNames("text-base", "font-bold")}
+          className="text-base font-bold"
           dangerouslySetInnerHTML={{ __html: title.replaceAll("/", "<wbr>/") }}
         ></h2>
         <div className="line-clamp-3" title={description}>
           {description}
         </div>
       </div>
-      {imageUrl && (
-        <div
-          className={styles.imageBox}
-          style={{ backgroundImage: `url(${imageUrl})` }}
-        ></div>
-      )}
     </Link>
   );
 }

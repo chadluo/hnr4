@@ -1,8 +1,6 @@
 import Footer from "@/app/footer";
 import { getHnStory } from "@/app/hnStory";
 import Story from "@/app/story";
-import page from "@/styles/page.module.css";
-import storyPage from "@/styles/storyPage.module.css";
 import { sans } from "@/styles/typography";
 import classNames from "classnames";
 import Link from "next/link";
@@ -18,21 +16,34 @@ export default async function Page({ params }: Props) {
 
   return (
     <>
-      <header className={classNames(page.header, "mx-auto")}>
-        <h1 className={storyPage.title}>
-          <Link href="/" className={storyPage.back}>
+      <header className="mx-auto w-5/6 min-w-64 max-w-6xl pb-8 pt-12">
+        <h1 className="text-base">
+          <Link
+            href="/"
+            className="-ml-3 mr-3 px-3 py-2 font-normal hover:bg-neutral-900/70"
+          >
             🡨
           </Link>
           <Link
             href={hnUrl}
-            className={classNames(storyPage.hnTitle, sans.className)}
+            className={classNames(
+              sans.className,
+              "text-base",
+              "font-bold",
+              "hover:text-[#f60]",
+            )}
             target="_blank"
           >
             {title}
           </Link>
         </h1>
       </header>
-      <main className={classNames(page.main, sans.className, "mx-auto")}>
+      <main
+        className={classNames(
+          sans.className,
+          "mx-auto flex w-5/6 min-w-64 max-w-6xl flex-col gap-6",
+        )}
+      >
         <Story storyId={id} full={true} />
       </main>
       <Footer />

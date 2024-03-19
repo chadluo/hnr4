@@ -38,7 +38,7 @@ export default async function Story(props: StoryProps) {
     <h2>
       <Link
         href={hnUrl}
-        className={classNames(styles.hnTitle, sans, 'font-bold')}
+        className={classNames(sans, "font-bold", "text-base")}
         target="_blank"
       >
         {title}
@@ -146,7 +146,7 @@ async function getSummary(storyId: number, url: string) {
 const getTweet = unstable_cache(
   async (id: string) => _getTweet(id),
   ["tweet"],
-  { revalidate: 3600 * 24 }
+  { revalidate: 3600 * 24 },
 );
 
 const TweetPage = async ({ id }: { id: string }) => {
