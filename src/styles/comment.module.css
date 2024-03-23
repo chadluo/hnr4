@@ -3,16 +3,16 @@ details .comment {
 }
 
 .comment a {
-  color: var(--hn);
+  color: hsl(24 100% 50%);
   word-break: break-word;
 }
 
 .comment a:hover {
-  color: var(--hn2);
+  color: hsl(24 80% 70%);
 }
 
 .comment p {
-  margin-top: var(--vg);
+  margin-top: 0.5rem;
 }
 
 .comment pre {

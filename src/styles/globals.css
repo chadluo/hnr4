@@ -1,25 +1,3 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-:root {
-  --w: clamp(16rem, calc(100% - 2rem), 72rem);
-  --vg: 0.7rem;
-  --hn: hsl(24 100% 50%);
-  --hn2: hsl(24 80% 70%);
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-body {
-  line-height: calc(2 * var(--vg));
-}
-
-a {
-  color: white;
-  text-decoration: none;
-}

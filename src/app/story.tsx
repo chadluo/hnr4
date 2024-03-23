@@ -1,6 +1,5 @@
 import Comment from "@/app/comment";
 import comment from "@/styles/comment.module.css";
-import styles from "@/styles/story.module.css";
 import { mono, sans } from "@/styles/typography";
 import classNames from "classnames";
 import { unstable_cache } from "next/cache";
@@ -38,7 +37,7 @@ export default async function Story(props: StoryProps) {
     <h2>
       <Link
         href={hnUrl}
-        className={classNames(sans, "font-bold", "text-base")}
+        className={classNames(sans, "text-base font-bold hover:text-[#f60]")}
         target="_blank"
       >
         {title}
@@ -46,9 +45,21 @@ export default async function Story(props: StoryProps) {
     </h2>
   );
 
+  const discussionsCount = (
+    <Link href={`/story/${storyId}`} className="text-gray-300 hover:text-white">
+      {kids?.length || 0} discussions
+    </Link>
+  );
+
   const discussions = (text || kids) && (
     <div
-      className={classNames(styles.discussions, mono.variable, sans.variable)}
+      className={classNames(
+        mono.variable,
+        sans.variable,
+        "[&>details:not(:first-of-type)]:border-t",
+        "[&>details:not(:first-of-type)]:border-neutral-500",
+        "[&>details:not(:first-of-type)]:pt-2",
+      )}
     >
       {text && (
         <div
@@ -61,76 +72,56 @@ export default async function Story(props: StoryProps) {
     </div>
   );
 
-  if (!url) {
-    return (
-      <>
-        <div className={classNames("grid", "lg:grid-cols-8", "gap-4")}>
-          <div className={classNames("flex", "flex-col", "lg:col-span-3")}>
-            {!full && hnLink}
-            <Link
-              href={`/story/${storyId}`}
-              className={classNames("text-gray-300", "hover:text-white")}
-            >
-              {kids?.length || 0} discussion
-            </Link>
-          </div>
-          <Card title={title} url={hnUrl} description={text} />
-        </div>
-        {full && discussions}
-      </>
-    );
-  }
-
-  let meta: Meta | undefined, summary: Summary | undefined;
-  const { hostname, pathname } = new URL(url);
-
+  let meta: Meta | undefined;
+  let summary: Summary | undefined;
   let tweetId;
-  if (hostname === "twitter.com") {
-    tweetId = pathname.split("/").slice(-1)[0];
-  } else {
-    meta = await getMeta(url);
-    if (type !== "job") {
-      summary = await getSummary(storyId, url);
+
+  if (url) {
+    const { hostname, pathname } = new URL(url);
+    if (hostname === "twitter.com") {
+      tweetId = pathname.split("/").slice(-1)[0];
+    } else {
+      meta = await getMeta(url);
+      if (type !== "job") {
+        summary = await getSummary(storyId, url);
+      }
     }
   }
 
-  const card = (
-    <div className={classNames("lg:col-span-5")}>
-      {tweetId ? (
-        <TweetPage id={tweetId} />
-      ) : meta ? (
-        <Card
-          title={meta.title || title}
-          url={url || hnUrl}
-          image={meta.image}
-          authors={meta.authors}
-          description={meta.description}
-        />
-      ) : (
-        <Card title={title} url={url || hnUrl} />
-      )}
-    </div>
-  );
   return (
     <>
-      <div className={classNames("grid", "lg:grid-cols-8", "gap-4")}>
-        <div className={classNames("flex", "flex-col", "lg:col-span-3")}>
+      <div className="grid gap-4 lg:grid-cols-8">
+        <div className="flex flex-col lg:col-span-3">
           {!full && hnLink}
           {summary != null && (
-            <span className={classNames(mono.className, styles.summary)}>
+            <span
+              className={classNames(
+                mono.className,
+                "italic",
+                "text-sm",
+                "leading-6",
+              )}
+            >
               {full ? summary.long : summary.short}
             </span>
           )}
-          {!full && (
-            <Link
-              href={`/story/${storyId}`}
-              className={classNames("text-gray-300", "hover:text-white")}
-            >
-              {kids?.length || 0} discussions
-            </Link>
+          {!full && discussionsCount}
+        </div>
+        <div className="lg:col-span-5">
+          {tweetId ? (
+            <TweetPage id={tweetId} />
+          ) : meta ? (
+            <Card
+              title={meta.title || title}
+              url={url || hnUrl}
+              image={meta.image}
+              authors={meta.authors}
+              description={meta.description || text}
+            />
+          ) : (
+            <Card title={title} url={url || hnUrl} description={text} />
           )}
         </div>
-        {card}
       </div>
       {full && discussions}
     </>

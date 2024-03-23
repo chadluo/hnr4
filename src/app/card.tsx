@@ -38,26 +38,11 @@ export default function Card(props: CardProps) {
     >
       {imageUrl && (
         <div
-          className={classNames(
-            "bg-center",
-            "bg-cover",
-            "min-h-36",
-            "peer",
-            "basis-2/5",
-          )}
+          className="peer min-h-36 basis-2/5 bg-cover bg-center"
           style={{ backgroundImage: `url(${imageUrl})` }}
         ></div>
       )}
-      <div
-        className={classNames(
-          "flex",
-          "flex-col",
-          "px-3",
-          "py-2",
-          "basis-full",
-          "peer-[]:basis-3/5",
-        )}
-      >
+      <div className="basis-full px-3 py-2 peer-[]:basis-3/5">
         <span className="line-clamp-2 text-neutral-500" title={url}>
           {icon}
           {source}
@@ -66,7 +51,12 @@ export default function Card(props: CardProps) {
           className="text-base font-bold"
           dangerouslySetInnerHTML={{ __html: title.replaceAll("/", "<wbr>/") }}
         ></h2>
-        <div className="line-clamp-3" title={description}>
+        <div
+          className="line-clamp-3 break-words"
+          // override for http://localhost:4000/story/39792136
+          style={{ overflowWrap: "anywhere" }}
+          title={description}
+        >
           {description}
         </div>
       </div>
