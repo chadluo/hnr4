@@ -1,5 +1,4 @@
 import Comment from "@/app/comment";
-import comment from "@/styles/comment.module.css";
 import { mono, sans } from "@/styles/typography";
 import classNames from "classnames";
 import { unstable_cache } from "next/cache";
@@ -52,23 +51,12 @@ export default async function Story(props: StoryProps) {
   );
 
   const discussions = (text || kids) && (
-    <div
-      className={classNames(
-        mono.variable,
-        sans.variable,
-        "[&>details:not(:first-of-type)]:border-t",
-        "[&>details:not(:first-of-type)]:border-neutral-500",
-        "[&>details:not(:first-of-type)]:pt-2",
-      )}
-    >
-      {text && (
-        <div
-          className={comment.comment}
-          dangerouslySetInnerHTML={{ __html: text }}
-        ></div>
-      )}
+    <div className="[&>details:not(:first-of-type)]:border-t [&>details:not(:first-of-type)]:border-neutral-500 [&>details:not(:first-of-type)]:pt-2">
+      {text && <div dangerouslySetInnerHTML={{ __html: text }}></div>}
       {kids &&
-        kids.map((kid) => <Comment key={kid} commentId={kid} expand={false} />)}
+        kids.map((kid) => (
+          <Comment key={kid} commentId={kid} isExpanded={false} isTop={true} />
+        ))}
     </div>
   );
 

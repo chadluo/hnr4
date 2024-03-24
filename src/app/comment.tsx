@@ -1,13 +1,12 @@
 "use client";
 
-import styles from "@/styles/comment.module.css";
 import classNames from "classnames";
-import type { SyntheticEvent } from "react";
-import { useEffect, useState } from "react";
+import { SyntheticEvent, useCallback, useEffect, useState } from "react";
 
 type Props = {
   commentId: number;
-  expand: boolean;
+  isExpanded: boolean;
+  isTop: boolean;
 };
 
 type CommentContent = {
@@ -19,10 +18,19 @@ type CommentContent = {
 };
 
 export default function Comment(props: Props) {
-  const { commentId, expand } = props;
+  const { commentId, isExpanded, isTop } = props;
 
   const [comment, setComment] = useState<CommentContent>();
   const [startRender, setStartRender] = useState(false);
+
+  const toggle = useCallback(
+    (event: SyntheticEvent<HTMLDetailsElement, Event>) => {
+      if ((event.target as HTMLDetailsElement).open && !startRender) {
+        setStartRender(true);
+      }
+    },
+    [startRender],
+  );
 
   useEffect(() => {
     const controller = new AbortController();
@@ -30,9 +38,7 @@ export default function Comment(props: Props) {
       signal: controller.signal,
     })
       .then((response) => response.json())
-      .then((json) => {
-        setComment(json);
-      });
+      .then(setComment);
     return () => {
       try {
         controller.abort();
@@ -42,28 +48,34 @@ export default function Comment(props: Props) {
     };
   }, [commentId]);
 
-  function toggle(event: SyntheticEvent<HTMLDetailsElement, Event>) {
-    if ((event.target as HTMLDetailsElement).open && !startRender) {
-      setStartRender(true);
-    }
+  if (!comment) {
+    return <></>;
   }
 
-  return comment && !comment.deleted && !comment.dead ? (
+  const { text, by, kids, deleted, dead } = comment;
+
+  return !deleted && !dead ? (
     <details
       data-commentid={commentId}
-      open={expand}
-      onToggle={(e) => toggle(e)}
-      className={classNames(styles.comment, { [styles.nokid]: !comment.kids })}
+      data-kids={kids}
+      open={isExpanded}
+      onToggle={toggle}
+      className={classNames(
+        { "pl-8": !isTop },
+        "[&_a]:break-words [&_a]:text-[#f60] hover:[&_a]:text-[#f0a675]",
+        "[&_p]:mt-2",
+        "[&_pre]:overflow-x-auto",
+      )}
     >
       <summary
-        // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+        className={classNames("mb-2", { "list-none": !kids })}
         dangerouslySetInnerHTML={{
-          __html: `${comment.text} [<a href="https://news.ycombinator.com/item?id=${commentId}">${comment.by}</a>]`,
+          __html: `${text} [<a target="_blank" href="https://news.ycombinator.com/item?id=${commentId}">${by}</a>]`,
         }}
       />
       {startRender &&
-        comment.kids?.map((kid) => (
-          <Comment key={kid} commentId={kid} expand={true} />
+        kids?.map((kid) => (
+          <Comment key={kid} commentId={kid} isExpanded={true} isTop={false} />
         ))}
     </details>
   ) : (

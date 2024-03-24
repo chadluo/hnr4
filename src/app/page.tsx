@@ -1,4 +1,4 @@
-import { mono, sans } from "@/styles/typography";
+import { mono } from "@/styles/typography";
 import classNames from "classnames";
 import { Suspense } from "react";
 import Footer from "./footer";
@@ -19,12 +19,7 @@ export default async function Home() {
       >
         <span>{title}</span>
       </header>
-      <main
-        className={classNames(
-          sans.className,
-          "mx-auto flex w-5/6 min-w-64 max-w-6xl flex-col gap-6",
-        )}
-      >
+      <main className="mx-auto flex w-5/6 min-w-64 max-w-6xl flex-col gap-6">
         {storyIds.map((storyId) => (
           <Suspense key={storyId}>
             <Story storyId={storyId} full={false} />

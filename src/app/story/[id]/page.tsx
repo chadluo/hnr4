@@ -1,8 +1,6 @@
 import Footer from "@/app/footer";
 import { getHnStory } from "@/app/hnStory";
 import Story from "@/app/story";
-import { sans } from "@/styles/typography";
-import classNames from "classnames";
 import Link from "next/link";
 
 type Props = { params: { id: number } };
@@ -26,24 +24,14 @@ export default async function Page({ params }: Props) {
           </Link>
           <Link
             href={hnUrl}
-            className={classNames(
-              sans.className,
-              "text-base",
-              "font-bold",
-              "hover:text-[#f60]",
-            )}
+            className="text-base font-bold hover:text-[#f60]"
             target="_blank"
           >
             {title}
           </Link>
         </h1>
       </header>
-      <main
-        className={classNames(
-          sans.className,
-          "mx-auto flex w-5/6 min-w-64 max-w-6xl flex-col gap-6",
-        )}
-      >
+      <main className="mx-auto flex w-5/6 min-w-64 max-w-6xl flex-col gap-6">
         <Story storyId={id} full={true} />
       </main>
       <Footer />

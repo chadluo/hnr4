@@ -1,4 +1,5 @@
 import "@/styles/globals.css";
+import { mono, sans } from "@/styles/typography";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Metadata } from "next";
@@ -42,7 +43,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         style={{ background }}
-        className="min-h-screen max-w-full overflow-x-hidden text-white"
+        className={`${mono.variable} ${sans.variable} min-h-screen max-w-full overflow-x-hidden font-sans text-white`}
       >
         {children}
       </body>
