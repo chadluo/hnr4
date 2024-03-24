@@ -1,6 +1,4 @@
 import Comment from "@/app/comment";
-import { mono, sans } from "@/styles/typography";
-import classNames from "classnames";
 import { unstable_cache } from "next/cache";
 import Link from "next/link";
 import { EmbeddedTweet, TweetNotFound } from "react-tweet";
@@ -36,7 +34,7 @@ export default async function Story(props: StoryProps) {
     <h2>
       <Link
         href={hnUrl}
-        className={classNames(sans, "text-base font-bold hover:text-[#f60]")}
+        className="text-base font-bold hover:text-[#f60]"
         target="_blank"
       >
         {title}
@@ -82,14 +80,7 @@ export default async function Story(props: StoryProps) {
         <div className="flex flex-col lg:col-span-3">
           {!full && hnLink}
           {summary != null && (
-            <span
-              className={classNames(
-                mono.className,
-                "italic",
-                "text-sm",
-                "leading-6",
-              )}
-            >
+            <span className="font-mono text-sm italic leading-6">
               {full ? summary.long : summary.short}
             </span>
           )}

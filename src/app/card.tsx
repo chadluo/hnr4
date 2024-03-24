@@ -1,4 +1,3 @@
-import classNames from "classnames";
 import Link from "next/link";
 
 type CardProps = {
@@ -24,9 +23,7 @@ export default function Card(props: CardProps) {
   const source = authors ? authors : url && extractSource(url);
   const website = findWebsite(url);
   const icon = website ? (
-    <>
-      <i className={classNames("fa", `fa-${mapIcon(website)}`)}></i>{" "}
-    </>
+    <i className={`fa fa-${mapIcon(website)} mr-1`}></i>
   ) : undefined;
 
   return (

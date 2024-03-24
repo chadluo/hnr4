@@ -1,5 +1,3 @@
-import { mono } from "@/styles/typography";
-import classNames from "classnames";
 import { Suspense } from "react";
 import Footer from "./footer";
 import Story from "./story";
@@ -11,12 +9,7 @@ export default async function Home() {
 
   return (
     <>
-      <header
-        className={classNames(
-          "mx-auto w-5/6 min-w-64 max-w-6xl pb-8 pt-12",
-          mono.className,
-        )}
-      >
+      <header className="mx-auto w-5/6 min-w-64 max-w-6xl pb-8 pt-12 font-mono">
         <span>{title}</span>
       </header>
       <main className="mx-auto flex w-5/6 min-w-64 max-w-6xl flex-col gap-6">
