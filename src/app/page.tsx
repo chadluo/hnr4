@@ -1,6 +1,3 @@
-import page from "@/styles/page.module.css";
-import { mono, sans } from "@/styles/typography";
-import classNames from "classnames";
 import { Suspense } from "react";
 import Footer from "./footer";
 import Story from "./story";
@@ -12,10 +9,10 @@ export default async function Home() {
 
   return (
     <>
-      <header className={classNames(page.header, mono.className)}>
+      <header className="mx-auto w-5/6 min-w-64 max-w-6xl pb-8 pt-12 font-mono">
         <span>{title}</span>
       </header>
-      <main className={classNames(page.main, sans.className)}>
+      <main className="mx-auto flex w-5/6 min-w-64 max-w-6xl flex-col gap-6">
         {storyIds.map((storyId) => (
           <Suspense key={storyId}>
             <Story storyId={storyId} full={false} />

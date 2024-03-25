@@ -1,29 +1,3 @@
-:root {
-  --w: clamp(16rem, calc(100% - 2rem), 72rem);
-  --vg: 0.7rem;
-  --hn: hsl(24 100% 50%);
-  --hn2: hsl(24 80% 70%);
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-  line-height: calc(2 * var(--vg));
-}
-
-body {
-  color: white;
-  min-height: 100vh;
-}
-
-a {
-  color: white;
-  text-decoration: none;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

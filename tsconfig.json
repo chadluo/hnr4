@@ -37,8 +37,7 @@
     "**/*.ts",
     "**/*.tsx",
     "**/*.js",
-    ".next/types/**/*.ts",
-    "src/app/story/[id]/page.tsx"
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

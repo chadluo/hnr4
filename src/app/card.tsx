@@ -1,5 +1,3 @@
-import styles from "@/styles/card.module.css";
-import classNames from "classnames";
 import Link from "next/link";
 
 type CardProps = {
@@ -25,37 +23,40 @@ export default function Card(props: CardProps) {
   const source = authors ? authors : url && extractSource(url);
   const website = findWebsite(url);
   const icon = website ? (
-    <>
-      <i className={classNames("fa", `fa-${mapIcon(website)}`)}></i>{" "}
-    </>
+    <i className={`fa fa-${mapIcon(website)} mr-1`}></i>
   ) : undefined;
 
   return (
     <Link
       href={url}
       title={url}
-      className={classNames(styles.card, { [styles.imageCard]: imageUrl })}
+      className="flex flex-col border border-neutral-700 bg-neutral-900/70 hover:border-neutral-500 lg:flex-row-reverse"
       target="_blank"
     >
-      <div className={styles.textBox}>
-        <span className={styles.source} title={url}>
+      {imageUrl && (
+        <div
+          className="peer min-h-36 basis-2/5 bg-cover bg-center"
+          style={{ backgroundImage: `url(${imageUrl})` }}
+        ></div>
+      )}
+      <div className="basis-full px-3 py-2 peer-[]:basis-3/5">
+        <span className="line-clamp-2 text-neutral-500" title={url}>
           {icon}
           {source}
         </span>
         <h2
-          className={styles.title}
+          className="text-base font-bold"
           dangerouslySetInnerHTML={{ __html: title.replaceAll("/", "<wbr>/") }}
         ></h2>
-        <div className={styles.description} title={description}>
+        <div
+          className="line-clamp-3 break-words"
+          // override for http://localhost:4000/story/39792136
+          style={{ overflowWrap: "anywhere" }}
+          title={description}
+        >
           {description}
         </div>
       </div>
-      {imageUrl && (
-        <div
-          className={styles.imageBox}
-          style={{ backgroundImage: `url(${imageUrl})` }}
-        ></div>
-      )}
     </Link>
   );
 }

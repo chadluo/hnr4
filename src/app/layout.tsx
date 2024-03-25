@@ -1,4 +1,5 @@
 import "@/styles/globals.css";
+import { mono, sans } from "@/styles/typography";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Metadata } from "next";
@@ -40,7 +41,12 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body style={{ background }}>{children}</body>
+      <body
+        style={{ background }}
+        className={`${mono.variable} ${sans.variable} min-h-screen max-w-full overflow-x-hidden font-sans text-white`}
+      >
+        {children}
+      </body>
       <Script src="https://kit.fontawesome.com/8c38f2aa0a.js"></Script>
       <SpeedInsights />
       <Analytics />
