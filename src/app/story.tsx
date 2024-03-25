@@ -44,7 +44,7 @@ export default async function Story(props: StoryProps) {
 
   const discussionsCount = (
     <Link href={`/story/${storyId}`} className="text-gray-300 hover:text-white">
-      {kids?.length || 0} discussions
+      <i className="fa-regular fa-comment"></i> {kids?.length || 0}
     </Link>
   );
 
