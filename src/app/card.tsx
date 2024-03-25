@@ -11,10 +11,11 @@ type CardProps = {
 export type Website =
   | "apple"
   | "github"
+  | "medium"
   | "reddit"
   | "wikipedia"
-  | "youtube"
-  | "ycombinator";
+  | "ycombinator"
+  | "youtube";
 
 export default function Card(props: CardProps) {
   const { title, url, image, authors, description } = props;
@@ -65,6 +66,8 @@ function extractSource(url: string) {
   const { hostname, pathname } = new URL(url);
   if (hostname === "github.com" || hostname.includes("reddit.com")) {
     return takePath(pathname, 3);
+  } else if (hostname === "medium.com") {
+    return takePath(pathname, 2);
   } else if (hostname === "gist.github.com") {
     return hostname + takePath(pathname, 2);
   } else {
@@ -85,14 +88,16 @@ function findWebsite(url: string): Website | undefined {
     return "apple";
   } else if (hostname.endsWith("github.com")) {
     return "github";
+  } else if (hostname.endsWith("medium.com")) {
+    return "medium";
   } else if (hostname.endsWith("reddit.com")) {
     return "reddit";
   } else if (hostname.endsWith("wikipedia.org")) {
     return "wikipedia";
-  } else if (hostname.endsWith("youtube.com")) {
-    return "youtube";
   } else if (hostname.endsWith("ycombinator.com")) {
     return "ycombinator";
+  } else if (hostname.endsWith("youtube.com")) {
+    return "youtube";
   } else {
     return undefined;
   }
