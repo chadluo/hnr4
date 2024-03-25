@@ -1,7 +1,7 @@
 "use client";
 
 import classNames from "classnames";
-import { SyntheticEvent, useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
   commentId: number;
@@ -22,15 +22,6 @@ export default function Comment(props: Props) {
 
   const [comment, setComment] = useState<CommentContent>();
   const [startRender, setStartRender] = useState(false);
-
-  const toggle = useCallback(
-    (event: SyntheticEvent<HTMLDetailsElement, Event>) => {
-      if ((event.target as HTMLDetailsElement).open && !startRender) {
-        setStartRender(true);
-      }
-    },
-    [startRender],
-  );
 
   useEffect(() => {
     const controller = new AbortController();
@@ -59,12 +50,16 @@ export default function Comment(props: Props) {
       data-commentid={commentId}
       data-kids={kids}
       open={isExpanded}
-      onToggle={toggle}
+      onToggle={(event) => {
+        if ((event.target as HTMLDetailsElement).open && !startRender) {
+          setStartRender(true);
+        }
+      }}
       className={classNames(
         { "pl-8": !isTop },
         "[&_a]:break-words [&_a]:text-[#f60] hover:[&_a]:text-[#f0a675]",
         "[&_p]:mt-2",
-        "[&_pre]:overflow-x-auto",
+        "[&_pre]:mb-2 [&_pre]:overflow-x-auto [&_pre]:text-sm [&_pre]:leading-6",
       )}
     >
       <summary
