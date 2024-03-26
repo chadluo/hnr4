@@ -4,7 +4,7 @@ import Link from "next/link";
 import { EmbeddedTweet, TweetNotFound } from "react-tweet";
 import { getTweet as _getTweet } from "react-tweet/api";
 import Card from "./card";
-import { getHnStory } from "./hnStory";
+import { getHnStory } from "./hn";
 import { getMeta } from "./meta";
 
 type StoryProps = {

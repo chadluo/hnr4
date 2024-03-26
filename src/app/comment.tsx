@@ -2,6 +2,7 @@
 
 import classNames from "classnames";
 import { useEffect, useState } from "react";
+import { HNComment, getHNComment } from "./hn";
 
 type Props = {
   commentId: number;
@@ -9,27 +10,15 @@ type Props = {
   isTop: boolean;
 };
 
-type CommentContent = {
-  text: string;
-  by: string;
-  kids: number[] | undefined;
-  deleted: boolean | undefined;
-  dead: boolean | undefined;
-};
-
 export default function Comment(props: Props) {
   const { commentId, isExpanded, isTop } = props;
 
-  const [comment, setComment] = useState<CommentContent>();
+  const [comment, setComment] = useState<HNComment>();
   const [startRender, setStartRender] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
-    fetch(`https://hacker-news.firebaseio.com/v0/item/${commentId}.json`, {
-      signal: controller.signal,
-    })
-      .then((response) => response.json())
-      .then(setComment);
+    getHNComment(commentId, controller).then(setComment);
     return () => {
       try {
         controller.abort();

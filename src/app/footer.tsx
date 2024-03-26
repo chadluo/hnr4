@@ -1,7 +1,4 @@
-import { IBM_Plex_Mono } from "next/font/google";
 import Link from "next/link";
-
-const mono = IBM_Plex_Mono({ weight: "400", subsets: ["latin"] });
 
 export default function Footer() {
   return (
@@ -9,12 +6,14 @@ export default function Footer() {
       <Link
         className="text-gray-300 hover:text-white"
         href="https://github.com/chadluo/hnr4"
+        target="_blank"
       >
         chadluo/hnr4
       </Link>
       <Link
         className="text-gray-300 hover:text-white"
         href="https://github.com/sponsors/chadluo"
+        target="_blank"
       >
         sponsor
       </Link>

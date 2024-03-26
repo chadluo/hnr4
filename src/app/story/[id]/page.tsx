@@ -1,5 +1,5 @@
 import Footer from "@/app/footer";
-import { getHnStory } from "@/app/hnStory";
+import { getHnStory } from "@/app/hn";
 import Story from "@/app/story";
 import Link from "next/link";
 

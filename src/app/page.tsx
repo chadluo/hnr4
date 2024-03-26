@@ -1,9 +1,10 @@
 import { Suspense } from "react";
 import Footer from "./footer";
+import { getHNTopStories } from "./hn";
 import Story from "./story";
 
 export default async function Home() {
-  const storyIds = await getStoryIds();
+  const storyIds = await getHNTopStories();
 
   const title = "Hacker News Reader";
 
@@ -22,13 +23,4 @@ export default async function Home() {
       <Footer />
     </>
   );
-}
-
-async function getStoryIds() {
-  const TOP_STORIES_ENDPOINT = `https://hacker-news.firebaseio.com/v0/topstories.json?limitToFirst=30&orderBy="$priority"`;
-  const storesResponse = await fetch(TOP_STORIES_ENDPOINT, {
-    cache: "no-store",
-  });
-
-  return (await storesResponse.json()) as number[];
 }
