@@ -49,7 +49,7 @@ export default async function Story(props: StoryProps) {
   );
 
   const discussions = (text || kids) && (
-    <div className="[&>details:not(:first-of-type)]:border-t [&>details:not(:first-of-type)]:border-neutral-600 [&>details:not(:first-of-type)]:pt-2">
+    <div className="mx-auto max-w-4xl [&>details:not(:first-of-type)]:border-t [&>details:not(:first-of-type)]:border-neutral-600 [&>details:not(:first-of-type)]:pt-2">
       {text && <div dangerouslySetInnerHTML={{ __html: text }}></div>}
       {kids &&
         kids.map((kid) => (
