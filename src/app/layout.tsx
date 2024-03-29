@@ -1,14 +1,28 @@
 import "@/styles/globals.css";
-import { mono, sans } from "@/styles/typography";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Metadata } from "next";
+import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import Script from "next/script";
 
 const title = "Hacker News Reader";
 const description =
   "Yet another Hacker News Reader with metadata cards and some LLM summaries.";
 const image = "/hnr.png";
+
+const mono = IBM_Plex_Mono({
+  weight: "400",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  variable: "--font-mono",
+});
+
+const sans = IBM_Plex_Sans({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  variable: "--font-sans",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://hnr.adluo.ch"),
