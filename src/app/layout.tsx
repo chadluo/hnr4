@@ -60,10 +60,10 @@ export default function RootLayout({
         className={`${mono.variable} ${sans.variable} min-h-screen max-w-full overflow-x-hidden font-sans text-white`}
       >
         {children}
+        <Script src="https://kit.fontawesome.com/8c38f2aa0a.js"></Script>
+        <SpeedInsights />
+        <Analytics />
       </body>
-      <Script src="https://kit.fontawesome.com/8c38f2aa0a.js"></Script>
-      <SpeedInsights />
-      <Analytics />
     </html>
   );
 }
