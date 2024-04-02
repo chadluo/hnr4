@@ -1,9 +1,22 @@
 import Footer from "@/app/footer";
 import { getHnStory } from "@/app/hn";
+import { SITE_TITLE } from "@/app/metadata";
 import Story from "@/app/story";
+import { Metadata, ResolvingMetadata } from "next";
 import Link from "next/link";
 
 type Props = { params: { id: number } };
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const { id } = params;
+
+  const { title } = await getHnStory(id);
+
+  return { title: `${title} | ${SITE_TITLE}` };
+}
 
 /** Story page */
 export default async function Page({ params }: Props) {

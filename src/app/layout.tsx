@@ -4,11 +4,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Metadata } from "next";
 import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import Script from "next/script";
-
-const title = "Hacker News Reader";
-const description =
-  "Yet another Hacker News Reader with metadata cards and some LLM summaries.";
-const image = "/hnr.png";
+import { SITE_DESCRIPTION, SITE_IMAGE, SITE_TITLE } from "./metadata";
 
 const mono = IBM_Plex_Mono({
   weight: "400",
@@ -26,17 +22,17 @@ const sans = IBM_Plex_Sans({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://hnr.adluo.ch"),
-  title,
-  description,
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
   openGraph: {
     type: "website",
-    images: [{ url: image }],
+    images: [{ url: SITE_IMAGE }],
   },
   twitter: {
     card: "summary_large_image",
-    title,
-    description,
-    images: image,
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: SITE_IMAGE,
   },
 };
 
