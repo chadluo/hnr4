@@ -1,4 +1,5 @@
 import Comment from "@/app/comment";
+import { Suspense } from "react";
 import { unstable_cache } from "next/cache";
 import Link from "next/link";
 import { EmbeddedTweet, TweetNotFound } from "react-tweet";
@@ -87,19 +88,21 @@ export default async function Story(props: StoryProps) {
           {!full && discussionsCount}
         </div>
         <div className="lg:col-span-5">
-          {tweetId ? (
-            <TweetPage id={tweetId} />
-          ) : meta ? (
-            <Card
-              title={meta.title || title}
-              url={url || hnUrl}
-              image={meta.image}
-              authors={meta.authors}
-              description={meta.description || text}
-            />
-          ) : (
-            <Card title={title} url={url || hnUrl} description={text} />
-          )}
+          <Suspense fallback={<div className="h-36 bg-neutral-900"></div>}>
+            {tweetId ? (
+              <TweetPage id={tweetId} />
+            ) : meta ? (
+              <Card
+                title={meta.title || title}
+                url={url || hnUrl}
+                image={meta.image}
+                authors={meta.authors}
+                description={meta.description || text}
+              />
+            ) : (
+              <Card title={title} url={url || hnUrl} description={text} />
+            )}
+          </Suspense>
         </div>
       </div>
       {full && discussions}
