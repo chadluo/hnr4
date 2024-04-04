@@ -7,7 +7,7 @@ const responseOption = {
   headers: { "Cache-Control": "max-age=0, s-maxage=21600" },
 };
 
-export async function GET(request, context) {
+export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const url = searchParams.get("url");
   try {
@@ -87,7 +87,7 @@ export async function GET(request, context) {
     );
     return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
-  context.waitUntil(kv.set(key, summary));
+  kv.set(key, summary);
 
   return NextResponse.json(summary, responseOption);
 }
