@@ -1,7 +1,7 @@
 import kv from "@vercel/kv";
 import { NextResponse } from "next/server";
 
-export const config = { runtime: "edge" };
+export const runtime = "edge";
 
 const responseOption = {
   headers: { "Cache-Control": "max-age=0, s-maxage=21600" },
