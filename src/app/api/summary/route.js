@@ -1,4 +1,4 @@
-import kv from "@vercel/kv";
+import { kv } from "@vercel/kv";
 import { NextResponse } from "next/server";
 
 export const runtime = "edge";
@@ -7,7 +7,7 @@ const responseOption = {
   headers: { "Cache-Control": "max-age=0, s-maxage=21600" },
 };
 
-export async function GET(request) {
+export async function GET(request, context) {
   const { searchParams } = new URL(request.url);
   const url = searchParams.get("url");
   try {
