@@ -1,33 +1,26 @@
 import { kv } from "@vercel/kv";
-import { NextResponse } from "next/server";
 
-export const runtime = "edge";
+export type Summary = { short: string; long: string };
 
-const responseOption = {
-  headers: { "Cache-Control": "max-age=0, s-maxage=21600" },
-};
-
-export async function GET(request) {
-  const { searchParams } = new URL(request.url);
-  const url = searchParams.get("url");
+export async function getSummary(
+  storyId: number,
+  url: string,
+): Promise<Summary | null> {
   try {
     new URL(url);
   } catch (err) {
-    return NextResponse.json(
-      { error: `Invalid url [${url}]` },
-      { status: 400 },
-    );
+    console.error(`Invalid url [${url}]`);
+    return null;
   }
 
   if (process.env.mode === "dev") {
-    return NextResponse.json({ short: "short summary", long: "long summary" });
+    return { short: "short summary", long: "long summary" };
   }
 
-  const storyId = searchParams.get("storyId");
   const key = `summary-${storyId}`;
   const existingSummary = await kv.get(key);
   if (existingSummary) {
-    return NextResponse.json(existingSummary, responseOption);
+    return existingSummary as Summary;
   }
 
   let response;
@@ -60,34 +53,31 @@ export async function GET(request) {
   } catch (error) {
     const errorMessage = `Failed requesting summaries for [${url}]`;
     console.error(errorMessage, error);
-    return NextResponse.json({ error: errorMessage }, { status: 500 });
+    return null;
   }
 
   if (!response.ok) {
     const errorMessage = `Failed requesting summaries for [${url}]`;
     console.error(errorMessage, response);
-    return NextResponse.json({ error: errorMessage }, { status: 500 });
+    return null;
   }
 
   const json = await response.json();
   if (!json.choices) {
     const errorMessage = `Missing mandatory field 'choices': ${json}`;
     console.error(errorMessage, response);
-    return NextResponse.json({ error: errorMessage }, { status: 500 });
+    return null;
   }
 
   let summary;
   try {
     summary = JSON.parse(json.choices[0].message.content);
   } catch (error) {
-    console.error(
-      "Failed parsing response",
-      error,
-      json.choices[0].message.content,
-    );
-    return NextResponse.json({ error: errorMessage }, { status: 500 });
+    const errorMessage = `Failed parsing response ${error} ${json.choices[0].message.content}`;
+    console.error(errorMessage);
+    return null;
   }
   kv.set(key, summary);
 
-  return NextResponse.json(summary, responseOption);
+  return summary;
 }

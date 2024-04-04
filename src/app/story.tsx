@@ -7,6 +7,7 @@ import { getTweet as _getTweet } from "react-tweet/api";
 import Card from "./card";
 import { getHnStory } from "./hn";
 import { getMeta } from "./meta";
+import { Summary, getSummary } from "./summary";
 
 type StoryProps = {
   storyId: number;
@@ -18,11 +19,6 @@ type Meta = {
   description?: string;
   image?: string;
   authors?: string;
-};
-
-type Summary = {
-  short: string;
-  long: string;
 };
 
 export default async function Story(props: StoryProps) {
@@ -70,9 +66,7 @@ export default async function Story(props: StoryProps) {
     } else {
       meta = await getMeta(url);
       if (type !== "job") {
-        // 504: GATEWAY_TIMEOUT This Serverless Function has timed out.
-        // temporarily disable
-        // summary = await getSummary(storyId, url);
+        summary = (await getSummary(storyId, url)) as Summary;
       }
     }
   }
@@ -110,12 +104,6 @@ export default async function Story(props: StoryProps) {
       {full && discussions}
     </>
   );
-}
-
-async function getSummary(storyId: number, url: string) {
-  return (await (
-    await fetch(`${process.env.HOST}/api/summary?storyId=${storyId}&url=${url}`)
-  ).json()) as Summary;
 }
 
 const getTweet = unstable_cache(
