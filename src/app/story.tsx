@@ -70,7 +70,9 @@ export default async function Story(props: StoryProps) {
     } else {
       meta = await getMeta(url);
       if (type !== "job") {
-        summary = await getSummary(storyId, url);
+        // 504: GATEWAY_TIMEOUT This Serverless Function has timed out.
+        // temporarily disable
+        // summary = await getSummary(storyId, url);
       }
     }
   }
