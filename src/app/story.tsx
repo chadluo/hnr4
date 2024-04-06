@@ -56,7 +56,6 @@ export default async function Story(props: StoryProps) {
   );
 
   let meta: Meta | undefined;
-  let summary: Summary | undefined;
   let tweetId;
 
   if (url) {
@@ -65,22 +64,29 @@ export default async function Story(props: StoryProps) {
       tweetId = pathname.split("/").slice(-1)[0];
     } else {
       meta = await getMeta(url);
-      if (type !== "job") {
-        summary = (await getSummary(storyId, url)) as Summary;
-      }
     }
   }
+
+  const Summary = async (props: { full: boolean }) => {
+    if (!url || type === "job") {
+      return null;
+    }
+    const { hostname } = new URL(url);
+    if (hostname === "twitter.com" || hostname === "x.com") {
+      return null;
+    }
+    const summaryContent = (await getSummary(storyId, url)) as Summary;
+    return <>{props.full ? summaryContent.long : summaryContent.short}</>;
+  };
 
   return (
     <>
       <div className="grid gap-4 lg:grid-cols-8">
         <div className="flex flex-col lg:col-span-3">
           {!full && hnLink}
-          {summary != null && (
-            <span className="font-mono text-sm italic leading-6">
-              {full ? summary.long : summary.short}
-            </span>
-          )}
+          <Suspense fallback={<div className="h-4 bg-neutral-900"></div>}>
+            <Summary full={full} />
+          </Suspense>
           {!full && discussionsCount}
         </div>
         <div className="lg:col-span-5">
