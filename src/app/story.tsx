@@ -76,7 +76,11 @@ export default async function Story(props: StoryProps) {
       return null;
     }
     const summaryContent = (await getSummary(storyId, url)) as Summary;
-    return <>{props.full ? summaryContent.long : summaryContent.short}</>;
+    return (
+      <span className="font-mono text-sm italic leading-6">
+        {props.full ? summaryContent.long : summaryContent.short}
+      </span>
+    );
   };
 
   return (
