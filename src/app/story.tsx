@@ -7,7 +7,7 @@ import { getTweet as _getTweet } from "react-tweet/api";
 import Card from "./card";
 import { getHnStory } from "./hn";
 import { getMeta } from "./meta";
-import { Summary, getSummary } from "./summary";
+import { Summary } from "./summary";
 
 type StoryProps = {
   storyId: number;
@@ -67,30 +67,12 @@ export default async function Story(props: StoryProps) {
     }
   }
 
-  const Summary = async (props: { full: boolean }) => {
-    if (!url || type === "job") {
-      return null;
-    }
-    const { hostname } = new URL(url);
-    if (hostname === "twitter.com" || hostname === "x.com") {
-      return null;
-    }
-    const summaryContent = (await getSummary(storyId, url)) as Summary;
-    return (
-      <span className="font-mono text-sm italic leading-6">
-        {props.full ? summaryContent.long : summaryContent.short}
-      </span>
-    );
-  };
-
   return (
     <>
       <div className="grid gap-4 lg:grid-cols-8">
         <div className="flex flex-col lg:col-span-3">
           {!full && hnLink}
-          <Suspense fallback={<div className="h-4 bg-neutral-900"></div>}>
-            <Summary full={full} />
-          </Suspense>
+          {full && <Summary storyId={storyId} storyType={type} url={url} />}
           {!full && discussionsCount}
         </div>
         <div className="lg:col-span-5">

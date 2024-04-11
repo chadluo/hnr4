@@ -1,11 +1,35 @@
 import { kv } from "@vercel/kv";
+import * as React from "react";
 
-export type Summary = { short: string; long: string };
+export type SummaryContent = { short: string; long: string };
+
+export const Summary = async (props: {
+  storyId: number;
+  storyType: string;
+  url?: string;
+}) => {
+  const { storyId, url, storyType } = props;
+  if (!url || storyType === "job") {
+    return null;
+  }
+  const { hostname } = new URL(url);
+  if (hostname === "twitter.com" || hostname === "x.com") {
+    return null;
+  }
+  const summaryContent = await getSummary(storyId, url);
+  return (
+    <React.Suspense fallback={<div className="h-4 bg-neutral-900"></div>}>
+      <span className="font-mono text-sm italic leading-6">
+        {summaryContent}
+      </span>
+    </React.Suspense>
+  );
+};
 
 export async function getSummary(
   storyId: number,
   url: string,
-): Promise<Summary | null> {
+): Promise<string | null> {
   try {
     new URL(url);
   } catch (err) {
@@ -14,13 +38,13 @@ export async function getSummary(
   }
 
   if (process.env.mode === "dev") {
-    return { short: "short summary", long: "long summary" };
+    return "summary";
   }
 
   const key = `summary-${storyId}`;
-  const existingSummary = await kv.get(key);
+  const existingSummary = (await kv.get(key)) as string;
   if (existingSummary) {
-    return existingSummary as Summary;
+    return existingSummary;
   }
 
   let response;
@@ -33,16 +57,16 @@ export async function getSummary(
         Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "gpt-3.5-turbo",
+        model: "gpt-4-turbo-2024-04-09",
         messages: [
           {
             role: "system",
-            content: `You are an assistant good at extracting core information out of texts. You should only generate valid JSON and no normal texts.`,
+            content:
+              "You are good at extracting information from websites. When given a URL you can visit the website and find the information that most people would be interested in. Present the message no longer than one paragraph.",
           },
           {
             role: "user",
-            content: `Visit and generate 2 summarizations of ${url}, the first of one short sentence, the other
-             being a long proper summarization. Return them in a JSON object of keys 'short' and 'long'.`,
+            content: url,
           },
         ],
         max_tokens: 256,
@@ -69,15 +93,5 @@ export async function getSummary(
     return null;
   }
 
-  let summary;
-  try {
-    summary = JSON.parse(json.choices[0].message.content);
-  } catch (error) {
-    const errorMessage = `Failed parsing response ${error} ${json.choices[0].message.content}`;
-    console.error(errorMessage);
-    return null;
-  }
-  kv.set(key, summary);
-
-  return summary;
+  return json.choices[0].message.content;
 }
