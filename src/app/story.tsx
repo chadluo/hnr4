@@ -8,6 +8,7 @@ import Card from "./card";
 import { getHnStory } from "./hn";
 import { getMeta } from "./meta";
 import { Summary } from "./summary";
+import classNames from "classnames";
 
 type StoryProps = {
   storyId: number;
@@ -46,8 +47,17 @@ export async function Story(props: StoryProps) {
   );
 
   const discussions = (text || kids) && (
-    <div className="mx-auto max-w-4xl [&>details:not(:first-of-type)]:border-t [&>details:not(:first-of-type)]:border-neutral-600 [&>details:not(:first-of-type)]:pt-2">
-      {text && <div dangerouslySetInnerHTML={{ __html: text }}></div>}
+    <div className="[&>details:not(:first-of-type)]:border-t [&>details:not(:first-of-type)]:border-neutral-600 [&>details:not(:first-of-type)]:pt-2">
+      {text && (
+        <div
+          className={classNames(
+            "[&_a]:break-words [&_a]:text-[#f60] hover:[&_a]:text-[#f0a675]",
+            "[&_p]:mt-2",
+            "[&_pre]:mb-2 [&_pre]:overflow-x-auto [&_pre]:text-sm [&_pre]:leading-6",
+          )}
+          dangerouslySetInnerHTML={{ __html: text }}
+        ></div>
+      )}
       {kids &&
         kids.map((kid) => (
           <Comment key={kid} commentId={kid} isExpanded={false} isTop={true} />
