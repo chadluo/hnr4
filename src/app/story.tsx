@@ -21,14 +21,14 @@ type Meta = {
   authors?: string;
 };
 
-export default async function Story(props: StoryProps) {
+export async function Story(props: StoryProps) {
   const { storyId, full } = props;
   const { title, url, text, kids, type } = await getHnStory(storyId);
 
   const hnUrl = `https://news.ycombinator.com/item?id=${storyId}`;
 
   const hnLink = (
-    <h2>
+    <h2 className="flex flex-row justify-between">
       <Link
         href={hnUrl}
         className="text-base font-bold hover:text-[#f60]"
@@ -36,13 +36,13 @@ export default async function Story(props: StoryProps) {
       >
         {title}
       </Link>
+      <Link
+        href={`/story/${storyId}`}
+        className="text-gray-300 hover:text-white"
+      >
+        <i className="fa-regular fa-comment"></i> {kids?.length || 0}
+      </Link>
     </h2>
-  );
-
-  const discussionsCount = (
-    <Link href={`/story/${storyId}`} className="text-gray-300 hover:text-white">
-      <i className="fa-regular fa-comment"></i> {kids?.length || 0}
-    </Link>
   );
 
   const discussions = (text || kids) && (
@@ -69,30 +69,25 @@ export default async function Story(props: StoryProps) {
 
   return (
     <>
-      <div className="grid gap-4 lg:grid-cols-8">
-        <div className="flex flex-col lg:col-span-3">
-          {!full && hnLink}
-          {full && <Summary storyId={storyId} storyType={type} url={url} />}
-          {!full && discussionsCount}
-        </div>
-        <div className="lg:col-span-5">
-          <Suspense fallback={<div className="h-36 bg-neutral-900"></div>}>
-            {tweetId ? (
-              <TweetPage id={tweetId} />
-            ) : meta ? (
-              <Card
-                title={meta.title || title}
-                url={url || hnUrl}
-                image={meta.image}
-                authors={meta.authors}
-                description={meta.description || text}
-              />
-            ) : (
-              <Card title={title} url={url || hnUrl} description={text} />
-            )}
-          </Suspense>
-        </div>
+      <div className="flex flex-col gap-3">
+        {!full && hnLink}
+        <Suspense fallback={<div className="h-36 bg-neutral-900"></div>}>
+          {tweetId ? (
+            <TweetPage id={tweetId} />
+          ) : meta ? (
+            <Card
+              title={meta.title || title}
+              url={url || hnUrl}
+              image={meta.image}
+              authors={meta.authors}
+              description={meta.description || text}
+            />
+          ) : (
+            <Card title={title} url={url || hnUrl} description={text} />
+          )}
+        </Suspense>
       </div>
+      {full && <Summary storyId={storyId} storyType={type} url={url} />}
       {full && discussions}
     </>
   );
@@ -112,4 +107,13 @@ const TweetPage = async ({ id }: { id: string }) => {
     console.error(error);
     return <TweetNotFound error={error} />;
   }
+};
+
+export const StoryPlaceholder = () => {
+  return (
+    <div>
+      <div className="h-4 bg-neutral-900"></div>
+      <div className="h-36 bg-neutral-900"></div>
+    </div>
+  );
 };

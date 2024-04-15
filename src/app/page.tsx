@@ -1,6 +1,7 @@
+import { Suspense } from "react";
 import Footer from "./footer";
 import { getHNTopStories } from "./hn";
-import Story from "./story";
+import { Story, StoryPlaceholder } from "./story";
 
 export default async function Home() {
   const storyIds = await getHNTopStories();
@@ -9,12 +10,14 @@ export default async function Home() {
 
   return (
     <>
-      <header className="mx-auto w-5/6 min-w-64 max-w-6xl pb-8 pt-12 font-mono">
+      <header className="mx-auto w-5/6 min-w-64 max-w-4xl pb-8 pt-12 font-mono">
         <span>{title}</span>
       </header>
-      <main className="mx-auto flex w-5/6 min-w-64 max-w-6xl flex-col gap-6">
+      <main className="mx-auto flex w-5/6 min-w-64 max-w-4xl flex-col gap-8">
         {storyIds.map((storyId) => (
-          <Story key={storyId} storyId={storyId} full={false} />
+          <Suspense key={storyId} fallback={<StoryPlaceholder />}>
+            <Story storyId={storyId} full={false} />
+          </Suspense>
         ))}
       </main>
       <Footer />

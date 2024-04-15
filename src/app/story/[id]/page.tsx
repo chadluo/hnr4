@@ -1,7 +1,7 @@
 import Footer from "@/app/footer";
 import { getHnStory } from "@/app/hn";
 import { SITE_TITLE } from "@/app/metadata";
-import Story from "@/app/story";
+import { Story } from "@/app/story";
 import { Metadata, ResolvingMetadata } from "next";
 import Link from "next/link";
 
@@ -27,7 +27,7 @@ export default async function Page({ params }: Props) {
 
   return (
     <>
-      <header className="mx-auto w-5/6 min-w-64 max-w-6xl pb-8 pt-12">
+      <header className="mx-auto w-5/6 min-w-64 max-w-4xl pb-8 pt-12">
         <h1 className="text-base">
           <Link
             href="/"
@@ -44,7 +44,7 @@ export default async function Page({ params }: Props) {
           </Link>
         </h1>
       </header>
-      <main className="mx-auto flex w-5/6 min-w-64 max-w-6xl flex-col gap-6">
+      <main className="mx-auto flex w-5/6 min-w-64 max-w-4xl flex-col gap-6">
         <Story storyId={id} full={true} />
       </main>
       <Footer />
