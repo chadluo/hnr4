@@ -1,7 +1,7 @@
 "use client";
 
 import classNames from "classnames";
-import { useEffect, useState } from "react";
+import * as React from "react";
 import { HNComment, getHNComment } from "./hn";
 
 type Props = {
@@ -13,10 +13,10 @@ type Props = {
 export default function Comment(props: Props) {
   const { commentId, isExpanded, isTop } = props;
 
-  const [comment, setComment] = useState<HNComment>();
-  const [startRender, setStartRender] = useState(false);
+  const [comment, setComment] = React.useState<HNComment>();
+  const [startRender, setStartRender] = React.useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const controller = new AbortController();
     getHNComment(commentId, controller).then(setComment);
     return () => {

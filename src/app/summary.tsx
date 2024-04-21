@@ -1,5 +1,4 @@
 import { kv } from "@vercel/kv";
-import * as React from "react";
 
 export type SummaryContent = { short: string; long: string };
 
@@ -18,11 +17,7 @@ export const Summary = async (props: {
   }
   const summaryContent = await getSummary(storyId, url);
   return (
-    <React.Suspense fallback={<div className="h-4 bg-neutral-900"></div>}>
-      <span className="font-mono text-sm italic leading-6">
-        {summaryContent}
-      </span>
-    </React.Suspense>
+    <span className="font-mono text-sm italic leading-6">{summaryContent}</span>
   );
 };
 

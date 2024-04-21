@@ -1,5 +1,5 @@
-import { Suspense } from "react";
 import Footer from "./footer";
+import * as React from "react";
 import { getHNTopStories } from "./hn";
 import { Story, StoryPlaceholder } from "./story";
 
@@ -15,9 +15,9 @@ export default async function Home() {
       </header>
       <main className="mx-auto flex w-5/6 min-w-64 max-w-4xl flex-col gap-8">
         {storyIds.map((storyId) => (
-          <Suspense key={storyId} fallback={<StoryPlaceholder />}>
+          <React.Suspense key={storyId} fallback={<StoryPlaceholder />}>
             <Story storyId={storyId} full={false} />
-          </Suspense>
+          </React.Suspense>
         ))}
       </main>
       <Footer />
