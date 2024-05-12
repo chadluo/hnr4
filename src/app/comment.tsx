@@ -21,7 +21,7 @@ export default function Comment(props: Props) {
     getHNComment(commentId, controller).then(setComment);
     return () => {
       try {
-        controller.abort();
+        controller.abort('useEffect abort');
       } catch (err) {
         console.error(err);
       }

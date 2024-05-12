@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 type CardProps = {
   title: string;
@@ -35,12 +36,17 @@ export default function Card(props: CardProps) {
       target="_blank"
     >
       {imageUrl && (
-        <div
-          className="peer min-h-36 basis-2/5 bg-cover bg-center"
-          style={{ backgroundImage: `url(${imageUrl})` }}
-        ></div>
+        <div className="peer basis-1/3">
+          <Image
+            src={imageUrl}
+            alt={title}
+            fill={false}
+            width={1600}
+            height={900}
+          />
+        </div>
       )}
-      <div className="basis-full px-3 py-2 peer-[]:basis-3/5">
+      <div className="basis-full px-3 py-2 peer-[]:basis-2/3">
         <span className="line-clamp-2 text-neutral-500" title={url}>
           {icon}
           {source}

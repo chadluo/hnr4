@@ -8,10 +8,7 @@ import Link from "next/link";
 
 type Props = { params: { id: number } };
 
-export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata,
-): Promise<Metadata> {
+export async function generateMetadata( { params }: Props): Promise<Metadata> {
   const { id } = params;
 
   const { title } = await getHnStory(id);
