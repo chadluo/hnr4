@@ -1,7 +1,8 @@
 import Footer from "@/app/footer";
 import { getHnStory } from "@/app/hn";
+import * as React from "react";
 import { SITE_TITLE } from "@/app/metadata";
-import { Story } from "@/app/story";
+import { Story, StoryPlaceholder } from "@/app/story";
 import { Metadata, ResolvingMetadata } from "next";
 import Link from "next/link";
 
@@ -45,7 +46,9 @@ export default async function Page({ params }: Props) {
         </h1>
       </header>
       <main className="mx-auto flex w-5/6 min-w-64 max-w-4xl flex-col gap-6">
-        <Story storyId={id} full={true} />
+        <React.Suspense fallback={<StoryPlaceholder />}>
+          <Story storyId={id} full={true} />
+        </React.Suspense>
       </main>
       <Footer />
     </>
