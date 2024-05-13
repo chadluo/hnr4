@@ -8,6 +8,9 @@ const config: Config = {
         sans: ["var(--font-sans)"],
         mono: ["var(--font-mono)"],
       },
+      aspectRatio: {
+        "2/1": "2",
+      },
     },
   },
   plugins: [],

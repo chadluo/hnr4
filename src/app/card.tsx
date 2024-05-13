@@ -32,7 +32,7 @@ export default function Card(props: CardProps) {
     <Link
       href={url}
       title={url}
-      className="flex flex-col border border-neutral-700 bg-neutral-900/70 hover:border-neutral-500 lg:flex-row-reverse"
+      className="flex flex-col border border-neutral-700 bg-neutral-900/70 hover:border-neutral-500 md:flex-row-reverse"
       target="_blank"
     >
       {imageUrl && (
@@ -41,8 +41,9 @@ export default function Card(props: CardProps) {
             src={imageUrl}
             alt={title}
             fill={false}
-            width={1600}
-            height={900}
+            width={1200}
+            height={675}
+            className="aspect-2/1 object-cover"
           />
         </div>
       )}
