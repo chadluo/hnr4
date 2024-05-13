@@ -18,6 +18,7 @@ type Meta = {
   title?: string;
   description?: string;
   image?: string;
+  imageAlt?: string;
   authors?: string;
 };
 
@@ -40,12 +41,12 @@ export async function Story(props: StoryProps) {
         href={`/story/${storyId}`}
         className="text-gray-300 hover:text-white"
       >
-        <i className="fa-regular fa-comment"></i> {kids?.length || 0}
+        <i className="fa-regular fa-comment"></i> {kids?.length ?? 0}
       </Link>
     </h2>
   );
 
-  const discussions = (text || kids) && (
+  const discussions = (text ?? kids) && (
     <div className="[&>details:not(:first-of-type)]:border-t [&>details:not(:first-of-type)]:border-neutral-600 [&>details:not(:first-of-type)]:pt-2">
       {text && (
         <div
@@ -80,23 +81,22 @@ export async function Story(props: StoryProps) {
     <>
       <div className="flex flex-col gap-3">
         {!full && hnLink}
-          {tweetId ? (
-            <TweetPage id={tweetId} />
-          ) : meta ? (
-            <Card
-              title={meta.title || title}
-              url={url || hnUrl}
-              image={meta.image}
-              authors={meta.authors}
-              description={meta.description || text}
-            />
-          ) : (
-            <Card title={title} url={url || hnUrl} description={text} />
-          )}
+        {tweetId ? (
+          <TweetPage id={tweetId} />
+        ) : meta ? (
+          <Card
+            title={meta.title ?? title}
+            url={url ?? hnUrl}
+            image={meta.image}
+            imageAlt={meta.imageAlt}
+            authors={meta.authors}
+            description={meta.description ?? text}
+          />
+        ) : (
+          <Card title={title} url={url ?? hnUrl} description={text} />
+        )}
       </div>
-      {full && (
-          <Summary storyId={storyId} storyType={type} url={url} />
-      )}
+      {full && <Summary storyId={storyId} storyType={type} url={url} />}
       {full && discussions}
     </>
   );

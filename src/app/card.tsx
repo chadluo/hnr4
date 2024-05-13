@@ -5,6 +5,7 @@ type CardProps = {
   title: string;
   url: string;
   image?: string;
+  imageAlt?: string;
   authors?: string;
   description?: string;
 };
@@ -19,7 +20,7 @@ export type Website =
   | "youtube";
 
 export default function Card(props: CardProps) {
-  const { title, url, image, authors, description } = props;
+  const { title, url, image, imageAlt, authors, description } = props;
   const imageUrl = checkImageUrl(image);
 
   const source = authors ? authors : url && extractSource(url);
@@ -39,11 +40,11 @@ export default function Card(props: CardProps) {
         <div className="peer basis-1/3">
           <Image
             src={imageUrl}
-            alt={title}
+            alt={imageAlt ?? ""}
             fill={false}
-            width={1200}
-            height={675}
-            className="aspect-2/1 object-cover"
+            width={320}
+            height={160}
+            className="aspect-2/1 w-full object-cover md:w-80"
           />
         </div>
       )}
