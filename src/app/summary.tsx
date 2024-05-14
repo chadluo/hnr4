@@ -1,13 +1,18 @@
+import { Readability } from "@mozilla/readability";
 import { kv } from "@vercel/kv";
+import type { JSDOM } from "jsdom";
 
-export type SummaryContent = { short: string; long: string };
-
-export const Summary = async (props: {
+export const Summary = async ({
+  storyId,
+  url,
+  storyType,
+  content,
+}: {
   storyId: number;
   storyType: string;
   url?: string;
+  content: JSDOM | null | undefined;
 }) => {
-  const { storyId, url, storyType } = props;
   if (!url || storyType === "job") {
     return null;
   }
@@ -15,7 +20,7 @@ export const Summary = async (props: {
   if (hostname === "twitter.com" || hostname === "x.com") {
     return null;
   }
-  const summaryContent = await getSummary(storyId, url);
+  const summaryContent = await getSummary(storyId, url, content);
   return (
     <span className="font-mono text-sm italic leading-6">{summaryContent}</span>
   );
@@ -24,22 +29,26 @@ export const Summary = async (props: {
 export async function getSummary(
   storyId: number,
   url: string,
+  content: JSDOM | null | undefined,
 ): Promise<string | null> {
-  try {
-    new URL(url);
-  } catch (err) {
-    console.error(`Invalid url [${url}]`);
-    return null;
-  }
-
   if (process.env.mode === "dev") {
     return "summary";
+  }
+
+  if (content == null) {
+    return null;
   }
 
   const key = `summary-${storyId}`;
   const existingSummary = (await kv.get(key)) as string;
   if (existingSummary) {
     return existingSummary;
+  }
+
+  const article = new Readability(content.window.document).parse();
+
+  if (!article) {
+    return null;
   }
 
   let response;
@@ -52,16 +61,18 @@ export async function getSummary(
         Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "gpt-4-turbo-2024-04-09",
+        model: "gpt-4o",
         messages: [
           {
             role: "system",
-            content:
-              "You are good at extracting information from websites. When given a URL you can visit the website and find the information that most people would be interested in. Present the message no longer than one paragraph.",
+            content: `You are an insightful assistant. Given the content of a webpage, based on your
+              knowledge, you can find the most important or most interesting information and
+              provide a concise summary of the information. The summary should be in plain text
+              with no formatting.`,
           },
           {
             role: "user",
-            content: url,
+            content: article.textContent,
           },
         ],
         max_tokens: 256,

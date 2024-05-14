@@ -1,13 +1,15 @@
 import Comment from "@/app/comment";
+import classNames from "classnames";
+import type { JSDOM } from "jsdom";
 import { unstable_cache } from "next/cache";
 import Link from "next/link";
 import { EmbeddedTweet, TweetNotFound } from "react-tweet";
 import { getTweet as _getTweet } from "react-tweet/api";
 import Card from "./card";
+import { getContent } from "./contents";
 import { getHnStory } from "./hn";
 import { getMeta } from "./meta";
 import { Summary } from "./summary";
-import classNames from "classnames";
 
 type StoryProps = {
   storyId: number;
@@ -67,6 +69,7 @@ export async function Story(props: StoryProps) {
 
   let meta: Meta | undefined;
   let tweetId;
+  let content: JSDOM | null | undefined;
 
   if (url) {
     const { hostname, pathname } = new URL(url);
@@ -75,6 +78,8 @@ export async function Story(props: StoryProps) {
     } else {
       meta = await getMeta(url);
     }
+
+    content = await getContent(url);
   }
 
   return (
@@ -96,7 +101,14 @@ export async function Story(props: StoryProps) {
           <Card title={title} url={url ?? hnUrl} description={text} />
         )}
       </div>
-      {full && <Summary storyId={storyId} storyType={type} url={url} />}
+      {full && (
+        <Summary
+          storyId={storyId}
+          storyType={type}
+          url={url}
+          content={content}
+        />
+      )}
       {full && discussions}
     </>
   );
