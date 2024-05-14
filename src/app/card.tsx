@@ -77,7 +77,7 @@ function extractSource(url: string) {
   } else if (hostname === "medium.com") {
     return takePath(pathname, 2);
   } else if (hostname === "gist.github.com") {
-    return hostname + takePath(pathname, 2);
+    return `${hostname}/${takePath(pathname, 2)}`;
   } else {
     return hostname.replace(/^www\./, "");
   }
