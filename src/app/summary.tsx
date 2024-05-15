@@ -54,11 +54,11 @@ export async function getSummary(
     return null;
   }
 
-  console.log({
+  /*   console.log({
     excerpt: article.excerpt,
     textContent: article.textContent.slice(0, 200),
     length: article.textContent.length,
-  });
+  }); */
 
   let response;
   try {
