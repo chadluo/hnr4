@@ -3,12 +3,12 @@ import { getHnStory } from "@/app/hn";
 import * as React from "react";
 import { SITE_TITLE } from "@/app/metadata";
 import { Story, StoryPlaceholder } from "@/app/story";
-import { Metadata, ResolvingMetadata } from "next";
+import { Metadata } from "next";
 import Link from "next/link";
 
-type Props = { params: { id: number } };
+type Props = { params: { id: number }; searchParams: { realSummary?: string } };
 
-export async function generateMetadata( { params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = params;
 
   const { title } = await getHnStory(id);
@@ -17,7 +17,7 @@ export async function generateMetadata( { params }: Props): Promise<Metadata> {
 }
 
 /** Story page */
-export default async function Page({ params }: Props) {
+export default async function Page({ params, searchParams }: Props) {
   const { id } = params;
 
   const hnUrl = `https://news.ycombinator.com/item?id=${id}`;
@@ -44,7 +44,11 @@ export default async function Page({ params }: Props) {
       </header>
       <main className="mx-auto flex w-5/6 min-w-64 max-w-4xl flex-col gap-6">
         <React.Suspense fallback={<StoryPlaceholder />}>
-          <Story storyId={id} full={true} />
+          <Story
+            storyId={id}
+            full={true}
+            realSummary={searchParams.realSummary != null}
+          />
         </React.Suspense>
       </main>
       <Footer />

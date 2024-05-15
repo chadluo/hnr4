@@ -1,20 +1,14 @@
 import Comment from "@/app/comment";
 import classNames from "classnames";
-import type { JSDOM } from "jsdom";
 import { unstable_cache } from "next/cache";
 import Link from "next/link";
 import { EmbeddedTweet, TweetNotFound } from "react-tweet";
 import { getTweet as _getTweet } from "react-tweet/api";
 import Card from "./card";
-import { getContent } from "./contents";
+import { getHtmlContent } from "./contents";
 import { getHnStory } from "./hn";
 import { getMeta } from "./meta";
 import { Summary } from "./summary";
-
-type StoryProps = {
-  storyId: number;
-  full: boolean;
-};
 
 type Meta = {
   title?: string;
@@ -24,8 +18,15 @@ type Meta = {
   authors?: string;
 };
 
-export async function Story(props: StoryProps) {
-  const { storyId, full } = props;
+export async function Story({
+  storyId,
+  full,
+  realSummary,
+}: {
+  storyId: number;
+  full: boolean;
+  realSummary: boolean;
+}) {
   const { title, url, text, kids, type } = await getHnStory(storyId);
 
   const hnUrl = `https://news.ycombinator.com/item?id=${storyId}`;
@@ -68,18 +69,19 @@ export async function Story(props: StoryProps) {
   );
 
   let meta: Meta | undefined;
-  let tweetId;
-  let content: JSDOM | null | undefined;
+  let tweetId: string | undefined;
+  let html;
 
   if (url) {
     const { hostname, pathname } = new URL(url);
-    if (hostname === "twitter.com") {
+    if (hostname === "twitter.com" || hostname === "x.com") {
       tweetId = pathname.split("/").slice(-1)[0];
     } else {
-      meta = await getMeta(url);
+      html = await getHtmlContent(url);
+      if (html != null) {
+        meta = await getMeta(html);
+      }
     }
-
-    content = await getContent(url);
   }
 
   return (
@@ -106,7 +108,8 @@ export async function Story(props: StoryProps) {
           storyId={storyId}
           storyType={type}
           url={url}
-          content={content}
+          html={html}
+          realSummary={realSummary}
         />
       )}
       {full && discussions}

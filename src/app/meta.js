@@ -1,26 +1,6 @@
 import { parse } from "parse5";
 
-const DEFAULT_TIMEOUT_MS = 5000;
-
-export async function getMeta(url) {
-  try {
-    new URL(url);
-  } catch (err) {
-    return {};
-  }
-
-  const controller = new AbortController();
-  let html, abortTimeout;
-  try {
-    abortTimeout = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT_MS);
-    html = await fetch(url, { signal: controller.signal }).then((response) =>
-      response.text(),
-    );
-  } catch (err) {
-    console.error({ error: "Cannot fetch html: " + err, url });
-    return {};
-  }
-  clearTimeout(abortTimeout);
+export async function getMeta(html) {
   const rawMeta = findRawMeta(html);
   return {
     title: (rawMeta.get("title") ??
@@ -30,7 +10,8 @@ export async function getMeta(url) {
       rawMeta.get("og:description") ??
       rawMeta.get("twitter:description"))?.[0],
     image: (rawMeta.get("og:image") ?? rawMeta.get("twitter:image"))?.[0],
-    imageAlt: rawMeta.get("og:image:alt") ?? rawMeta.get("twitter:image:alt"),
+    imageAlt: (rawMeta.get("og:image:alt") ??
+      rawMeta.get("twitter:image:alt"))?.[0],
     authors: rawMeta.get("citation_author")?.join(" | "),
   };
 }
