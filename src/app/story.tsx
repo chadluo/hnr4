@@ -9,7 +9,6 @@ import { getHtmlContent } from "./contents";
 import { getHnStory } from "./hn";
 import { getMeta } from "./meta";
 import { Summary } from "./summary";
-import { Suspense } from "react";
 
 type Meta = {
   title?: string;
@@ -104,16 +103,14 @@ export async function Story({
           <Card title={title} url={url ?? hnUrl} description={text} />
         )}
       </div>
-      {full && (
-        <Suspense fallback={<div className="h-4 bg-neutral-900"></div>}>
-          <Summary
-            storyId={storyId}
-            storyType={type}
-            url={url}
-            html={html}
-            realSummary={realSummary}
-          />
-        </Suspense>
+      {full && url != null && html != null && canSummarize(type, url) && (
+        <Summary
+          storyId={storyId}
+          storyType={type}
+          url={url}
+          html={html}
+          realSummary={realSummary}
+        />
       )}
       {full && discussions}
     </>
@@ -149,3 +146,15 @@ export const StoryPlaceholder = ({ full }: { full?: boolean }) => {
     </div>
   );
 };
+
+function canSummarize(type: string, url: string) {
+  if (type === "job") {
+    return false;
+  }
+  const { hostname } = new URL(url);
+  if (hostname === "twitter.com" || hostname === "x.com") {
+    return false;
+  }
+
+  return true;
+}
