@@ -9,6 +9,7 @@ import { getHtmlContent } from "./contents";
 import { getHnStory } from "./hn";
 import { getMeta } from "./meta";
 import { Summary } from "./summary";
+import { Suspense } from "react";
 
 type Meta = {
   title?: string;
@@ -104,13 +105,15 @@ export async function Story({
         )}
       </div>
       {full && (
-        <Summary
-          storyId={storyId}
-          storyType={type}
-          url={url}
-          html={html}
-          realSummary={realSummary}
-        />
+        <Suspense fallback={<div className="h-4 bg-neutral-900"></div>}>
+          <Summary
+            storyId={storyId}
+            storyType={type}
+            url={url}
+            html={html}
+            realSummary={realSummary}
+          />
+        </Suspense>
       )}
       {full && discussions}
     </>
@@ -133,10 +136,15 @@ const TweetPage = async ({ id }: { id: string }) => {
   }
 };
 
-export const StoryPlaceholder = () => {
+export const StoryPlaceholder = ({ full }: { full?: boolean }) => {
   return (
     <div>
-      <div className="h-4 bg-neutral-900"></div>
+      {!full && (
+        <>
+          <div className="h-4 bg-neutral-900"></div>
+          <div className="h-3"></div>
+        </>
+      )}
       <div className="h-36 bg-neutral-900"></div>
     </div>
   );

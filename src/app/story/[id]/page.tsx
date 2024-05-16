@@ -43,7 +43,7 @@ export default async function Page({ params, searchParams }: Props) {
         </h1>
       </header>
       <main className="mx-auto flex w-5/6 min-w-64 max-w-4xl flex-col gap-6">
-        <React.Suspense fallback={<StoryPlaceholder />}>
+        <React.Suspense fallback={<StoryPlaceholder full={true} />}>
           <Story
             storyId={id}
             full={true}
