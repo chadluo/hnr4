@@ -1,6 +1,6 @@
 "use server";
 
-import { streamText } from "ai";
+import { StreamingTextResponse, streamText } from "ai";
 import { JSDOM } from "jsdom";
 import { Readability } from "@mozilla/readability";
 import { kv } from "@vercel/kv";
@@ -15,14 +15,13 @@ export async function generateSummary(
   const stream = createStreamableValue("");
 
   (async () => {
-    /*     const key = `summary-${storyId}`;
+    const key = `summary-${storyId}`;
     const existingSummary = (await kv.get(key)) as string;
     if (existingSummary) {
-      console.log({ key, existingSummary });
       stream.update(existingSummary);
       stream.done();
       return;
-    } */
+    }
 
     const {
       window: { document },
@@ -42,8 +41,8 @@ export async function generateSummary(
           role: "system",
           content: `You are an insightful assistant. Given the content of a webpage, based on your
               knowledge, you can find the most important or most interesting information and
-              provide a concise summary of the information. The summary should be in plain text
-              with no formatting.`,
+              provide a summary of the information in one sentence. The summary should be in plain
+              text with no formatting.`,
         },
         {
           role: "user",
@@ -53,13 +52,13 @@ export async function generateSummary(
       maxTokens: 128,
     });
 
-    let lastDelta = "";
+    let completeResponse = "";
     for await (const delta of textStream) {
       stream.update(delta);
-      lastDelta += delta;
+      completeResponse = completeResponse.concat(delta);
     }
 
-    // await kv.set(key, lastDelta);
+    await kv.set(key, completeResponse);
     stream.done();
   })();
 

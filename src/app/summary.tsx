@@ -19,16 +19,27 @@ export const Summary = ({
   const [generation, setGeneration] = React.useState("");
 
   React.useEffect(() => {
-    if (process.env.mode === "dev" && !realSummary) {
-      setGeneration("summary");
-    } else {
+    let isGenerating = true;
+    if (realSummary) {
       (async () => {
         const { output } = await generateSummary(storyId, url, html);
         for await (const delta of readStreamableValue(output)) {
-          setGeneration((currentGeneration) => `${currentGeneration}${delta}`);
+          if (!isGenerating) {
+            break;
+          } else {
+            setGeneration(
+              (currentGeneration) => `${currentGeneration}${delta}`,
+            );
+          }
         }
       })();
+    } else {
+      setGeneration("summary");
     }
+    return () => {
+      isGenerating = false;
+      setGeneration("");
+    };
   }, [storyId, url, html, realSummary]);
 
   return (

@@ -109,7 +109,7 @@ export async function Story({
           storyType={type}
           url={url}
           html={html}
-          realSummary={realSummary}
+          realSummary={process.env.mode !== "dev" || realSummary}
         />
       )}
       {full && discussions}
