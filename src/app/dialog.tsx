@@ -23,12 +23,20 @@ export const Dialog = ({
 } & Omit<SummaryProps, "startShowing">) => {
   const dialogRef = React.useRef(null);
   const [startShowing, setStartShowing] = React.useState(false);
+
   const openDialog = React.useCallback(() => {
     if (dialogRef.current == null) {
       return;
     }
     (dialogRef.current as HTMLDialogElement).showModal();
     setStartShowing(true);
+  }, []);
+
+  const closeDialog = React.useCallback(() => {
+    if (dialogRef.current == null) {
+      return;
+    }
+    (dialogRef.current as HTMLDialogElement).close();
   }, []);
 
   const canSummarize = React.useMemo(() => {
@@ -63,7 +71,10 @@ export const Dialog = ({
 
   return (
     <>
-      <a onClick={openDialog}>
+      <a
+        onClick={openDialog}
+        className="font-normal hover:cursor-pointer hover:bg-neutral-900/70 md:-mr-3 md:-mt-2 md:px-3 md:py-2"
+      >
         {canSummarize && (
           <>
             <i className="fa-solid fa-robot"></i>
@@ -74,23 +85,29 @@ export const Dialog = ({
       </a>
       <dialog
         ref={dialogRef}
-        className="max-h-[90vh] max-w-5xl overscroll-none bg-neutral-900 p-6 text-base text-white backdrop:overscroll-none"
+        className="max-h-screen w-full max-w-5xl gap-4 overscroll-none bg-neutral-900 text-base text-white backdrop:overscroll-none backdrop:bg-neutral-900/75 md:max-h-[90vh]"
       >
-        <h2 className="font-bold">{hnLink}</h2>
-        <div className="h-4"></div>
-        <div className="grid grid-cols-3 gap-3">
-          {canSummarize && (
-            <div>
-              <Summary
-                storyId={storyId}
-                url={url}
-                html={html}
-                realSummary={realSummary}
-                startShowing={startShowing}
-              />
-            </div>
-          )}
-          <div className="col-span-2">{discussions}</div>
+        <div className="flex max-h-screen flex-col gap-4 p-6 md:max-h-[90vh]">
+          <h2 className="flex justify-between gap-2 bg-neutral-900 font-bold">
+            {hnLink}
+            <a onClick={closeDialog} className="hover:cursor-pointer">
+              <i className="fa-solid fa-xmark"></i>
+            </a>
+          </h2>
+          <div className="grid grid-cols-1 gap-3 overflow-y-scroll md:grid-cols-3">
+            {canSummarize && (
+              <div>
+                <Summary
+                  storyId={storyId}
+                  url={url}
+                  html={html}
+                  realSummary={realSummary}
+                  startShowing={startShowing}
+                />
+              </div>
+            )}
+            <div className="col-span-2">{discussions}</div>
+          </div>
         </div>
       </dialog>
     </>

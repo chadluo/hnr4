@@ -39,18 +39,6 @@ export async function Story({
     </Link>
   );
 
-  const storyLink = (
-    <h2 className="flex flex-row justify-between">
-      {hnLink}
-      <Link
-        href={`/story/${storyId}`}
-        className="text-gray-300 hover:text-white"
-      >
-        <i className="fa-regular fa-comment"></i> {kids?.length ?? 0}
-      </Link>
-    </h2>
-  );
-
   let meta: Meta | undefined;
   let tweetId: string | undefined;
   let html: string | undefined;
@@ -67,8 +55,9 @@ export async function Story({
     }
   }
 
-  return (
-    <>
+  const storyLink = (
+    <h2 className="flex flex-col justify-between gap-2 md:flex-row">
+      {hnLink}
       <Dialog
         kids={kids}
         text={text}
@@ -79,6 +68,11 @@ export async function Story({
         realSummary={process.env.mode !== "dev" || realSummary}
         hnLink={hnLink}
       />
+    </h2>
+  );
+
+  return (
+    <>
       <div className="flex flex-col gap-3">
         {!full && storyLink}
         {tweetId ? (
