@@ -1,5 +1,3 @@
-import Comment from "@/app/comment";
-import classNames from "classnames";
 import { unstable_cache } from "next/cache";
 import Link from "next/link";
 import { EmbeddedTweet, TweetNotFound } from "react-tweet";
@@ -8,7 +6,7 @@ import Card from "./card";
 import { getHtmlContent } from "./contents";
 import { getHnStory } from "./hn";
 import { getMeta } from "./meta";
-import { Summary } from "./summary";
+import { Dialog } from "./dialog";
 
 type Meta = {
   title?: string;
@@ -32,14 +30,18 @@ export async function Story({
   const hnUrl = `https://news.ycombinator.com/item?id=${storyId}`;
 
   const hnLink = (
+    <Link
+      href={hnUrl}
+      className="text-base font-bold hover:text-[#f60]"
+      target="_blank"
+    >
+      {title}
+    </Link>
+  );
+
+  const storyLink = (
     <h2 className="flex flex-row justify-between">
-      <Link
-        href={hnUrl}
-        className="text-base font-bold hover:text-[#f60]"
-        target="_blank"
-      >
-        {title}
-      </Link>
+      {hnLink}
       <Link
         href={`/story/${storyId}`}
         className="text-gray-300 hover:text-white"
@@ -49,28 +51,9 @@ export async function Story({
     </h2>
   );
 
-  const discussions = (text ?? kids) && (
-    <div className="[&>details:not(:first-of-type)]:border-t [&>details:not(:first-of-type)]:border-neutral-600 [&>details:not(:first-of-type)]:pt-2">
-      {text && (
-        <div
-          className={classNames(
-            "[&_a]:break-words [&_a]:text-[#f60] hover:[&_a]:text-[#f0a675]",
-            "[&_p]:mt-2",
-            "[&_pre]:mb-2 [&_pre]:overflow-x-auto [&_pre]:text-sm [&_pre]:leading-6",
-          )}
-          dangerouslySetInnerHTML={{ __html: text }}
-        ></div>
-      )}
-      {kids &&
-        kids.map((kid) => (
-          <Comment key={kid} commentId={kid} isExpanded={false} isTop={true} />
-        ))}
-    </div>
-  );
-
   let meta: Meta | undefined;
   let tweetId: string | undefined;
-  let html;
+  let html: string | undefined;
 
   if (url) {
     const { hostname, pathname } = new URL(url);
@@ -86,8 +69,18 @@ export async function Story({
 
   return (
     <>
+      <Dialog
+        kids={kids}
+        text={text}
+        storyId={storyId}
+        storyType={type}
+        url={url}
+        html={html}
+        realSummary={process.env.mode !== "dev" || realSummary}
+        hnLink={hnLink}
+      />
       <div className="flex flex-col gap-3">
-        {!full && hnLink}
+        {!full && storyLink}
         {tweetId ? (
           <TweetPage id={tweetId} />
         ) : meta ? (
@@ -103,16 +96,6 @@ export async function Story({
           <Card title={title} url={url ?? hnUrl} description={text} />
         )}
       </div>
-      {full && url != null && html != null && canSummarize(type, url) && (
-        <Summary
-          storyId={storyId}
-          storyType={type}
-          url={url}
-          html={html}
-          realSummary={process.env.mode !== "dev" || realSummary}
-        />
-      )}
-      {full && discussions}
     </>
   );
 }
@@ -146,15 +129,3 @@ export const StoryPlaceholder = ({ full }: { full?: boolean }) => {
     </div>
   );
 };
-
-function canSummarize(type: string, url: string) {
-  if (type === "job") {
-    return false;
-  }
-  const { hostname } = new URL(url);
-  if (hostname === "twitter.com" || hostname === "x.com") {
-    return false;
-  }
-
-  return true;
-}
