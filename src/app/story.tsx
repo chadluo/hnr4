@@ -18,11 +18,9 @@ type Meta = {
 
 export async function Story({
   storyId,
-  full,
   realSummary,
 }: {
   storyId: number;
-  full: boolean;
   realSummary: boolean;
 }) {
   const { title, url, text, kids, type } = await getHnStory(storyId);
@@ -74,7 +72,7 @@ export async function Story({
   return (
     <>
       <div className="flex flex-col gap-3">
-        {!full && storyLink}
+        {storyLink}
         {tweetId ? (
           <TweetPage id={tweetId} />
         ) : meta ? (
@@ -110,15 +108,11 @@ const TweetPage = async ({ id }: { id: string }) => {
   }
 };
 
-export const StoryPlaceholder = ({ full }: { full?: boolean }) => {
+export const StoryPlaceholder = () => {
   return (
     <div>
-      {!full && (
-        <>
-          <div className="h-4 bg-neutral-900"></div>
-          <div className="h-3"></div>
-        </>
-      )}
+      <div className="h-4 bg-neutral-900"></div>
+      <div className="h-3"></div>
       <div className="h-36 bg-neutral-900"></div>
     </div>
   );
