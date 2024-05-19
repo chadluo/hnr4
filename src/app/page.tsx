@@ -6,7 +6,7 @@ import { Story, StoryPlaceholder } from "./story";
 export default async function Home({
   searchParams,
 }: {
-  searchParams: { realSummary?: string };
+  searchParams: { realSummary?: string; forceRefreshSummary?: string };
 }) {
   const storyIds = await getHNTopStories();
 
@@ -22,7 +22,10 @@ export default async function Home({
           <React.Suspense key={storyId} fallback={<StoryPlaceholder />}>
             <Story
               storyId={storyId}
-              realSummary={searchParams.realSummary != null}
+              flags={{
+                realSummary: searchParams.realSummary != null,
+                forceRefreshSummary: searchParams.forceRefreshSummary !== null,
+              }}
             />
           </React.Suspense>
         ))}

@@ -2,27 +2,22 @@ import { unstable_cache } from "next/cache";
 import Link from "next/link";
 import { EmbeddedTweet, TweetNotFound } from "react-tweet";
 import { getTweet as _getTweet } from "react-tweet/api";
-import Card from "./card";
+import { Card } from "./card";
 import { getHtmlContent } from "./contents";
 import { getHnStory } from "./hn";
-import { getMeta } from "./meta";
 import { Dialog } from "./dialog";
-
-type Meta = {
-  title?: string;
-  description?: string;
-  image?: string;
-  imageAlt?: string;
-  authors?: string;
-};
 
 export async function Story({
   storyId,
-  realSummary,
+  flags,
 }: {
   storyId: number;
-  realSummary: boolean;
+  flags: {
+    realSummary: boolean;
+    forceRefreshSummary: boolean;
+  };
 }) {
+  const { realSummary, forceRefreshSummary } = flags;
   const { title, url, text, kids, type } = await getHnStory(storyId);
 
   const hnUrl = `https://news.ycombinator.com/item?id=${storyId}`;
@@ -37,7 +32,6 @@ export async function Story({
     </Link>
   );
 
-  let meta: Meta | undefined;
   let tweetId: string | undefined;
   let html: string | undefined;
 
@@ -47,9 +41,6 @@ export async function Story({
       tweetId = pathname.split("/").slice(-1)[0];
     } else {
       html = await getHtmlContent(url);
-      if (html != null) {
-        meta = await getMeta(html);
-      }
     }
   }
 
@@ -62,8 +53,8 @@ export async function Story({
         storyId={storyId}
         storyType={type}
         url={url}
-        html={html}
         realSummary={process.env.mode !== "dev" || realSummary}
+        forceRefreshSummary={forceRefreshSummary}
         hnLink={hnLink}
       />
     </h2>
@@ -75,17 +66,8 @@ export async function Story({
         {storyLink}
         {tweetId ? (
           <TweetPage id={tweetId} />
-        ) : meta ? (
-          <Card
-            title={meta.title ?? title}
-            url={url ?? hnUrl}
-            image={meta.image}
-            imageAlt={meta.imageAlt}
-            authors={meta.authors}
-            description={meta.description ?? text}
-          />
         ) : (
-          <Card title={title} url={url ?? hnUrl} description={text} />
+          <Card url={url} hnTitle={title} hnUrl={hnUrl} hnText={text} />
         )}
       </div>
     </>

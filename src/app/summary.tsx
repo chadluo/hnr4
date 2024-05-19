@@ -7,25 +7,29 @@ import { readStreamableValue } from "ai/rsc";
 export type SummaryProps = {
   storyId: number;
   url?: string;
-  html?: string;
   startShowing: boolean;
   realSummary: boolean;
+  forceRefreshSummary: boolean;
 };
 
 export const Summary = ({
   storyId,
   url,
-  html,
   startShowing,
   realSummary,
+  forceRefreshSummary,
 }: SummaryProps) => {
   const [generation, setGeneration] = React.useState("");
 
   React.useEffect(() => {
     let isGenerating = true;
-    if (realSummary && startShowing && url != null && html != null) {
+    if (realSummary && startShowing && url != null) {
       (async () => {
-        const { output } = await generateSummary(storyId, url, html);
+        const { output } = await generateSummary(
+          storyId,
+          url,
+          forceRefreshSummary,
+        );
         for await (const delta of readStreamableValue(output)) {
           if (!isGenerating) {
             break;
@@ -43,7 +47,7 @@ export const Summary = ({
       isGenerating = false;
       setGeneration("");
     };
-  }, [storyId, url, html, realSummary, startShowing]);
+  }, [storyId, url, realSummary, startShowing, forceRefreshSummary]);
 
   return (
     <span className="font-mono text-sm italic leading-6">{generation}</span>

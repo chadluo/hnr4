@@ -1,24 +1,32 @@
 "use server";
 
-import { StreamingTextResponse, streamText } from "ai";
+import { streamText } from "ai";
 import { JSDOM } from "jsdom";
 import { Readability } from "@mozilla/readability";
 import { kv } from "@vercel/kv";
 import { openai } from "@ai-sdk/openai";
 import { createStreamableValue } from "ai/rsc";
+import { getHtmlContent } from "./contents";
 
 export async function generateSummary(
   storyId: number,
   url: string,
-  html: string,
+  forceRefreshSummary?: boolean,
 ) {
   const stream = createStreamableValue("");
 
   (async () => {
     const key = `summary-${storyId}`;
     const existingSummary = (await kv.get(key)) as string;
-    if (existingSummary) {
+    if (existingSummary && !forceRefreshSummary) {
       stream.update(existingSummary);
+      stream.done();
+      return;
+    }
+
+    const html = await getHtmlContent(url);
+
+    if (!html) {
       stream.done();
       return;
     }

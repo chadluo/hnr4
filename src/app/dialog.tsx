@@ -12,8 +12,8 @@ export const Dialog = ({
   storyId,
   storyType,
   url,
-  html,
   realSummary,
+  forceRefreshSummary,
   hnLink,
 }: {
   kids: number[];
@@ -100,8 +100,8 @@ export const Dialog = ({
                 <Summary
                   storyId={storyId}
                   url={url}
-                  html={html}
                   realSummary={realSummary}
+                  forceRefreshSummary={forceRefreshSummary}
                   startShowing={startShowing}
                 />
               </div>

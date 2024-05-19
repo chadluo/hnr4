@@ -1,16 +1,24 @@
 import Link from "next/link";
 import Image from "next/image";
+import { getHtmlContent } from "./contents";
+import { getMeta } from "./meta";
 
 type CardProps = {
-  title: string;
-  url: string;
+  url: string | undefined;
+  hnTitle: string;
+  hnUrl: string;
+  hnText: string | undefined;
+};
+
+export type Meta = {
+  title?: string;
+  description?: string;
   image?: string;
   imageAlt?: string;
   authors?: string;
-  description?: string;
 };
 
-export type Website =
+type Website =
   | "apple"
   | "github"
   | "medium"
@@ -19,16 +27,66 @@ export type Website =
   | "ycombinator"
   | "youtube";
 
-export default function Card(props: CardProps) {
-  const { title, url, image, imageAlt, authors, description } = props;
-  const imageUrl = checkImageUrl(image);
+export async function Card(props: CardProps) {
+  const { url, hnTitle, hnUrl, hnText } = props;
 
-  const source = authors ? authors : url && extractSource(url);
-  const website = findWebsite(url);
-  const icon = website ? (
-    <i className={`fa fa-${mapIcon(website)} mr-1`}></i>
-  ) : undefined;
+  if (url != null) {
+    const html = await getHtmlContent(url);
+    if (html != null) {
+      const meta = await getMeta(html);
+      if (meta != null) {
+        const title = meta.title ?? hnTitle;
+        const description = meta.description;
+        const image = meta.image;
+        const imageAlt = meta.imageAlt;
+        const authors = meta.authors;
 
+        const imageUrl = checkImageUrl(image);
+        const dataSource = authors ? authors : url && extractSource(url);
+        const website = findWebsite(url);
+        const icon = website ? (
+          <i className={`fa fa-${mapIcon(website)} mr-1`}></i>
+        ) : undefined;
+
+        return innerCard({
+          url,
+          title,
+          source: dataSource,
+          icon,
+          description,
+          imageUrl,
+          imageAlt,
+        });
+      }
+    }
+  }
+
+  return innerCard({
+    url: hnUrl,
+    source: extractSource(hnUrl),
+    title: hnTitle,
+    description: hnText ?? "",
+    icon: undefined,
+  });
+}
+
+function innerCard({
+  url,
+  icon,
+  source,
+  title,
+  description,
+  imageUrl,
+  imageAlt,
+}: {
+  url: string;
+  source: string;
+  title: string;
+  description: string;
+  icon: JSX.Element | undefined;
+  imageUrl?: string;
+  imageAlt?: string;
+}) {
   return (
     <Link
       href={url}
@@ -55,7 +113,9 @@ export default function Card(props: CardProps) {
         </span>
         <h2
           className="text-base font-bold"
-          dangerouslySetInnerHTML={{ __html: title.replaceAll("/", "<wbr>/") }}
+          dangerouslySetInnerHTML={{
+            __html: title.replaceAll("/", "<wbr>/"),
+          }}
         ></h2>
         <div
           className="line-clamp-3 break-words"
@@ -111,8 +171,8 @@ function findWebsite(url: string): Website | undefined {
   }
 }
 
-function mapIcon(icon: Website) {
-  switch (icon) {
+function mapIcon(website: Website) {
+  switch (website) {
     case "reddit":
       return "reddit-alien";
     case "wikipedia":
@@ -122,7 +182,7 @@ function mapIcon(icon: Website) {
     case "ycombinator":
       return "y-combinator";
     default:
-      return icon;
+      return website;
   }
 }
 
