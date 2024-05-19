@@ -85,7 +85,7 @@ export const Dialog = ({
       </a>
       <dialog
         ref={dialogRef}
-        className="max-h-screen w-full max-w-5xl gap-4 overscroll-none bg-neutral-900 text-base text-white backdrop:overscroll-none backdrop:bg-neutral-900/75 md:max-h-[90vh]"
+        className={`max-h-screen w-full ${canSummarize ? "max-w-6xl" : "max-w-4xl"} gap-4 overscroll-none bg-neutral-900 text-base text-white backdrop:overscroll-none backdrop:bg-neutral-800/95 md:max-h-[90vh]`}
       >
         <div className="flex max-h-screen flex-col gap-4 p-6 md:max-h-[90vh]">
           <h2 className="flex justify-between gap-2 bg-neutral-900 font-bold">
@@ -94,9 +94,9 @@ export const Dialog = ({
               <i className="fa-solid fa-xmark"></i>
             </a>
           </h2>
-          <div className="grid grid-cols-1 gap-3 overflow-y-scroll md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-3 overflow-y-scroll overscroll-none md:grid-cols-3">
             {canSummarize && (
-              <div>
+              <div className="peer">
                 <Summary
                   storyId={storyId}
                   url={url}
@@ -106,7 +106,7 @@ export const Dialog = ({
                 />
               </div>
             )}
-            <div className="col-span-2">{discussions}</div>
+            <div className="col-span-3 peer-[]:col-span-2">{discussions}</div>
           </div>
         </div>
       </dialog>
