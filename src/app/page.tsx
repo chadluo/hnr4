@@ -13,8 +13,9 @@ export default async function Home({
   const title = "Hacker News Reader";
 
   const flags = {
-    realSummary: process.env.mode !== "dev" || searchParams.realSummary != null,
-    forceRefreshSummary: searchParams.forceRefreshSummary != null,
+    realSummary: process.env.mode === "dev" && searchParams.realSummary != null,
+    forceRefreshSummary:
+      process.env.mode === "dev" && searchParams.forceRefreshSummary != null,
   };
 
   return (
