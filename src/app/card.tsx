@@ -187,10 +187,7 @@ function mapIcon(website: Website) {
 }
 
 function checkImageUrl(image?: string) {
-  if (image) {
-    try {
-      new URL(image);
-      return image;
-    } catch (e) {}
+  if (image && URL.canParse(image)) {
+    return image;
   }
 }

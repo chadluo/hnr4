@@ -1,9 +1,7 @@
 const DEFAULT_TIMEOUT_MS = 5000;
 
 export async function getHtmlContent(url: string): Promise<string | undefined> {
-  try {
-    new URL(url);
-  } catch (err) {
+  if (!URL.canParse(url)) {
     return;
   }
 
