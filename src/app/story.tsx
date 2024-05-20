@@ -6,16 +6,14 @@ import { Card } from "./card";
 import { getHtmlContent } from "./contents";
 import { getHnStory } from "./hn";
 import { Dialog } from "./dialog";
+import type { Flags } from "./flags";
 
 export async function Story({
   storyId,
   flags,
 }: {
   storyId: number;
-  flags: {
-    realSummary: boolean;
-    forceRefreshSummary: boolean;
-  };
+  flags: Flags;
 }) {
   const { realSummary, forceRefreshSummary } = flags;
   const { title, url, text, kids, type } = await getHnStory(storyId);
@@ -53,8 +51,7 @@ export async function Story({
         storyId={storyId}
         storyType={type}
         url={url}
-        realSummary={process.env.mode !== "dev" || realSummary}
-        forceRefreshSummary={forceRefreshSummary}
+        flags={flags}
         hnLink={hnLink}
       />
     </h2>

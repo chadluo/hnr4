@@ -4,6 +4,7 @@ import Comment from "@/app/comment";
 import classNames from "classnames";
 import * as React from "react";
 import { Summary, SummaryProps } from "./summary";
+import type { Flags } from "./flags";
 
 // button & dialog body
 export const Dialog = ({
@@ -12,14 +13,14 @@ export const Dialog = ({
   storyId,
   storyType,
   url,
-  realSummary,
-  forceRefreshSummary,
   hnLink,
+  flags,
 }: {
   kids: number[];
   text: string | undefined;
   storyType: string;
   hnLink: JSX.Element;
+  flags: Flags;
 } & Omit<SummaryProps, "startShowing">) => {
   const dialogRef = React.useRef(null);
   const [startShowing, setStartShowing] = React.useState(false);
@@ -100,8 +101,7 @@ export const Dialog = ({
                 <Summary
                   storyId={storyId}
                   url={url}
-                  realSummary={realSummary}
-                  forceRefreshSummary={forceRefreshSummary}
+                  flags={flags}
                   startShowing={startShowing}
                 />
               </div>

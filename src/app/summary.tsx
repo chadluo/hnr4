@@ -3,23 +3,25 @@
 import * as React from "react";
 import { generateSummary } from "./generate";
 import { readStreamableValue } from "ai/rsc";
+import type { Flags } from "./flags";
 
 export type SummaryProps = {
   storyId: number;
   url?: string;
   startShowing: boolean;
-  realSummary: boolean;
-  forceRefreshSummary: boolean;
+  flags: Flags;
 };
+
+const DEFAULT_SUMMARY = "summary";
 
 export const Summary = ({
   storyId,
   url,
   startShowing,
-  realSummary,
-  forceRefreshSummary,
+  flags,
 }: SummaryProps) => {
-  const [generation, setGeneration] = React.useState("");
+  const { realSummary, forceRefreshSummary } = flags;
+  const [generation, setGeneration] = React.useState(DEFAULT_SUMMARY);
 
   React.useEffect(() => {
     let isGenerating = true;
@@ -41,7 +43,7 @@ export const Summary = ({
         }
       })();
     } else {
-      setGeneration("summary");
+      setGeneration(DEFAULT_SUMMARY);
     }
     return () => {
       isGenerating = false;
