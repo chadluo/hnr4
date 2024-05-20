@@ -1,15 +1,15 @@
-import Footer from "./footer";
 import * as React from "react";
-import { getHNTopStories } from "./hn";
-import { Story, StoryPlaceholder } from "./story";
-import { Header } from "./header";
+import { Header } from "../header";
+import { getHNTopStories as getHNStories } from "../hn";
+import { Story, StoryPlaceholder } from "../story";
+import Footer from "../footer";
 
 export default async function Home({
   searchParams,
 }: {
   searchParams: { realSummary?: string; forceRefreshSummary?: string };
 }) {
-  const storyIds = await getHNTopStories();
+  const storyIds = await getHNStories("best");
 
   const flags = {
     realSummary: process.env.mode === "dev" && searchParams.realSummary != null,
@@ -19,7 +19,7 @@ export default async function Home({
 
   return (
     <>
-      <Header activePage="top" />
+      <Header activePage="best" />
       <main className="mx-auto flex w-5/6 min-w-64 max-w-4xl flex-col gap-8">
         {storyIds.map((storyId) => (
           <React.Suspense key={storyId} fallback={<StoryPlaceholder />}>

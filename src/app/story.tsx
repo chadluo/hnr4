@@ -15,7 +15,6 @@ export async function Story({
   storyId: number;
   flags: Flags;
 }) {
-  const { realSummary, forceRefreshSummary } = flags;
   const { title, url, text, kids, type } = await getHnStory(storyId);
 
   const hnUrl = `https://news.ycombinator.com/item?id=${storyId}`;
