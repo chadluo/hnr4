@@ -3,8 +3,8 @@
 import Comment from "@/app/comment";
 import classNames from "classnames";
 import * as React from "react";
-import { Summary, SummaryProps } from "./summary";
 import type { Flags } from "./flags";
+import { Summary, SummaryProps } from "./summary";
 
 // button & dialog body
 export const Dialog = ({

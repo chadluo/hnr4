@@ -4,9 +4,9 @@ import { EmbeddedTweet, TweetNotFound } from "react-tweet";
 import { getTweet as _getTweet } from "react-tweet/api";
 import { Card } from "./card";
 import { getHtmlContent } from "./contents";
-import { getHnStory } from "./hn";
 import { Dialog } from "./dialog";
 import type { Flags } from "./flags";
+import { getHnStory } from "./hn";
 
 export async function Story({
   storyId,
