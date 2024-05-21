@@ -17,7 +17,7 @@ export type HNComment = {
   dead: boolean | undefined;
 };
 
-export async function getHNTopStories(storyRank = "top") {
+export async function getHNStories(storyRank = "top") {
   const response = await fetch(
     `${HN_ENDPOINT}/${storyRank}stories.json?limitToFirst=30&orderBy="$priority"`,
     { cache: "no-store" },

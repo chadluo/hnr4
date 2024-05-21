@@ -1,21 +1,26 @@
-import Footer from "./footer";
 import * as React from "react";
-import { getHNTopStories } from "./hn";
-import { Story, StoryPlaceholder } from "./story";
+import Footer from "./footer";
 import { Header } from "./header";
+import { Story, StoryPlaceholder } from "./story";
+import { getHNStories } from "./hn";
 
 export default async function Home({
   searchParams,
 }: {
   searchParams: { realSummary?: string; forceRefreshSummary?: string };
 }) {
-  const storyIds = await getHNTopStories();
+  const storyIds = await getHNStories();
 
-  const flags = {
-    realSummary: process.env.mode === "dev" && searchParams.realSummary != null,
-    forceRefreshSummary:
-      process.env.mode === "dev" && searchParams.forceRefreshSummary != null,
-  };
+  const flags =
+    process.env.mode === "dev"
+      ? {
+          realSummary: searchParams.realSummary != null,
+          forceRefreshSummary: searchParams.forceRefreshSummary != null,
+        }
+      : {
+          realSummary: true,
+          forceRefreshSummary: false,
+        };
 
   return (
     <>

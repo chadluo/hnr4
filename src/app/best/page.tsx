@@ -1,8 +1,8 @@
 import * as React from "react";
-import { Header } from "../header";
-import { getHNTopStories as getHNStories } from "../hn";
-import { Story, StoryPlaceholder } from "../story";
 import Footer from "../footer";
+import { Header } from "../header";
+import { Story, StoryPlaceholder } from "../story";
+import { getHNStories } from "../hn";
 
 export default async function Home({
   searchParams,
@@ -11,11 +11,16 @@ export default async function Home({
 }) {
   const storyIds = await getHNStories("best");
 
-  const flags = {
-    realSummary: process.env.mode === "dev" && searchParams.realSummary != null,
-    forceRefreshSummary:
-      process.env.mode === "dev" && searchParams.forceRefreshSummary != null,
-  };
+  const flags =
+    process.env.mode === "dev"
+      ? {
+          realSummary: searchParams.realSummary != null,
+          forceRefreshSummary: searchParams.forceRefreshSummary != null,
+        }
+      : {
+          realSummary: true,
+          forceRefreshSummary: false,
+        };
 
   return (
     <>
