@@ -4,6 +4,7 @@ import { getHtmlContent } from "./contents";
 import { getMeta } from "./meta";
 
 type CardProps = {
+  storyId: number;
   url: string | undefined;
   hnTitle: string;
   hnUrl: string;
@@ -28,12 +29,12 @@ type Website =
   | "youtube";
 
 export async function Card(props: CardProps) {
-  const { url, hnTitle, hnUrl, hnText } = props;
+  const { storyId, url, hnTitle, hnUrl, hnText } = props;
 
   if (url != null) {
     const html = await getHtmlContent(url);
     if (html != null) {
-      const meta = await getMeta(html);
+      const meta = await getMeta(storyId, html);
       if (meta != null) {
         const title = meta.title ?? hnTitle;
         const description = meta.description;

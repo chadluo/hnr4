@@ -63,7 +63,13 @@ export async function Story({
         {tweetId ? (
           <TweetPage id={tweetId} />
         ) : (
-          <Card url={url} hnTitle={title} hnUrl={hnUrl} hnText={text} />
+          <Card
+            storyId={storyId}
+            url={url}
+            hnTitle={title}
+            hnUrl={hnUrl}
+            hnText={text}
+          />
         )}
       </div>
     </>

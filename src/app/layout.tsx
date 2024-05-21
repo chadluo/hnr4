@@ -4,7 +4,11 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Metadata } from "next";
 import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import Script from "next/script";
-import { SITE_DESCRIPTION, SITE_IMAGE, SITE_TITLE } from "./metadata";
+
+const SITE_TITLE = "Hacker News Reader";
+const SITE_DESCRIPTION =
+  "Yet another Hacker News Reader with metadata cards and some LLM summaries.";
+const SITE_IMAGE = "/hnr.png";
 
 const mono = IBM_Plex_Mono({
   weight: "400",
