@@ -76,26 +76,24 @@ export const Dialog = ({
         onClick={openDialog}
         className="font-normal hover:cursor-pointer hover:bg-neutral-900/70 md:-mr-3 md:-mt-2 md:px-3 md:py-2"
       >
-        {canSummarize && (
-          <>
-            <i className="fa-solid fa-robot"></i>
-            {" | "}
-          </>
-        )}
-        <i className="fa-regular fa-comments"></i> {kids?.length ?? 0}
+        {canSummarize && <>🤖 {" | "}</>}
+        💬 {kids?.length ?? 0}
       </a>
       <dialog
         ref={dialogRef}
-        className={`max-h-screen w-full ${canSummarize ? "max-w-6xl" : "max-w-4xl"} gap-4 overscroll-none bg-neutral-900 text-base text-white backdrop:overscroll-none backdrop:bg-neutral-800/95 md:max-h-[90vh]`}
+        className={`h-dvh max-h-dvh w-full ${canSummarize ? "max-w-6xl" : "max-w-4xl"} gap-4 overscroll-contain bg-neutral-900 text-base text-white backdrop:overscroll-contain backdrop:bg-neutral-800/95 md:max-h-[90vh]`}
       >
-        <div className="flex max-h-screen flex-col gap-4 p-6 md:max-h-[90vh]">
-          <h2 className="flex justify-between gap-2 bg-neutral-900 font-bold">
+        <div className="flex h-dvh max-h-dvh flex-col gap-4 p-6 md:max-h-[90vh]">
+          <h2 className="flex justify-between gap-4 bg-neutral-900 font-bold">
             {hnLink}
-            <a onClick={closeDialog} className="hover:cursor-pointer">
-              <i className="fa-solid fa-xmark"></i>
+            <a
+              onClick={closeDialog}
+              className="-m-1 p-1 hover:cursor-pointer hover:bg-neutral-700"
+            >
+              ❌
             </a>
           </h2>
-          <div className="grid grid-cols-1 gap-3 overflow-y-scroll overscroll-none md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-3 overflow-y-scroll overscroll-contain md:grid-cols-3">
             {canSummarize && (
               <div className="peer">
                 <Summary
