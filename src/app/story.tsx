@@ -4,9 +4,9 @@ import { EmbeddedTweet, TweetNotFound } from "react-tweet";
 import { getTweet as _getTweet } from "react-tweet/api";
 import { Card } from "./card";
 import { getHtmlContent } from "./contents";
-import { getHnStory } from "./hn";
 import { Dialog } from "./dialog";
 import type { Flags } from "./flags";
+import { getHnStory } from "./hn";
 
 export async function Story({
   storyId,
@@ -88,9 +88,8 @@ const TweetPage = async ({ id }: { id: string }) => {
 
 export const StoryPlaceholder = () => {
   return (
-    <div>
-      <div className="h-4 bg-neutral-900"></div>
-      <div className="h-3"></div>
+    <div className="flex flex-col gap-3">
+      <div className="h-8 bg-neutral-900"></div>
       <div className="h-36 bg-neutral-900"></div>
     </div>
   );
