@@ -1,6 +1,14 @@
-const DEFAULT_TIMEOUT_MS = 5000;
+import { unstable_cache } from "next/cache";
 
-export async function getHtmlContent(url: string): Promise<string | undefined> {
+const DEFAULT_TIMEOUT_MS = 10000;
+
+export const getHtmlContent = unstable_cache(
+  async (url: string) => getHtmlContent2(url),
+  ["htmlContent"],
+  { revalidate: 60 },
+);
+
+async function getHtmlContent2(url: string) {
   if (!URL.canParse(url)) {
     return;
   }
@@ -9,9 +17,8 @@ export async function getHtmlContent(url: string): Promise<string | undefined> {
   let html, abortTimeout;
   try {
     abortTimeout = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT_MS);
-    html = await fetch(url, { signal: controller.signal }).then((response) =>
-      response.text(),
-    );
+    const response = await fetch(url, { signal: controller.signal });
+    html = await response.text();
   } catch (err) {
     console.error({ error: "Cannot fetch html: " + err, url });
     return;
