@@ -21,16 +21,17 @@ export const Dialog = ({
   storyType: string;
   hnLink: JSX.Element;
   flags: Flags;
-} & Omit<SummaryProps, "startShowing">) => {
+} & Omit<SummaryProps, "isShowing">) => {
   const dialogRef = React.useRef(null);
-  const [startShowing, setStartShowing] = React.useState(false);
+  const [isShowing, setShowing] = React.useState(false);
 
   const openDialog = React.useCallback(() => {
     if (dialogRef.current == null) {
       return;
     }
     (dialogRef.current as HTMLDialogElement).showModal();
-    setStartShowing(true);
+    setShowing(true);
+    console.log('showing => true');
   }, []);
 
   const closeDialog = React.useCallback(() => {
@@ -38,6 +39,8 @@ export const Dialog = ({
       return;
     }
     (dialogRef.current as HTMLDialogElement).close();
+    setShowing(false);
+    console.log('showing => false');
   }, []);
 
   const canSummarize = React.useMemo(() => {
@@ -65,7 +68,7 @@ export const Dialog = ({
       )}
       {kids &&
         kids.map((kid) => (
-          <Comment key={kid} commentId={kid} isExpanded={false} isTop={true} />
+          <Comment key={kid} commentId={kid} isExpanded={false} isTop={true} isShowing={isShowing} />
         ))}
     </div>
   );
@@ -100,7 +103,7 @@ export const Dialog = ({
                   storyId={storyId}
                   url={url}
                   flags={flags}
-                  startShowing={startShowing}
+                  isShowing={isShowing}
                 />
               </div>
             )}

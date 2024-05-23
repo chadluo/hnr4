@@ -8,25 +8,34 @@ type Props = {
   commentId: number;
   isExpanded: boolean;
   isTop: boolean;
+  isShowing: boolean;
 };
 
 export default function Comment(props: Props) {
-  const { commentId, isExpanded, isTop } = props;
+  const { commentId, isExpanded, isTop, isShowing } = props;
 
   const [comment, setComment] = React.useState<HNComment>();
-  const [startRender, setStartRender] = React.useState(false);
+  const [isLocalShowing, setLocalShowing] = React.useState(isShowing);
 
   React.useEffect(() => {
     const controller = new AbortController();
-    getHNComment(commentId, controller).then(setComment);
+    if (isShowing) {
+      getHNComment(commentId, controller).then(setComment);
+    } else {
+      try {
+        controller.abort("Aborted loading comment");
+      } catch (err) {
+        console.error(err);
+      }
+    }
     return () => {
       try {
-        controller.abort('Aborted loading comment');
+        controller.abort("Aborted loading comment");
       } catch (err) {
         console.error(err);
       }
     };
-  }, [commentId]);
+  }, [commentId, isShowing]);
 
   if (!comment) {
     return <></>;
@@ -40,8 +49,8 @@ export default function Comment(props: Props) {
       data-kids={kids}
       open={isExpanded}
       onToggle={(event) => {
-        if ((event.target as HTMLDetailsElement).open && !startRender) {
-          setStartRender(true);
+        if ((event.target as HTMLDetailsElement).open && !isLocalShowing) {
+          setLocalShowing(true);
         }
       }}
       className={classNames(
@@ -57,9 +66,15 @@ export default function Comment(props: Props) {
           __html: `${text} [<a target="_blank" href="https://news.ycombinator.com/item?id=${commentId}">${by}</a>]`,
         }}
       />
-      {startRender &&
+      {isShowing &&
         kids?.map((kid) => (
-          <Comment key={kid} commentId={kid} isExpanded={true} isTop={false} />
+          <Comment
+            key={kid}
+            commentId={kid}
+            isExpanded={true}
+            isTop={false}
+            isShowing={isLocalShowing}
+          />
         ))}
     </details>
   ) : (
