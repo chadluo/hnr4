@@ -3,7 +3,6 @@ import Link from "next/link";
 import { EmbeddedTweet, TweetNotFound } from "react-tweet";
 import { getTweet as _getTweet } from "react-tweet/api";
 import { Card } from "./card";
-import { getHtmlContent } from "./contents";
 import { Dialog } from "./dialog";
 import type { Flags } from "./flags";
 import { getHnStory } from "./hn";
@@ -34,14 +33,11 @@ export async function Story({
   );
 
   let tweetId: string | undefined;
-  let html: string | undefined;
 
   if (url) {
     const { hostname, pathname } = new URL(url);
     if (hostname === "twitter.com" || hostname === "x.com") {
       tweetId = pathname.split("/").slice(-1)[0];
-    } else {
-      html = await getHtmlContent(url);
     }
   }
 
