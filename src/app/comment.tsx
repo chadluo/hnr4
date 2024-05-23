@@ -20,7 +20,7 @@ export default function Comment(props: Props) {
   React.useEffect(() => {
     const controller = new AbortController();
     if (isShowing) {
-      getHNComment(commentId, controller).then(setComment);
+      getHNComment(commentId, controller).then(setComment).catch(console.error);
     } else {
       try {
         controller.abort("Aborted loading comment");

@@ -18,27 +18,40 @@ export type HNComment = {
 };
 
 export async function getHNStories(storyRank = "top") {
-  const response = await fetch(
-    `${HN_ENDPOINT}/${storyRank}stories.json?limitToFirst=30&orderBy="$priority"`,
-    { cache: "no-store" },
-  );
-  return (await response.json()) as number[];
+  try {
+    const response = await fetch(
+      `${HN_ENDPOINT}/${storyRank}stories.json?limitToFirst=30&orderBy="$priority"`,
+      { cache: "no-store" },
+    );
+    return (await response.json()) as number[];
+  } catch (err) {
+    console.error({ error: "Failed fetching stories: " + err, storyRank });
+    return [];
+  }
 }
 
 export async function getHnStory(storyId: number) {
-  const response = await fetch(`${HN_ENDPOINT}/item/${storyId}.json`, {
-    cache: "no-store",
-  });
-  return { id: storyId, ...(await response.json()) } as HNStory;
+  try {
+    const response = await fetch(`${HN_ENDPOINT}/item/${storyId}.json`, {
+      cache: "no-store",
+    });
+    return { id: storyId, ...(await response.json()) } as HNStory;
+  } catch (err) {
+    console.error({ error: "Failed getting story", storyId });
+  }
 }
 
 export async function getHNComment(
   commentId: number,
   abortController: AbortController,
 ) {
-  const response = await fetch(`${HN_ENDPOINT}/item/${commentId}.json`, {
-    cache: "no-store",
-    signal: abortController.signal,
-  });
-  return (await response.json()) as HNComment;
+  try {
+    const response = await fetch(`${HN_ENDPOINT}/item/${commentId}.json`, {
+      cache: "no-store",
+      signal: abortController.signal,
+    });
+    return (await response.json()) as HNComment;
+  } catch (err) {
+    console.error({ error: "Failed getting comment", commentId });
+  }
 }

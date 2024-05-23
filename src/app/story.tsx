@@ -15,7 +15,11 @@ export async function Story({
   storyId: number;
   flags: Flags;
 }) {
-  const { title, url, text, kids, type } = await getHnStory(storyId);
+  const hnStory = await getHnStory(storyId);
+  if (!hnStory) {
+    return null;
+  }
+  const { title, url, text, kids, type } = hnStory;
 
   const hnUrl = `https://news.ycombinator.com/item?id=${storyId}`;
 
