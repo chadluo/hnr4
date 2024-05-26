@@ -10,7 +10,7 @@ export default async function Home({
   searchParams: { realSummary?: string; forceRefreshSummary?: string };
 }) {
   const flags =
-    process.env.mode === "dev"
+    process.env.NODE_ENV !== "production"
       ? {
           realSummary: searchParams.realSummary != null,
           forceRefreshSummary: searchParams.forceRefreshSummary != null,
