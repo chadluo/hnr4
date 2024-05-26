@@ -15,14 +15,16 @@ export type SummaryProps = {
 const DEFAULT_SUMMARY = "summary";
 
 export const Summary = ({ storyId, url, isShowing, flags }: SummaryProps) => {
-  const { realSummary, forceRefreshSummary } = flags;
+  const { forceRefreshSummary, fakeSummary } = flags;
   const [generation, setGeneration] = React.useState(DEFAULT_SUMMARY);
 
   React.useEffect(() => {
     let isGenerating = true;
     if (isShowing) {
-      if (realSummary && url != null) {
-        (async () => {
+      (async () => {
+        if (fakeSummary || url == null) {
+          setGeneration(DEFAULT_SUMMARY);
+        } else {
           const { output } = await generateSummary(
             storyId,
             url,
@@ -37,16 +39,14 @@ export const Summary = ({ storyId, url, isShowing, flags }: SummaryProps) => {
               );
             }
           }
-        })();
-      } else {
-        setGeneration(DEFAULT_SUMMARY);
-      }
+        }
+      })();
     }
     return () => {
       isGenerating = false;
       setGeneration("");
     };
-  }, [storyId, url, realSummary, isShowing, forceRefreshSummary]);
+  }, [storyId, url, isShowing, forceRefreshSummary, fakeSummary]);
 
   return (
     <span className="font-mono text-sm italic leading-6">{generation}</span>

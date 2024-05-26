@@ -1,4 +1,16 @@
+import { unstable_flag as flag } from "@vercel/flags/next";
+
 export type Flags = {
-  realSummary?: boolean;
   forceRefreshSummary?: boolean;
+  fakeSummary?: boolean;
 };
+
+export const fakeSummary = flag({
+  key: "fakeSummary",
+  decide: () => process.env.NODE_ENV !== "production",
+});
+
+export const forceRefreshSummary = flag({
+  key: "forceRefreshSummary",
+  decide: () => process.env.NODE_ENV !== "production",
+});

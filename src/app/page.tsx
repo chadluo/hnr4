@@ -1,24 +1,15 @@
 import * as React from "react";
+import { fakeSummary, forceRefreshSummary } from "./flags";
 import Footer from "./footer";
 import { Header } from "./header";
 import { getHNStories } from "./hn";
 import { Story, StoryPlaceholder } from "./story";
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: { realSummary?: string; forceRefreshSummary?: string };
-}) {
-  const flags =
-    process.env.NODE_ENV !== "production"
-      ? {
-          realSummary: searchParams.realSummary != null,
-          forceRefreshSummary: searchParams.forceRefreshSummary != null,
-        }
-      : {
-          realSummary: true,
-          forceRefreshSummary: false,
-        };
+export default async function Home() {
+  const flags = {
+    forceRefreshSummary: await forceRefreshSummary(),
+    fakeSummary: await fakeSummary(),
+  };
 
   const storyIds = await getHNStories();
 
