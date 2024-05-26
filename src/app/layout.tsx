@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { VercelToolbar } from "@vercel/toolbar/next";
 import { Metadata } from "next";
 import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import Script from "next/script";
@@ -60,6 +61,7 @@ export default function RootLayout({
         className={`${mono.variable} ${sans.variable} min-h-screen max-w-full overflow-x-hidden font-sans text-white`}
       >
         {children}
+        {process.env.NODE_ENV !== "production" && <VercelToolbar />}
         <Script src="https://kit.fontawesome.com/8c38f2aa0a.js"></Script>
         <SpeedInsights />
         <Analytics />

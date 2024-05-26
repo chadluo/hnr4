@@ -19,6 +19,7 @@
     "@vercel/kv": "^1.0.1",
     "@vercel/postgres": "^0.8.0",
     "@vercel/speed-insights": "^1.0.11",
+    "@vercel/toolbar": "^0.1.15",
     "ai": "^3.1.14",
     "classnames": "^2.5.1",
     "eslint": "^8.57.0",

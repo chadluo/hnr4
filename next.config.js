@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+let nextConfig = {
   reactStrictMode: true,
   images: {
     formats: ["image/avif", "image/webp"],
@@ -11,13 +11,13 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+const withVercelToolbar = require("@vercel/toolbar/plugins/next")();
+nextConfig = withVercelToolbar(nextConfig);
 
 // Injected content via Sentry wizard below
 
 const { withSentryConfig } = require("@sentry/nextjs");
-
-module.exports = withSentryConfig(module.exports, {
+nextConfig = withSentryConfig(nextConfig, {
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options
 
@@ -54,3 +54,5 @@ module.exports = withSentryConfig(module.exports, {
   // https://vercel.com/docs/cron-jobs
   automaticVercelMonitors: true,
 });
+
+module.exports = nextConfig;
