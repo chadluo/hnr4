@@ -11,14 +11,6 @@ type CardProps = {
   hnText: string | undefined;
 };
 
-export type Meta = {
-  title?: string;
-  description?: string;
-  image?: string;
-  imageAlt?: string;
-  authors?: string;
-};
-
 type Website =
   | "apple"
   | "github"

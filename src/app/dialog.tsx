@@ -31,7 +31,7 @@ export const Dialog = ({
     }
     (dialogRef.current as HTMLDialogElement).showModal();
     setShowing(true);
-    console.log('showing => true');
+    console.log("showing => true");
   }, []);
 
   const closeDialog = React.useCallback(() => {
@@ -40,11 +40,11 @@ export const Dialog = ({
     }
     (dialogRef.current as HTMLDialogElement).close();
     setShowing(false);
-    console.log('showing => false');
+    console.log("showing => false");
   }, []);
 
   const canSummarize = React.useMemo(() => {
-    if (storyType === "job" || url == null) {
+    if (storyType === "job" || url == null || url.endsWith("pdf")) {
       return false;
     }
     const { hostname } = new URL(url);
@@ -68,7 +68,13 @@ export const Dialog = ({
       )}
       {kids &&
         kids.map((kid) => (
-          <Comment key={kid} commentId={kid} isExpanded={false} isTop={true} isShowing={isShowing} />
+          <Comment
+            key={kid}
+            commentId={kid}
+            isExpanded={false}
+            isTop={true}
+            isShowing={isShowing}
+          />
         ))}
     </div>
   );

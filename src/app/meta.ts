@@ -1,7 +1,17 @@
 import { sql } from "@vercel/postgres";
 import { parse } from "parse5";
+import { Attribute } from "parse5/dist/common/token";
+import { Element, Node, TextNode } from "parse5/dist/tree-adapters/default";
 
-export async function getMeta(storyId, html) {
+export type Meta = {
+  title?: string;
+  description?: string;
+  image?: string;
+  imageAlt?: string;
+  authors?: string;
+};
+
+export async function getMeta(storyId: number, html: string) {
   const existingMeta =
     await sql`select * from metadata where storyId = ${storyId}`;
   if (existingMeta.rows.length > 0) {
@@ -45,29 +55,49 @@ export async function getMeta(storyId, html) {
   return meta;
 }
 
-function findRawMeta(html) {
-  const parsed = parse(html);
-  const headNode = parsed.childNodes
-    .find((node) => node.nodeName === "html")
-    .childNodes.find((node) => node.nodeName === "head");
+function findRawMeta(html: string): Map<string, string[]> {
+  const parsed = parse(html, { scriptingEnabled: false });
+  const htmlNode: Element = parsed?.childNodes.find(
+    (node: Node) => node.nodeName === "html",
+  ) as Element;
+  const headNode: Element = htmlNode.childNodes.find(
+    (node: Node) => node.nodeName === "head",
+  ) as Element;
   return headNode.childNodes
     .map((node) => {
-      if (node.nodeName !== "meta") {
-        return;
+      if (node.nodeName === "title") {
+        return ["title", (node.childNodes[0] as TextNode).value] as [
+          string,
+          string,
+        ];
       }
-      const key = node.attrs.find(
-        (attr) => attr.name === "property" || attr.name === "name",
-      )?.value;
-      const value = node.attrs.find((attr) => attr.name === "content")?.value;
-      return [key, value];
+
+      if (node.nodeName === "meta") {
+        const key = node.attrs.find(
+          (attr: Attribute) => attr.name === "property" || attr.name === "name",
+        )?.value;
+        const value = node.attrs.find(
+          (attr: Attribute) => attr.name === "content",
+        )?.value;
+        if (key == null || value == null) {
+          return;
+        }
+        return [key, value] as [string, string];
+      }
     })
-    .filter((entry) => entry != null)
-    .reduce((map, [key, value]) => {
-      if (map.has(key)) {
-        map.get(key).push(value);
-      } else {
-        map.set(key, [value]);
-      }
-      return map;
-    }, new Map());
+    .reduce(
+      (map: Map<string, string[]>, entry: [string, string] | undefined) => {
+        if (entry == null) {
+          return map;
+        }
+        const [key, value] = entry;
+        if (map.has(key)) {
+          map.get(key)?.push(value);
+        } else {
+          map.set(key, [value]);
+        }
+        return map;
+      },
+      new Map(),
+    );
 }
