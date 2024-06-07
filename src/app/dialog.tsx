@@ -83,7 +83,7 @@ export const Dialog = ({
     <>
       <a
         onClick={openDialog}
-        className="font-normal hover:cursor-pointer hover:bg-neutral-900/70 md:-mr-3 md:-mt-2 md:px-3 md:py-2"
+        className="font-normal hover:cursor-pointer hover:bg-neutral-900/70 md:-mx-3 md:-my-2 md:px-3 md:py-2"
       >
         {canSummarize && <>🤖 {" | "}</>}
         💬 {kids?.length ?? 0}
