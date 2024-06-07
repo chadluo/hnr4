@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { getHtmlContent } from "./contents";
 import { getMeta } from "./meta";
@@ -89,12 +88,10 @@ function innerCard({
     >
       {imageUrl && (
         <div className="peer basis-1/3">
-          <Image
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             src={imageUrl}
             alt={imageAlt ?? ""}
-            fill={false}
-            width={320}
-            height={160}
             className="aspect-2/1 w-full object-cover md:w-80"
           />
         </div>
