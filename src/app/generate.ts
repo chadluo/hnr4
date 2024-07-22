@@ -1,16 +1,17 @@
 "use server";
 
-import { streamText } from "ai";
-import { JSDOM } from "jsdom";
+import { openai } from "@ai-sdk/openai";
 import { Readability } from "@mozilla/readability";
 import { kv } from "@vercel/kv";
-import { openai } from "@ai-sdk/openai";
+import { streamText } from "ai";
 import { createStreamableValue } from "ai/rsc";
+import { JSDOM } from "jsdom";
 import { getHtmlContent } from "./contents";
 
 export async function generateSummary(
   storyId: number,
   url: string,
+  openaiModel: string,
   forceRefreshSummary?: boolean,
 ) {
   const stream = createStreamableValue("");
@@ -43,7 +44,7 @@ export async function generateSummary(
     }
 
     const { textStream } = await streamText({
-      model: openai("gpt-4o"),
+      model: openai(openaiModel),
       messages: [
         {
           role: "system",

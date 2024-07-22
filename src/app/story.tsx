@@ -1,3 +1,4 @@
+import { get } from '@vercel/edge-config';
 import { unstable_cache } from "next/cache";
 import Link from "next/link";
 import { EmbeddedTweet, TweetNotFound } from "react-tweet";
@@ -41,6 +42,8 @@ export async function Story({
     }
   }
 
+  const openaiModel = String(await get("openai_model"));
+
   const storyLink = (
     <h2 className="flex flex-col justify-between gap-2 md:flex-row">
       {hnLink}
@@ -50,8 +53,9 @@ export async function Story({
         storyId={storyId}
         storyType={type}
         url={url}
-        flags={flags}
         hnLink={hnLink}
+        openaiModel={openaiModel}
+        flags={flags}
       />
     </h2>
   );

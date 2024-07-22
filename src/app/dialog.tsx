@@ -14,12 +14,14 @@ export const Dialog = ({
   storyType,
   url,
   hnLink,
+  openaiModel,
   flags,
 }: {
   kids: number[];
   text: string | undefined;
   storyType: string;
   hnLink: JSX.Element;
+  openaiModel: string;
   flags: Flags;
 } & Omit<SummaryProps, "isShowing">) => {
   const dialogRef = React.useRef(null);
@@ -109,6 +111,7 @@ export const Dialog = ({
                   storyId={storyId}
                   url={url}
                   flags={flags}
+                  openaiModel={openaiModel}
                   isShowing={isShowing}
                 />
               </div>
