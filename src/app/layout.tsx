@@ -49,8 +49,8 @@ export default function RootLayout({
   const [deg1, hue1] = [Math.random() * 360, Math.random() * 360];
   const [deg2, hue2] = [Math.random() * 360, Math.random() * 360];
   const background = [
-    `linear-gradient(${deg1}deg, hsl(${hue1} 80% 20%), 20%, rgba(0, 0, 0, 0))`,
-    `linear-gradient(${deg2}deg, hsl(${hue2} 80% 20%), 20%, rgba(0, 0, 0, 0))`,
+    `linear-gradient(${deg1}deg, hsl(${hue1} 80% 25%), 20%, rgba(0, 0, 0, 0))`,
+    `linear-gradient(${deg2}deg, hsl(${hue2} 80% 25%), 20%, rgba(0, 0, 0, 0))`,
     "black",
   ].join(",");
 

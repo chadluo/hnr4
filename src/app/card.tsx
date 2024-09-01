@@ -83,7 +83,7 @@ function innerCard({
     <Link
       href={url}
       title={url}
-      className="flex flex-col border border-neutral-700 bg-neutral-900/70 hover:border-neutral-500 md:flex-row-reverse"
+      className="flex flex-col gap-3 bg-neutral-900/60 hover:bg-neutral-800/60 md:flex-row-reverse p-3 rounded"
       target="_blank"
     >
       {imageUrl && (
@@ -96,8 +96,8 @@ function innerCard({
           />
         </div>
       )}
-      <div className="basis-full px-3 py-2 peer-[]:basis-2/3">
-        <span className="line-clamp-2 text-neutral-500" title={url}>
+      <div className="basis-full peer-[]:basis-2/3">
+        <span className="line-clamp-2 text-neutral-400" title={url}>
           {icon}
           {source}
         </span>
@@ -108,7 +108,7 @@ function innerCard({
           }}
         ></h2>
         <div
-          className="line-clamp-3 break-words"
+          className="line-clamp-3 break-words text-neutral-400"
           // override for http://localhost:4000/story/39792136
           style={{ overflowWrap: "anywhere" }}
           title={description}
