@@ -19,10 +19,12 @@ type Website =
   | "ycombinator"
   | "youtube";
 
+const noPreviewWebsiteHostnames = ["www.bloomberg.com", "www.washingtonpost.com", "www.reuters.com"];
+
 export async function Card(props: CardProps) {
   const { storyId, url, hnTitle, hnUrl, hnText } = props;
 
-  if (url != null) {
+  if (url != null && !noPreviewWebsiteHostnames.includes(new URL(url).hostname)) {
     const html = await getHtmlContent(url);
     if (html != null) {
       const meta = await getMeta(storyId, html);
@@ -54,8 +56,8 @@ export async function Card(props: CardProps) {
   }
 
   return innerCard({
-    url: hnUrl,
-    source: extractSource(hnUrl),
+    url: url ?? hnUrl,
+    source: extractSource(url ?? hnUrl),
     title: hnTitle,
     description: hnText ?? "",
     icon: undefined,
