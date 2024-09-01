@@ -5,7 +5,7 @@ import { Header } from "../header";
 import { getHNStories } from "../hn";
 import { Story, StoryPlaceholder } from "../story";
 
-export default async function Home() {
+export default async function Page() {
   const flags = {
     forceRefreshSummary: await forceRefreshSummary(),
     fakeSummary: await fakeSummary(),
