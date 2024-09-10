@@ -1,4 +1,5 @@
 import Link from "next/link";
+import * as React from "react";
 import { getHtmlContent } from "./contents";
 import { getMeta } from "./meta";
 
@@ -19,12 +20,45 @@ type Website =
   | "ycombinator"
   | "youtube";
 
-const noPreviewWebsiteHostnames = ["www.bloomberg.com", "www.washingtonpost.com", "www.reuters.com"];
+const noPreviewWebsiteHostnames = [
+  "www.bloomberg.com",
+  "www.reuters.com",
+  "www.washingtonpost.com",
+];
 
 export async function Card(props: CardProps) {
   const { storyId, url, hnTitle, hnUrl, hnText } = props;
 
-  if (url != null && !noPreviewWebsiteHostnames.includes(new URL(url).hostname)) {
+  const dummyCard = card({
+    url: url ?? hnUrl,
+    title: hnTitle,
+    source: extractSource(url ?? hnUrl),
+    description: hnText ?? "",
+    icon: undefined,
+  });
+
+  return (
+    <React.Suspense fallback={dummyCard}>
+      {innerCard({ storyId, hnTitle, url, dummyCard })}
+    </React.Suspense>
+  );
+}
+
+async function innerCard({
+  storyId,
+  hnTitle,
+  url,
+  dummyCard,
+}: {
+  storyId: number;
+  hnTitle: string;
+  url: string | undefined;
+  dummyCard: JSX.Element;
+}) {
+  if (
+    url != null &&
+    !noPreviewWebsiteHostnames.includes(new URL(url).hostname)
+  ) {
     const html = await getHtmlContent(url);
     if (html != null) {
       const meta = await getMeta(storyId, html);
@@ -42,7 +76,7 @@ export async function Card(props: CardProps) {
           <i className={`fa fa-${mapIcon(website)} mr-1`}></i>
         ) : undefined;
 
-        return innerCard({
+        return card({
           url,
           title,
           source: dataSource,
@@ -55,16 +89,10 @@ export async function Card(props: CardProps) {
     }
   }
 
-  return innerCard({
-    url: url ?? hnUrl,
-    source: extractSource(url ?? hnUrl),
-    title: hnTitle,
-    description: hnText ?? "",
-    icon: undefined,
-  });
+  return dummyCard;
 }
 
-function innerCard({
+function card({
   url,
   icon,
   source,
@@ -85,7 +113,7 @@ function innerCard({
     <Link
       href={url}
       title={url}
-      className="flex flex-col gap-3 bg-neutral-900/60 hover:bg-neutral-800/60 md:flex-row-reverse p-3 rounded"
+      className="flex flex-col gap-3 rounded bg-neutral-900/60 p-3 hover:bg-neutral-800/60 md:flex-row-reverse"
       target="_blank"
     >
       {imageUrl && (

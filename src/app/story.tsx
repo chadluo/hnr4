@@ -1,4 +1,4 @@
-import { get } from '@vercel/edge-config';
+import { get } from "@vercel/edge-config";
 import { unstable_cache } from "next/cache";
 import Link from "next/link";
 import { EmbeddedTweet, TweetNotFound } from "react-tweet";
@@ -99,8 +99,8 @@ const TweetPage = async ({ id }: { id: string }) => {
 export const StoryPlaceholder = () => {
   return (
     <div className="flex flex-col gap-3">
-      <div className="h-6 bg-neutral-900"></div>
-      <div className="h-36 bg-neutral-900"></div>
+      <div className="h-6 bg-neutral-900/60"></div>
+      <div className="h-36 bg-neutral-900/60"></div>
     </div>
   );
 };
