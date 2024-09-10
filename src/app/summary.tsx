@@ -54,7 +54,7 @@ export const Summary = ({
       isGenerating = false;
       setGeneration("");
     };
-  }, [storyId, url, isShowing, forceRefreshSummary, fakeSummary]);
+  }, [storyId, url, isShowing, openaiModel, forceRefreshSummary, fakeSummary]);
 
   return (
     <span
