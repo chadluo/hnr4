@@ -46,7 +46,12 @@ export const Dialog = ({
   }, []);
 
   const canSummarize = React.useMemo(() => {
-    if (storyType === "job" || url == null || url.endsWith("pdf")) {
+    if (
+      storyType === "job" ||
+      url == null ||
+      url.endsWith("pdf") ||
+      url.endsWith("mp4")
+    ) {
       return false;
     }
     const { hostname } = new URL(url);
