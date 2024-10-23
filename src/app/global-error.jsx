@@ -1,7 +1,7 @@
 "use client";
 
 import * as Sentry from "@sentry/nextjs";
-import Error from "next/error";
+import { Error as NextError } from "next/error";
 import * as React from "react";
 
 export default function GlobalError({ error }) {
@@ -12,7 +12,7 @@ export default function GlobalError({ error }) {
   return (
     <html>
       <body>
-        <Error />
+        <NextError />
       </body>
     </html>
   );

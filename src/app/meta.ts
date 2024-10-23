@@ -1,7 +1,11 @@
 import { sql } from "@vercel/postgres";
 import { parse } from "parse5";
-import { Attribute } from "parse5/dist/common/token";
-import { Element, Node, TextNode } from "parse5/dist/tree-adapters/default";
+import type { Attribute } from "parse5/dist/common/token";
+import type {
+  Element,
+  Node,
+  TextNode,
+} from "parse5/dist/tree-adapters/default";
 
 export type Meta = {
   title?: string;
