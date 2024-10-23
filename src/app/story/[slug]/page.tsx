@@ -4,13 +4,17 @@ import Footer from "../../footer";
 import { Header } from "../../header";
 import { Story, StoryPlaceholder } from "../../story";
 
-export default async function Page({ params }: { params: { slug: number } }) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: number }>;
+}) {
   const flags = {
     forceRefreshSummary: await forceRefreshSummary(),
     fakeSummary: await fakeSummary(),
   };
 
-  const storyId = params.slug;
+  const storyId = (await params).slug;
 
   return (
     <>
