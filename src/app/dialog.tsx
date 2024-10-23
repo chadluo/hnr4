@@ -4,7 +4,7 @@ import Comment from "@/app/comment";
 import classNames from "classnames";
 import * as React from "react";
 import type { Flags } from "./flags";
-import { Summary, SummaryProps } from "./summary";
+import { Summary, type SummaryProps } from "./summary";
 
 // button & dialog body
 export const Dialog = ({
@@ -66,18 +66,17 @@ export const Dialog = ({
             "[&_pre]:mb-2 [&_pre]:overflow-x-auto [&_pre]:text-sm [&_pre]:leading-6",
           )}
           dangerouslySetInnerHTML={{ __html: text }}
-        ></div>
+        />
       )}
-      {kids &&
-        kids.map((kid) => (
-          <Comment
-            key={kid}
-            commentId={kid}
-            isExpanded={false}
-            isTop={true}
-            isShowing={isShowing}
-          />
-        ))}
+      {kids?.map((kid) => (
+        <Comment
+          key={kid}
+          commentId={kid}
+          isExpanded={false}
+          isTop={true}
+          isShowing={isShowing}
+        />
+      ))}
     </div>
   );
 

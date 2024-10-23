@@ -39,12 +39,12 @@ export const Summary = ({
             forceRefreshSummary,
           );
           for await (const delta of readStreamableValue(output)) {
-            if (!isGenerating) {
-              break;
-            } else {
+            if (isGenerating) {
               setGeneration(
                 (currentGeneration) => `${currentGeneration}${delta}`,
               );
+            } else {
+              break;
             }
           }
         }
