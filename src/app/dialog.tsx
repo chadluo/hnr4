@@ -15,6 +15,7 @@ export const Dialog = ({
   url,
   hnLink,
   openaiModel,
+  canVisit,
   flags,
 }: {
   kids: number[];
@@ -22,6 +23,7 @@ export const Dialog = ({
   storyType: string;
   hnLink: JSX.Element;
   openaiModel: string;
+  canVisit: boolean;
   flags: Flags;
 } & Omit<SummaryProps, "isShowing">) => {
   const dialogRef = React.useRef(null);
@@ -47,6 +49,7 @@ export const Dialog = ({
 
   const canSummarize = React.useMemo(() => {
     if (
+      !canVisit ||
       storyType === "job" ||
       url == null ||
       url.endsWith("pdf") ||
@@ -59,7 +62,7 @@ export const Dialog = ({
       return false;
     }
     return true;
-  }, [storyType, url]);
+  }, [canVisit, storyType, url]);
 
   const discussions = (text || kids) && (
     <div className="[&>details:not(:first-of-type)]:border-t [&>details:not(:first-of-type)]:border-neutral-600 [&>details:not(:first-of-type)]:pt-2">

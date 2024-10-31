@@ -9,6 +9,7 @@ type CardProps = {
   hnTitle: string;
   hnUrl: string;
   hnText: string | undefined;
+  canVisit: boolean;
 };
 
 type Website =
@@ -20,14 +21,8 @@ type Website =
   | "ycombinator"
   | "youtube";
 
-const noPreviewWebsiteHostnames = [
-  "www.bloomberg.com",
-  "www.reuters.com",
-  "www.washingtonpost.com",
-];
-
 export async function Card(props: CardProps) {
-  const { storyId, url, hnTitle, hnUrl, hnText } = props;
+  const { storyId, url, hnTitle, hnUrl, hnText, canVisit } = props;
 
   const dummyCard = card({
     url: url ?? hnUrl,
@@ -39,7 +34,7 @@ export async function Card(props: CardProps) {
 
   return (
     <React.Suspense fallback={dummyCard}>
-      {innerCard({ storyId, hnTitle, url, dummyCard })}
+      {innerCard({ storyId, hnTitle, url, dummyCard, canVisit })}
     </React.Suspense>
   );
 }
@@ -49,47 +44,46 @@ async function innerCard({
   hnTitle,
   url,
   dummyCard,
+  canVisit,
 }: {
   storyId: number;
   hnTitle: string;
   url: string | undefined;
   dummyCard: JSX.Element;
+  canVisit: boolean;
 }) {
-  if (
-    url != null &&
-    !noPreviewWebsiteHostnames.includes(new URL(url).hostname)
-  ) {
-    const html = await getHtmlContent(url);
-    if (html != null) {
-      const meta = await getMeta(storyId, html);
-      if (meta != null) {
-        const title = meta.title ?? hnTitle;
-        const description = meta.description;
-        const image = meta.image;
-        const imageAlt = meta.imageAlt;
-        const authors = meta.authors;
-
-        const imageUrl = checkImageUrl(image);
-        const dataSource = authors ? authors : url && extractSource(url);
-        const website = findWebsite(url);
-        const icon = website ? (
-          <i className={`fa fa-${mapIcon(website)} mr-1`}></i>
-        ) : undefined;
-
-        return card({
-          url,
-          title,
-          source: dataSource,
-          icon,
-          description,
-          imageUrl,
-          imageAlt,
-        });
-      }
-    }
+  if (!canVisit || url == null) {
+    return dummyCard;
   }
 
-  return dummyCard;
+  const html = await getHtmlContent(url);
+  if (html != null) {
+    const meta = await getMeta(storyId, html);
+    if (meta != null) {
+      const title = meta.title ?? hnTitle;
+      const description = meta.description;
+      const image = meta.image;
+      const imageAlt = meta.imageAlt;
+      const authors = meta.authors;
+
+      const imageUrl = checkImageUrl(image);
+      const dataSource = authors ? authors : url && extractSource(url);
+      const website = findWebsite(url);
+      const icon = website ? (
+        <i className={`fa fa-${mapIcon(website)} mr-1`}></i>
+      ) : undefined;
+
+      return card({
+        url,
+        title,
+        source: dataSource,
+        icon,
+        description,
+        imageUrl,
+        imageAlt,
+      });
+    }
+  }
 }
 
 function card({
@@ -133,10 +127,11 @@ function card({
         </span>
         <h2
           className="text-base font-bold"
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
           dangerouslySetInnerHTML={{
             __html: title.replaceAll("/", "<wbr>/"),
           }}
-        ></h2>
+        />
         <div
           className="line-clamp-3 break-words text-neutral-400"
           // override for http://localhost:4000/story/39792136

@@ -8,6 +8,12 @@ import { Dialog } from "./dialog";
 import type { Flags } from "./flags";
 import { getHnStory } from "./hn";
 
+const noVisitWebsiteHostnames = [
+  "www.bloomberg.com",
+  "www.reuters.com",
+  "www.washingtonpost.com",
+];
+
 export async function Story({
   storyId,
   flags,
@@ -34,12 +40,13 @@ export async function Story({
   );
 
   let tweetId: string | undefined;
-
+  let canVisit = false;
   if (url) {
     const { hostname, pathname } = new URL(url);
     if (hostname === "twitter.com" || hostname === "x.com") {
       tweetId = pathname.split("/").slice(-1)[0];
     }
+    canVisit = !noVisitWebsiteHostnames.includes(new URL(url).hostname);
   }
 
   const openaiModel = String(await get("openai_model"));
@@ -55,6 +62,7 @@ export async function Story({
         url={url}
         hnLink={hnLink}
         openaiModel={openaiModel}
+        canVisit={canVisit}
         flags={flags}
       />
     </h2>
@@ -73,6 +81,7 @@ export async function Story({
             hnTitle={title}
             hnUrl={hnUrl}
             hnText={text}
+            canVisit={canVisit}
           />
         )}
       </div>
