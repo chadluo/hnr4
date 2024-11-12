@@ -1,4 +1,3 @@
-import { get } from "@vercel/edge-config";
 import { unstable_cache } from "next/cache";
 import Link from "next/link";
 import { EmbeddedTweet, TweetNotFound } from "react-tweet";
@@ -14,13 +13,13 @@ const noVisitWebsiteHostnames = [
   "www.washingtonpost.com",
 ];
 
-export async function Story({
-  storyId,
-  flags,
-}: {
+export type StoryProps = {
   storyId: number;
+  openaiModel: string;
   flags: Flags;
-}) {
+};
+
+export async function Story({ storyId, openaiModel, flags }: StoryProps) {
   const hnStory = await getHnStory(storyId);
   if (!hnStory) {
     return null;
@@ -48,8 +47,6 @@ export async function Story({
     }
     canVisit = !noVisitWebsiteHostnames.includes(new URL(url).hostname);
   }
-
-  const openaiModel = String(await get("openai_model"));
 
   const storyLink = (
     <h2 className="flex flex-col justify-between gap-2 md:flex-row">
