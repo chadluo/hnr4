@@ -61,7 +61,7 @@ async function innerCard({
     const meta = await getMeta(storyId, html);
     if (meta != null) {
       const title = meta.title ?? hnTitle;
-      const description = meta.description;
+      const description = meta.description ?? "";
       const image = meta.image;
       const imageAlt = meta.imageAlt;
       const authors = meta.authors;
