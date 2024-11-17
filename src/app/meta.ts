@@ -70,10 +70,15 @@ function findRawMeta(storyId: number, html: string): Map<string, string[]> {
   const rawMeta = headNode?.childNodes
     .map((node) => {
       if (node.nodeName === "title") {
-        return ["title", (node.childNodes[0] as TextNode).value] as [
-          string,
-          string,
-        ];
+        const value = node.childNodes[0] as TextNode;
+        if (value == null) {
+          console.warn("Cannot load title", { storyId });
+        } else {
+          return ["title", (node.childNodes[0] as TextNode).value] as [
+            string,
+            string,
+          ];
+        }
       }
 
       if (node.nodeName === "meta") {
