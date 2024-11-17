@@ -21,7 +21,7 @@ export async function getMeta(storyId: number, html: string) {
   //  if (existingMeta.rows.length > 0) {
   //    return existingMeta.rows[0];
   //  }
-  const rawMeta = findRawMeta(html);
+  const rawMeta = findRawMeta(storyId, html);
   const meta = {
     title: (rawMeta.get("title") ??
       rawMeta.get("og:title") ??
@@ -59,15 +59,15 @@ export async function getMeta(storyId: number, html: string) {
   return meta;
 }
 
-function findRawMeta(html: string): Map<string, string[]> {
+function findRawMeta(storyId: number, html: string): Map<string, string[]> {
   const parsed = parse(html, { scriptingEnabled: false });
-  const htmlNode: Element = parsed?.childNodes.find(
+  const htmlNode: Element | undefined = parsed?.childNodes.find(
     (node: Node) => node.nodeName === "html",
-  ) as Element;
-  const headNode: Element = htmlNode.childNodes.find(
+  ) as Element | undefined;
+  const headNode: Element | undefined = htmlNode?.childNodes.find(
     (node: Node) => node.nodeName === "head",
-  ) as Element;
-  return headNode.childNodes
+  ) as Element | undefined;
+  const rawMeta = headNode?.childNodes
     .map((node) => {
       if (node.nodeName === "title") {
         return ["title", (node.childNodes[0] as TextNode).value] as [
@@ -104,4 +104,9 @@ function findRawMeta(html: string): Map<string, string[]> {
       },
       new Map(),
     );
+  if (!rawMeta) {
+    console.warn("Cannot load metadata", { storyId });
+    return new Map();
+  }
+  return rawMeta;
 }
