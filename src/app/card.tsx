@@ -49,7 +49,7 @@ async function innerCard({
   storyId: number;
   hnTitle: string;
   url: string | undefined;
-  dummyCard: JSX.Element;
+  dummyCard: React.JSX.Element;
   canVisit: boolean;
 }) {
   if (!canVisit || url == null) {
@@ -99,7 +99,7 @@ function card({
   source: string;
   title: string;
   description: string;
-  icon: JSX.Element | undefined;
+  icon: React.JSX.Element | undefined;
   imageUrl?: string;
   imageAlt?: string;
 }) {

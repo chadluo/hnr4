@@ -21,7 +21,7 @@ export const Dialog = ({
   kids: number[];
   text: string | undefined;
   storyType: string;
-  hnLink: JSX.Element;
+  hnLink: React.JSX.Element;
   openaiModel: string;
   canVisit: boolean;
   flags: Flags;
