@@ -11,8 +11,8 @@ let nextConfig = {
   },
 };
 
-const withVercelToolbar = require("@vercel/toolbar/plugins/next")();
-nextConfig = withVercelToolbar(nextConfig);
+// const withVercelToolbar = require("@vercel/toolbar/plugins/next")();
+// nextConfig = withVercelToolbar(nextConfig);
 
 // Injected content via Sentry wizard below
 
