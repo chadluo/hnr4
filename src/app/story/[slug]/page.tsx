@@ -22,7 +22,7 @@ export default async function Page({
   return (
     <>
       <Header />
-      <main className="mx-auto flex w-5/6 min-w-64 max-w-4xl flex-col gap-8">
+      <main className="mx-auto flex min-w-64 max-w-4xl flex-col gap-8 px-4">
         <React.Suspense key={storyId} fallback={<StoryPlaceholder />}>
           <Story storyId={storyId} openaiModel={openaiModel} flags={flags} />
         </React.Suspense>
