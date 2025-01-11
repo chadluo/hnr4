@@ -57,32 +57,34 @@ async function innerCard({
   }
 
   const html = await getHtmlContent(url);
-  if (html != null) {
-    const meta = await getMeta(storyId, html);
-    if (meta != null) {
-      const title = meta.title ?? hnTitle;
-      const description = meta.description ?? "";
-      const image = meta.image;
-      const imageAlt = meta.imageAlt;
-      const authors = meta.authors;
+  if (html == null) {
+    return dummyCard;
+  }
 
-      const imageUrl = checkImageUrl(image);
-      const dataSource = authors ? authors : url && extractSource(url);
-      const website = findWebsite(url);
-      const icon = website ? (
-        <i className={`fa fa-${mapIcon(website)} mr-1`}></i>
-      ) : undefined;
+  const meta = await getMeta(storyId, html);
+  if (meta != null) {
+    const title = meta.title ?? hnTitle;
+    const description = meta.description ?? "";
+    const image = meta.image;
+    const imageAlt = meta.imageAlt;
+    const authors = meta.authors;
 
-      return card({
-        url,
-        title,
-        source: dataSource,
-        icon,
-        description,
-        imageUrl,
-        imageAlt,
-      });
-    }
+    const imageUrl = checkImageUrl(image);
+    const dataSource = authors ? authors : url && extractSource(url);
+    const website = findWebsite(url);
+    const icon = website ? (
+      <i className={`fa fa-${mapIcon(website)} mr-1`}></i>
+    ) : undefined;
+
+    return card({
+      url,
+      title,
+      source: dataSource,
+      icon,
+      description,
+      imageUrl,
+      imageAlt,
+    });
   }
 }
 
