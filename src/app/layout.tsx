@@ -70,7 +70,7 @@ export default function RootLayout({
       >
         {children}
         {process.env.NODE_ENV !== "production" && <VercelToolbar />}
-        <Script src="https://kit.fontawesome.com/8c38f2aa0a.js"></Script>
+        <Script src="https://kit.fontawesome.com/8c38f2aa0a.js" />
         <SpeedInsights />
         <Analytics />
       </body>

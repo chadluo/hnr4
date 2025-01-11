@@ -73,7 +73,7 @@ async function innerCard({
     const dataSource = authors ? authors : url && extractSource(url);
     const website = findWebsite(url);
     const icon = website ? (
-      <i className={`fa fa-${mapIcon(website)} mr-1`}></i>
+      <i className={`fa fa-${mapIcon(website)} mr-1`} />
     ) : undefined;
 
     return card({

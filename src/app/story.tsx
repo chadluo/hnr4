@@ -105,8 +105,8 @@ const TweetPage = async ({ id }: { id: string }) => {
 export const StoryPlaceholder = () => {
   return (
     <div className="flex flex-col gap-3">
-      <div className="h-6 bg-neutral-900/60"></div>
-      <div className="h-36 bg-neutral-900/60"></div>
+      <div className="h-6 bg-neutral-900/60" />
+      <div className="h-36 bg-neutral-900/60" />
     </div>
   );
 };
