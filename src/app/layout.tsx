@@ -56,6 +56,14 @@ export default function RootLayout({
 
   return (
     <html lang="en">
+      <head>
+        {process.env.NODE_ENV !== "production" && (
+          <script
+            src="https://unpkg.com/react-scan/dist/auto.global.js"
+            async
+          />
+        )}
+      </head>
       <body
         style={{ background }}
         className={`${mono.variable} ${sans.variable} min-h-screen max-w-full overflow-x-hidden font-sans text-white`}
