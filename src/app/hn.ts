@@ -1,7 +1,8 @@
 const HN_ENDPOINT = "https://hacker-news.firebaseio.com/v0";
 
-type HNStory = {
+export type HNStory = {
   id: number;
+  by: string;
   title: string;
   url?: string;
   text?: string;

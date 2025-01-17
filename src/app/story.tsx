@@ -24,7 +24,7 @@ export async function Story({ storyId, openaiModel, flags }: StoryProps) {
   if (!hnStory) {
     return null;
   }
-  const { title, url, text, kids, type } = hnStory;
+  const { title, url, text, type } = hnStory;
 
   const hnUrl = `https://news.ycombinator.com/item?id=${storyId}`;
 
@@ -52,8 +52,7 @@ export async function Story({ storyId, openaiModel, flags }: StoryProps) {
     <h2 className="flex flex-col justify-between gap-2 md:flex-row">
       {hnLink}
       <Dialog
-        kids={kids}
-        text={text}
+        hnStory={hnStory}
         storyId={storyId}
         storyType={type}
         url={url}

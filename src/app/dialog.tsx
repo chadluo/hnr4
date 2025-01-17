@@ -4,12 +4,12 @@ import Comment from "@/app/comment";
 import classNames from "classnames";
 import * as React from "react";
 import type { Flags } from "./flags";
+import type { HNStory } from "./hn";
 import { Summary, type SummaryProps } from "./summary";
 
 // button & dialog body
 export const Dialog = ({
-  kids,
-  text,
+  hnStory,
   storyId,
   storyType,
   url,
@@ -18,8 +18,7 @@ export const Dialog = ({
   canVisit,
   flags,
 }: {
-  kids: number[];
-  text: string | undefined;
+  hnStory: HNStory;
   storyType: string;
   hnLink: React.JSX.Element;
   openaiModel: string;
@@ -29,13 +28,15 @@ export const Dialog = ({
   const dialogRef = React.useRef(null);
   const [isShowing, setShowing] = React.useState(false);
 
+  const { id, by, text, kids } = hnStory;
+
   const openDialog = React.useCallback(() => {
     if (dialogRef.current == null) {
       return;
     }
     (dialogRef.current as HTMLDialogElement).showModal();
     setShowing(true);
-    console.log("showing => true");
+    // console.log("showing => true");
   }, []);
 
   const closeDialog = React.useCallback(() => {
@@ -44,7 +45,7 @@ export const Dialog = ({
     }
     (dialogRef.current as HTMLDialogElement).close();
     setShowing(false);
-    console.log("showing => false");
+    // console.log("showing => false");
   }, []);
 
   const canSummarize = React.useMemo(() => {
@@ -65,24 +66,29 @@ export const Dialog = ({
   }, [canVisit, storyType, url]);
 
   const discussions = (text || kids) && (
-    <div className="[&>details:not(:first-of-type)]:border-t [&>details:not(:first-of-type)]:border-neutral-600 [&>details:not(:first-of-type)]:pt-2">
+    <div>
       {text && (
         <div
           className={classNames(
+            "pb-2",
             "[&_a]:break-words [&_a]:text-[#f60] hover:[&_a]:text-[#f0a675]",
             "[&_p]:mt-2",
             "[&_pre]:mb-2 [&_pre]:overflow-x-auto [&_pre]:text-sm [&_pre]:leading-6",
           )}
-          dangerouslySetInnerHTML={{ __html: text }}
+          dangerouslySetInnerHTML={{
+            __html: `${text} [<a href="https://news.ycombinator.com/item?id=${id}">${by}</a>]`,
+          }}
         />
       )}
-      {kids?.map((kid) => (
+      {kids?.map((kid, index) => (
         <Comment
           key={kid}
           commentId={kid}
+          index={index}
           isExpanded={false}
           isTop={true}
           isShowing={isShowing}
+          hasStoryText={text != null}
         />
       ))}
     </div>
@@ -94,8 +100,7 @@ export const Dialog = ({
         onClick={openDialog}
         className="font-normal hover:cursor-pointer hover:bg-neutral-900/70 md:-mx-3 md:-my-2 md:px-3 md:py-2"
       >
-        {canSummarize && <>🤖 {" | "}</>}
-        💬 {kids?.length ?? 0}
+        {canSummarize && <>🤖 {" | "}</>}💬 {kids?.length ?? 0}
       </a>
       <dialog
         ref={dialogRef}

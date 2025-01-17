@@ -6,13 +6,16 @@ import { type HNComment, getHNComment } from "./hn";
 
 type Props = {
   commentId: number;
+  index: number;
   isExpanded: boolean;
   isTop: boolean;
   isShowing: boolean;
+  hasStoryText?: boolean;
 };
 
 export default function Comment(props: Props) {
-  const { commentId, isExpanded, isTop, isShowing } = props;
+  const { commentId, index, isExpanded, isTop, isShowing, hasStoryText } =
+    props;
 
   const [comment, setComment] = React.useState<HNComment>();
   const [isLocalShowing, setLocalShowing] = React.useState(isShowing);
@@ -54,7 +57,11 @@ export default function Comment(props: Props) {
         }
       }}
       className={classNames(
-        { "pl-8": !isTop },
+        {
+          "pl-8": !isTop,
+          "border-t border-neutral-600 pt-2":
+            isTop && (hasStoryText || index !== 0),
+        },
         "[&_a]:break-words [&_a]:text-[#f60] hover:[&_a]:text-[#f0a675]",
         "[&_p]:mt-2",
         "[&_pre]:mb-2 [&_pre]:overflow-x-auto [&_pre]:text-sm [&_pre]:leading-6",
