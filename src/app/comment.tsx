@@ -6,10 +6,10 @@ import { type HNComment, getHNComment } from "./hn";
 
 type Props = {
   commentId: number;
-  index: number;
   isExpanded: boolean;
   isTop: boolean;
   isShowing: boolean;
+  index?: number;
   hasStoryText?: boolean;
 };
 

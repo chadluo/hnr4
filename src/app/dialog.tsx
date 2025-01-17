@@ -84,10 +84,10 @@ export const Dialog = ({
         <Comment
           key={kid}
           commentId={kid}
-          index={index}
           isExpanded={false}
           isTop={true}
           isShowing={isShowing}
+          index={index}
           hasStoryText={text != null}
         />
       ))}
