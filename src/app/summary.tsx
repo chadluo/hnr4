@@ -4,10 +4,10 @@ import { readStreamableValue } from "ai/rsc";
 import * as React from "react";
 import type { Flags } from "./flags";
 import { generateSummary } from "./generate";
+import { HNStory } from "./hn";
 
 export type SummaryProps = {
-  storyId: number;
-  url?: string;
+  hnStory: HNStory;
   isShowing: boolean;
   flags: Flags;
   openaiModel: string;
@@ -16,8 +16,7 @@ export type SummaryProps = {
 const DEFAULT_SUMMARY = "summary";
 
 export const Summary = ({
-  storyId,
-  url,
+  hnStory,
   isShowing,
   flags,
   openaiModel,
@@ -29,11 +28,12 @@ export const Summary = ({
     let isGenerating = true;
     if (isShowing) {
       (async () => {
+        const {id,  url } = hnStory;
         if (fakeSummary || url == null) {
           setGeneration(DEFAULT_SUMMARY);
         } else {
           const { output } = await generateSummary(
-            storyId,
+            id,
             url,
             openaiModel,
             forceRefreshSummary,
@@ -54,7 +54,7 @@ export const Summary = ({
       isGenerating = false;
       setGeneration("");
     };
-  }, [storyId, url, isShowing, openaiModel, forceRefreshSummary, fakeSummary]);
+  }, [hnStory, isShowing, openaiModel, forceRefreshSummary, fakeSummary]);
 
   return (
     <span

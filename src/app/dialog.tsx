@@ -10,16 +10,12 @@ import { Summary, type SummaryProps } from "./summary";
 // button & dialog body
 export const Dialog = ({
   hnStory,
-  storyId,
-  storyType,
-  url,
   hnLink,
   openaiModel,
   canVisit,
   flags,
 }: {
   hnStory: HNStory;
-  storyType: string;
   hnLink: React.JSX.Element;
   openaiModel: string;
   canVisit: boolean;
@@ -49,13 +45,8 @@ export const Dialog = ({
   }, []);
 
   const canSummarize = React.useMemo(() => {
-    if (
-      !canVisit ||
-      storyType === "job" ||
-      url == null ||
-      url.endsWith("pdf") ||
-      url.endsWith("mp4")
-    ) {
+    const { type, url } = hnStory;
+    if ( !canVisit || type === "job" || url == null || url.endsWith("pdf") || url.endsWith("mp4")) {
       return false;
     }
     const { hostname } = new URL(url);
@@ -63,7 +54,8 @@ export const Dialog = ({
       return false;
     }
     return true;
-  }, [canVisit, storyType, url]);
+  }, [canVisit, hnStory]);
+
 
   const discussions = (text || kids) && (
     <div>
@@ -120,8 +112,7 @@ export const Dialog = ({
             {canSummarize && (
               <div className="peer">
                 <Summary
-                  storyId={storyId}
-                  url={url}
+                  hnStory={hnStory}
                   flags={flags}
                   openaiModel={openaiModel}
                   isShowing={isShowing}

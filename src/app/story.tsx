@@ -24,7 +24,7 @@ export async function Story({ storyId, openaiModel, flags }: StoryProps) {
   if (!hnStory) {
     return null;
   }
-  const { title, url, text, type } = hnStory;
+  const { title, url, text } = hnStory;
 
   const hnUrl = `https://news.ycombinator.com/item?id=${storyId}`;
 
@@ -53,9 +53,6 @@ export async function Story({ storyId, openaiModel, flags }: StoryProps) {
       {hnLink}
       <Dialog
         hnStory={hnStory}
-        storyId={storyId}
-        storyType={type}
-        url={url}
         hnLink={hnLink}
         openaiModel={openaiModel}
         canVisit={canVisit}

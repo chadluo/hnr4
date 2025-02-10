@@ -43,7 +43,7 @@ export async function generateSummary(
       return;
     }
 
-    const { textStream } = await streamText({
+    const { textStream } = streamText({
       model: openai(openaiModel),
       messages: [
         {
