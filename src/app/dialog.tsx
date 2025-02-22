@@ -108,7 +108,7 @@ export const Dialog = ({
       >
         <div
           className={classNames(
-            "grid h-full grid-cols-1 gap-x-3 gap-y-4 overscroll-contain p-4 backdrop:overscroll-contain md:p-6",
+            "grid h-full grid-cols-1 grid-rows-[auto_1fr] gap-x-3 gap-y-4 overscroll-contain p-4 backdrop:overscroll-contain md:p-6",
             { "md:grid-cols-3": canSummarize },
           )}
         >
@@ -127,7 +127,7 @@ export const Dialog = ({
             </a>
           </h2>
           {canSummarize && (
-            <div className="peer">
+            <div>
               <Summary
                 hnStory={hnStory}
                 flags={flags}
@@ -136,7 +136,12 @@ export const Dialog = ({
               />
             </div>
           )}
-          <div className="col-span-1 overflow-y-scroll overscroll-contain md:peer-[]:col-span-2">
+          <div
+            className={classNames(
+              "col-span-1 overflow-y-scroll overscroll-contain",
+              { "md:col-span-2": canSummarize },
+            )}
+          >
             {discussions}
           </div>
         </div>
