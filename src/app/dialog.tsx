@@ -46,7 +46,13 @@ export const Dialog = ({
 
   const canSummarize = React.useMemo(() => {
     const { type, url } = hnStory;
-    if (!canVisit || type === "job" || url == null || url.endsWith("pdf") || url.endsWith("mp4")) {
+    if (
+      !canVisit ||
+      type === "job" ||
+      url == null ||
+      url.endsWith("pdf") ||
+      url.endsWith("mp4")
+    ) {
       return false;
     }
     const { hostname } = new URL(url);
@@ -55,7 +61,6 @@ export const Dialog = ({
     }
     return true;
   }, [canVisit, hnStory]);
-
 
   const discussions = (text || kids) && (
     <div>
@@ -96,10 +101,23 @@ export const Dialog = ({
       </a>
       <dialog
         ref={dialogRef}
-        className={`h-dvh max-h-dvh w-full ${canSummarize ? "max-w-6xl" : "max-w-4xl"} gap-4 overscroll-contain bg-neutral-900 text-base text-white backdrop:overscroll-contain backdrop:bg-neutral-800/95 md:max-h-[90vh]`}
+        className={classNames(
+          "h-dvh w-full bg-neutral-900 text-base text-white backdrop:bg-neutral-800/95 md:h-[90dvh]",
+          canSummarize ? "max-w-6xl" : "max-w-4xl",
+        )}
       >
-        <div className="flex h-dvh max-h-dvh flex-col gap-4 p-6 md:max-h-[90vh]">
-          <h2 className="flex justify-between gap-4 bg-neutral-900 font-bold">
+        <div
+          className={classNames(
+            "grid h-full grid-cols-1 gap-x-3 gap-y-4 overscroll-contain p-4 backdrop:overscroll-contain md:p-6",
+            { "md:grid-cols-3": canSummarize },
+          )}
+        >
+          <h2
+            className={classNames(
+              "flex justify-between gap-4 bg-neutral-900 font-bold",
+              { "md:col-span-3": canSummarize },
+            )}
+          >
             {hnLink}
             <a
               onClick={closeDialog}
@@ -108,18 +126,18 @@ export const Dialog = ({
               ❌
             </a>
           </h2>
-          <div className="grid grid-cols-1 gap-3 overflow-y-scroll overscroll-contain md:grid-cols-3">
-            {canSummarize && (
-              <div className="peer">
-                <Summary
-                  hnStory={hnStory}
-                  flags={flags}
-                  openaiModel={openaiModel}
-                  isShowing={isShowing}
-                />
-              </div>
-            )}
-            <div className="col-span-3 peer-[]:col-span-2">{discussions}</div>
+          {canSummarize && (
+            <div className="peer">
+              <Summary
+                hnStory={hnStory}
+                flags={flags}
+                openaiModel={openaiModel}
+                isShowing={isShowing}
+              />
+            </div>
+          )}
+          <div className="col-span-1 overflow-y-scroll overscroll-contain md:peer-[]:col-span-2">
+            {discussions}
           </div>
         </div>
       </dialog>
