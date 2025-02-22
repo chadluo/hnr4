@@ -46,7 +46,7 @@ export const Dialog = ({
 
   const canSummarize = React.useMemo(() => {
     const { type, url } = hnStory;
-    if ( !canVisit || type === "job" || url == null || url.endsWith("pdf") || url.endsWith("mp4")) {
+    if (!canVisit || type === "job" || url == null || url.endsWith("pdf") || url.endsWith("mp4")) {
       return false;
     }
     const { hostname } = new URL(url);
