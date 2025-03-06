@@ -11,13 +11,11 @@ import { Summary, type SummaryProps } from "./summary";
 export const Dialog = ({
   hnStory,
   hnLink,
-  openaiModel,
   canVisit,
   flags,
 }: {
   hnStory: HNStory;
   hnLink: React.JSX.Element;
-  openaiModel: string;
   canVisit: boolean;
   flags: Flags;
 } & Omit<SummaryProps, "isShowing">) => {
@@ -131,7 +129,6 @@ export const Dialog = ({
               <Summary
                 hnStory={hnStory}
                 flags={flags}
-                openaiModel={openaiModel}
                 isShowing={isShowing}
               />
             </div>

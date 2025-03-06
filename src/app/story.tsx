@@ -15,11 +15,10 @@ const noVisitWebsiteHostnames = [
 
 export type StoryProps = {
   storyId: number;
-  openaiModel: string;
   flags: Flags;
 };
 
-export async function Story({ storyId, openaiModel, flags }: StoryProps) {
+export async function Story({ storyId, flags }: StoryProps) {
   const hnStory = await getHnStory(storyId);
   if (!hnStory) {
     return null;
@@ -54,7 +53,6 @@ export async function Story({ storyId, openaiModel, flags }: StoryProps) {
       <Dialog
         hnStory={hnStory}
         hnLink={hnLink}
-        openaiModel={openaiModel}
         canVisit={canVisit}
         flags={flags}
       />
