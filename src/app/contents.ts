@@ -12,6 +12,7 @@ export const getHtmlContent = async (url: string) => {
     .then((response) => response.text())
     .catch((err) => {
       console.error({ message: "Cannot fetch html", url, err });
+      return null;
     })
     .finally(() => {
       clearTimeout(abortTimeout);
