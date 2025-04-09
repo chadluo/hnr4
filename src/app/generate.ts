@@ -37,7 +37,7 @@ export async function generateSummary(
 
     const article = new Readability(document).parse();
 
-    if (!article) {
+    if (!article || !article.textContent) {
       stream.done();
       return;
     }
