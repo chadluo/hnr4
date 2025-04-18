@@ -1,4 +1,4 @@
-import { unstable_flag as flag } from "@vercel/flags/next";
+import { flag } from "@vercel/flags/next";
 
 export type Flags = {
   forceRefreshSummary?: boolean;
