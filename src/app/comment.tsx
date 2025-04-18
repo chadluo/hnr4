@@ -2,7 +2,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { type HNComment, getHNComment } from "./hn";
+import { type HNComment, getHNComment } from "./hn.ts";
 
 type Props = {
   commentId: number;

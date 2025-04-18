@@ -1,7 +1,7 @@
 import Link from "next/link";
 import * as React from "react";
-import { getHtmlContent } from "./contents";
-import { getMeta } from "./meta";
+import { getHtmlContent } from "./contents.ts";
+import { getMeta } from "./meta.ts";
 
 type CardProps = {
   storyId: number;

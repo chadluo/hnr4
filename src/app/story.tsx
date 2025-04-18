@@ -2,10 +2,10 @@ import { unstable_cache } from "next/cache";
 import Link from "next/link";
 import { EmbeddedTweet, TweetNotFound } from "react-tweet";
 import { getTweet as _getTweet } from "react-tweet/api";
-import { Card } from "./card";
-import { Dialog } from "./dialog";
-import type { Flags } from "./flags";
-import { getHnStory } from "./hn";
+import { Card } from "./card.tsx";
+import { Dialog } from "./dialog.tsx";
+import type { Flags } from "./flags.ts";
+import { getHnStory } from "./hn.ts";
 
 const noVisitWebsiteHostnames = [
   "www.bloomberg.com",
