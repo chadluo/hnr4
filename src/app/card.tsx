@@ -113,7 +113,7 @@ function card({
       target="_blank"
     >
       {imageUrl && (
-        <div className="peer basis-1/3">
+        <div className="basis-1/3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={imageUrl}
@@ -122,7 +122,7 @@ function card({
           />
         </div>
       )}
-      <div className="basis-full peer-[]:basis-2/3">
+      <div className="basis-2/3 grow">
         <span className="line-clamp-2 text-neutral-400" title={url}>
           {icon}
           {source}
