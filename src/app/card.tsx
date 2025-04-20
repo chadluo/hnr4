@@ -9,7 +9,6 @@ type CardProps = {
   hnTitle: string;
   hnUrl: string;
   hnText: string | undefined;
-  canVisit: boolean;
 };
 
 type Website =
@@ -22,7 +21,7 @@ type Website =
   | "youtube";
 
 export async function Card(props: CardProps) {
-  const { storyId, url, hnTitle, hnUrl, hnText, canVisit } = props;
+  const { storyId, url, hnTitle, hnUrl, hnText } = props;
 
   const dummyCard = card({
     url: url ?? hnUrl,
@@ -34,7 +33,7 @@ export async function Card(props: CardProps) {
 
   return (
     <React.Suspense fallback={dummyCard}>
-      {innerCard({ storyId, hnTitle, url, dummyCard, canVisit })}
+      {innerCard({ storyId, hnTitle, url, dummyCard })}
     </React.Suspense>
   );
 }
@@ -44,15 +43,13 @@ async function innerCard({
   hnTitle,
   url,
   dummyCard,
-  canVisit,
 }: {
   storyId: number;
   hnTitle: string;
   url: string | undefined;
   dummyCard: React.JSX.Element;
-  canVisit: boolean;
 }) {
-  if (!canVisit || url == null) {
+  if (!url) {
     return dummyCard;
   }
 
@@ -122,7 +119,7 @@ function card({
           />
         </div>
       )}
-      <div className="basis-2/3 grow">
+      <div className="grow basis-2/3">
         <span className="line-clamp-2 text-neutral-400" title={url}>
           {icon}
           {source}

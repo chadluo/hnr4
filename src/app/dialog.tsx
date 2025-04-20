@@ -3,6 +3,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import Comment from "./comment";
+import { canVisit } from "./contents";
 import type { Flags } from "./flags";
 import type { HNStory } from "./hn";
 import { Summary, type SummaryProps } from "./summary";
@@ -11,12 +12,10 @@ import { Summary, type SummaryProps } from "./summary";
 export const Dialog = ({
   hnStory,
   hnLink,
-  canVisit,
   flags,
 }: {
   hnStory: HNStory;
   hnLink: React.JSX.Element;
-  canVisit: boolean;
   flags: Flags;
 } & Omit<SummaryProps, "isShowing">) => {
   const dialogRef = React.useRef(null);
@@ -44,13 +43,7 @@ export const Dialog = ({
 
   const canSummarize = React.useMemo(() => {
     const { type, url } = hnStory;
-    if (
-      !canVisit ||
-      type === "job" ||
-      url == null ||
-      url.endsWith("pdf") ||
-      url.endsWith("mp4")
-    ) {
+    if (type === "job" || url == null || !canVisit(url)) {
       return false;
     }
     const { hostname } = new URL(url);
@@ -58,7 +51,7 @@ export const Dialog = ({
       return false;
     }
     return true;
-  }, [canVisit, hnStory]);
+  }, [hnStory]);
 
   const discussions = (text || kids) && (
     <div>
@@ -100,7 +93,7 @@ export const Dialog = ({
       <dialog
         ref={dialogRef}
         className={classNames(
-          "h-dvh w-full bg-neutral-900 text-base text-white backdrop:bg-neutral-800/95 md:h-[90dvh] m-auto",
+          "m-auto h-dvh w-full bg-neutral-900 text-base text-white backdrop:bg-neutral-800/95 md:h-[90dvh]",
           canSummarize ? "max-w-6xl" : "max-w-4xl",
         )}
       >
@@ -126,11 +119,7 @@ export const Dialog = ({
           </h2>
           {canSummarize && (
             <div>
-              <Summary
-                hnStory={hnStory}
-                flags={flags}
-                isShowing={isShowing}
-              />
+              <Summary hnStory={hnStory} flags={flags} isShowing={isShowing} />
             </div>
           )}
           <div

@@ -1,8 +1,32 @@
 const DEFAULT_TIMEOUT_MS = 5000;
 
-export const getHtmlContent = async (url: string) => {
+const noVisitWebsiteHostnames = [
+  "bloomberg.com",
+  "reddit.com",
+  "reuters.com",
+  "washingtonpost.com",
+];
+
+export const canVisit = (url: string) => {
   if (!URL.canParse(url)) {
-    return;
+    return false;
+  }
+
+  if (url.endsWith(".pdf") || url.endsWith(".mp4")) {
+    return false;
+  }
+
+  const hostname = new URL(url).hostname;
+  if (noVisitWebsiteHostnames.some((h) => hostname.includes(h))) {
+    return false;
+  }
+
+  return true;
+};
+
+export const getHtmlContent = async (url: string) => {
+  if (!canVisit(url)) {
+    return null;
   }
 
   const controller = new AbortController();

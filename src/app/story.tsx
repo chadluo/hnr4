@@ -7,12 +7,6 @@ import { Dialog } from "./dialog";
 import type { Flags } from "./flags";
 import { getHnStory } from "./hn";
 
-const noVisitWebsiteHostnames = [
-  "www.bloomberg.com",
-  "www.reuters.com",
-  "www.washingtonpost.com",
-];
-
 export type StoryProps = {
   storyId: number;
   flags: Flags;
@@ -38,24 +32,17 @@ export async function Story({ storyId, flags }: StoryProps) {
   );
 
   let tweetId: string | undefined;
-  let canVisit = false;
   if (url) {
     const { hostname, pathname } = new URL(url);
     if (hostname === "twitter.com" || hostname === "x.com") {
       tweetId = pathname.split("/").slice(-1)[0];
     }
-    canVisit = !noVisitWebsiteHostnames.includes(new URL(url).hostname);
   }
 
   const storyLink = (
     <h2 className="flex flex-col justify-between gap-2 md:flex-row">
       {hnLink}
-      <Dialog
-        hnStory={hnStory}
-        hnLink={hnLink}
-        canVisit={canVisit}
-        flags={flags}
-      />
+      <Dialog hnStory={hnStory} hnLink={hnLink} flags={flags} />
     </h2>
   );
 
@@ -72,7 +59,6 @@ export async function Story({ storyId, flags }: StoryProps) {
             hnTitle={title}
             hnUrl={hnUrl}
             hnText={text}
-            canVisit={canVisit}
           />
         )}
       </div>
