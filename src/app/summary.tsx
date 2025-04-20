@@ -2,9 +2,9 @@
 
 import { readStreamableValue } from "ai/rsc";
 import * as React from "react";
-import type { Flags } from "./flags.ts";
-import { generateSummary } from "./generate.ts";
-import type { HNStory } from "./hn.ts";
+import type { Flags } from "./flags";
+import { generateSummary } from "./generate";
+import type { HNStory } from "./hn";
 
 export type SummaryProps = {
   hnStory: HNStory;

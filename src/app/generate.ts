@@ -6,7 +6,7 @@ import { kv } from "@vercel/kv";
 import { streamText } from "ai";
 import { createStreamableValue } from "ai/rsc";
 import { JSDOM } from "jsdom";
-import { getHtmlContent } from "./contents.ts";
+import { getHtmlContent } from "./contents";
 
 export async function generateSummary(
   storyId: number,

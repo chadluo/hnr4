@@ -2,10 +2,10 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import Comment from "./comment.tsx";
-import type { Flags } from "./flags.ts";
-import type { HNStory } from "./hn.ts";
-import { Summary, type SummaryProps } from "./summary.tsx";
+import Comment from "./comment";
+import type { Flags } from "./flags";
+import type { HNStory } from "./hn";
+import { Summary, type SummaryProps } from "./summary";
 
 // button & dialog body
 export const Dialog = ({

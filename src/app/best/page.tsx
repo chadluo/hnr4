@@ -1,9 +1,9 @@
 import * as React from "react";
-import { fakeSummary, forceRefreshSummary } from "../flags.ts";
-import Footer from "../footer.tsx";
-import { Header } from "../header.tsx";
-import { getHNStories } from "../hn.ts";
-import { Story, StoryPlaceholder } from "../story.tsx";
+import { fakeSummary, forceRefreshSummary } from "../flags";
+import Footer from "../footer";
+import { Header } from "../header";
+import { getHNStories } from "../hn";
+import { Story, StoryPlaceholder } from "../story";
 
 export default async function Page() {
   const flags = {

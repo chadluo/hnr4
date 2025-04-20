@@ -1,7 +1,7 @@
 import Link from "next/link";
 import * as React from "react";
-import { getHtmlContent } from "./contents.ts";
-import { getMeta } from "./meta.ts";
+import { getHtmlContent } from "./contents";
+import { getMeta } from "./meta";
 
 type CardProps = {
   storyId: number;
@@ -114,6 +114,7 @@ function card({
     >
       {imageUrl && (
         <div className="peer basis-1/3">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={imageUrl}
             alt={imageAlt ?? ""}
