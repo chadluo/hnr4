@@ -1,8 +1,8 @@
 "use client";
 
-import Comment from "@/app/comment";
 import classNames from "classnames";
 import * as React from "react";
+import Comment from "./comment";
 import type { Flags } from "./flags";
 import type { HNStory } from "./hn";
 import { Summary, type SummaryProps } from "./summary";
@@ -100,7 +100,7 @@ export const Dialog = ({
       <dialog
         ref={dialogRef}
         className={classNames(
-          "h-dvh w-full bg-neutral-900 text-base text-white backdrop:bg-neutral-800/95 md:h-[90dvh]",
+          "h-dvh w-full bg-neutral-900 text-base text-white backdrop:bg-neutral-800/95 md:h-[90dvh] m-auto",
           canSummarize ? "max-w-6xl" : "max-w-4xl",
         )}
       >

@@ -1,0 +1,6 @@
+onlyBuiltDependencies:
+  - '@sentry/cli'
+  - '@vercel/speed-insights'
+  - bufferutil
+  - sharp
+  - utf-8-validate

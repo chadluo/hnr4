@@ -1,11 +1,5 @@
 // import { sql } from "@vercel/postgres";
-import { parse } from "parse5";
-import type { Attribute } from "parse5/dist/common/token";
-import type {
-  Element,
-  Node,
-  TextNode,
-} from "parse5/dist/tree-adapters/default";
+import { DefaultTreeAdapterTypes, Token, parse } from "parse5";
 
 export type Meta = {
   title?: string;
@@ -61,20 +55,20 @@ export async function getMeta(storyId: number, html: string) {
 
 function findRawMeta(storyId: number, html: string): Map<string, string[]> {
   const parsed = parse(html, { scriptingEnabled: false });
-  const htmlNode: Element | undefined = parsed?.childNodes.find(
-    (node: Node) => node.nodeName === "html",
-  ) as Element | undefined;
-  const headNode: Element | undefined = htmlNode?.childNodes.find(
-    (node: Node) => node.nodeName === "head",
-  ) as Element | undefined;
+  const htmlNode: DefaultTreeAdapterTypes.Element | undefined = parsed?.childNodes.find(
+    (node: DefaultTreeAdapterTypes.Node) => node.nodeName === "html",
+  ) as DefaultTreeAdapterTypes.Element | undefined;
+  const headNode: DefaultTreeAdapterTypes.Element | undefined = htmlNode?.childNodes.find(
+    (node: DefaultTreeAdapterTypes.Node) => node.nodeName === "head",
+  ) as DefaultTreeAdapterTypes.Element | undefined;
   const rawMeta = headNode?.childNodes
     .map((node) => {
       if (node.nodeName === "title") {
-        const value = node.childNodes[0] as TextNode;
+        const value = node.childNodes[0] as DefaultTreeAdapterTypes.TextNode;
         if (value == null) {
           console.warn("Cannot load title", { storyId });
         } else {
-          return ["title", (node.childNodes[0] as TextNode).value] as [
+          return ["title", (node.childNodes[0] as DefaultTreeAdapterTypes.TextNode).value] as [
             string,
             string,
           ];
@@ -83,10 +77,10 @@ function findRawMeta(storyId: number, html: string): Map<string, string[]> {
 
       if (node.nodeName === "meta") {
         const key = node.attrs.find(
-          (attr: Attribute) => attr.name === "property" || attr.name === "name",
+          (attr: Token.Attribute) => attr.name === "property" || attr.name === "name",
         )?.value;
         const value = node.attrs.find(
-          (attr: Attribute) => attr.name === "content",
+          (attr: Token.Attribute) => attr.name === "content",
         )?.value;
         if (key == null || value == null) {
           return;
