@@ -5,6 +5,7 @@ const noVisitWebsiteHostnames = [
   "reddit.com",
   "reuters.com",
   "washingtonpost.com",
+  "wsj.com"
 ];
 
 export const canVisit = (url: string) => {
