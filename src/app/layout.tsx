@@ -60,8 +60,8 @@ export default function RootLayout({
   const c = 0.1 + Math.random() * 0.1;
 
   const background = [
-    `linear-gradient(${deg1}deg, oklch(${l} ${c} ${h1}deg), 20%, rgba(0, 0, 0, 0))`,
-    `linear-gradient(${deg2}deg, oklch(${l} ${c} ${h2}deg), 20%, rgba(0, 0, 0, 0))`,
+    `linear-gradient(${deg1}deg, oklch(${l} ${c} ${h1}deg), 20%, oklch(0 0 ${h1}deg / 0))`,
+    `linear-gradient(${deg2}deg, oklch(${l} ${c} ${h2}deg), 20%, oklch(0 0 ${h2}deg / 0))`,
     "black",
   ].join(",");
 
