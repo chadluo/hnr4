@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import Link from "next/link";
 import * as React from "react";
 import { getHtmlContent } from "./contents";
@@ -65,6 +66,7 @@ async function innerCard({
     const image = meta.image;
     const imageAlt = meta.imageAlt;
     const authors = meta.authors;
+    const themeColor = meta.themeColor;
 
     const imageUrl = checkImageUrl(image);
     const dataSource = authors ? authors : url && extractSource(url);
@@ -81,6 +83,7 @@ async function innerCard({
       description,
       imageUrl,
       imageAlt,
+      themeColor,
     });
   }
 }
@@ -93,6 +96,7 @@ function card({
   description,
   imageUrl,
   imageAlt,
+  themeColor,
 }: {
   url: string;
   source: string;
@@ -101,13 +105,20 @@ function card({
   icon: React.JSX.Element | undefined;
   imageUrl?: string;
   imageAlt?: string;
+  themeColor?: string;
 }) {
   return (
     <Link
       href={url}
       title={url}
-      className="flex flex-col gap-3 rounded bg-neutral-900/60 p-3 hover:bg-neutral-800/60 md:flex-row-reverse"
+      className={classNames(
+        "flex flex-col gap-3 rounded bg-neutral-900/60 p-3 hover:bg-neutral-800/60 md:flex-row-reverse",
+        {
+          [`border border-[${themeColor}]`]: themeColor,
+        },
+      )}
       target="_blank"
+      style={{ borderColor: themeColor }}
     >
       {imageUrl && (
         <div className="basis-1/3">

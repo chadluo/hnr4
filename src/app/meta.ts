@@ -7,6 +7,7 @@ export type Meta = {
   image?: string;
   imageAlt?: string;
   authors?: string;
+  themeColor?: string;
 };
 
 export async function getMeta(storyId: number, html: string) {
@@ -16,7 +17,7 @@ export async function getMeta(storyId: number, html: string) {
   //    return existingMeta.rows[0];
   //  }
   const rawMeta = findRawMeta(storyId, html);
-  const meta = {
+  const meta: Meta = {
     title: (rawMeta.get("title") ??
       rawMeta.get("og:title") ??
       rawMeta.get("twitter:title"))?.[0],
@@ -27,6 +28,7 @@ export async function getMeta(storyId: number, html: string) {
     imageAlt: (rawMeta.get("og:image:alt") ??
       rawMeta.get("twitter:image:alt"))?.[0],
     authors: rawMeta.get("citation_author")?.join(" | "),
+    themeColor: rawMeta.get("theme-color")?.[0],
   };
 
   //  await sql`MERGE INTO metadata as target
@@ -55,12 +57,14 @@ export async function getMeta(storyId: number, html: string) {
 
 function findRawMeta(storyId: number, html: string): Map<string, string[]> {
   const parsed = parse(html, { scriptingEnabled: false });
-  const htmlNode: DefaultTreeAdapterTypes.Element | undefined = parsed?.childNodes.find(
-    (node: DefaultTreeAdapterTypes.Node) => node.nodeName === "html",
-  ) as DefaultTreeAdapterTypes.Element | undefined;
-  const headNode: DefaultTreeAdapterTypes.Element | undefined = htmlNode?.childNodes.find(
-    (node: DefaultTreeAdapterTypes.Node) => node.nodeName === "head",
-  ) as DefaultTreeAdapterTypes.Element | undefined;
+  const htmlNode: DefaultTreeAdapterTypes.Element | undefined =
+    parsed?.childNodes.find(
+      (node: DefaultTreeAdapterTypes.Node) => node.nodeName === "html",
+    ) as DefaultTreeAdapterTypes.Element | undefined;
+  const headNode: DefaultTreeAdapterTypes.Element | undefined =
+    htmlNode?.childNodes.find(
+      (node: DefaultTreeAdapterTypes.Node) => node.nodeName === "head",
+    ) as DefaultTreeAdapterTypes.Element | undefined;
   const rawMeta = headNode?.childNodes
     .map((node) => {
       if (node.nodeName === "title") {
@@ -68,16 +72,17 @@ function findRawMeta(storyId: number, html: string): Map<string, string[]> {
         if (value == null) {
           console.warn("Cannot load title", { storyId });
         } else {
-          return ["title", (node.childNodes[0] as DefaultTreeAdapterTypes.TextNode).value] as [
-            string,
-            string,
-          ];
+          return [
+            "title",
+            (node.childNodes[0] as DefaultTreeAdapterTypes.TextNode).value,
+          ] as [string, string];
         }
       }
 
       if (node.nodeName === "meta") {
         const key = node.attrs.find(
-          (attr: Token.Attribute) => attr.name === "property" || attr.name === "name",
+          (attr: Token.Attribute) =>
+            attr.name === "property" || attr.name === "name",
         )?.value;
         const value = node.attrs.find(
           (attr: Token.Attribute) => attr.name === "content",
