@@ -14,6 +14,7 @@ type CardProps = {
 type Website =
   | "apple"
   | "github"
+  | "google"
   | "medium"
   | "reddit"
   | "wikipedia"
@@ -173,6 +174,8 @@ function findWebsite(url: string): Website | undefined {
     return "apple";
   } else if (hostname.endsWith("github.com")) {
     return "github";
+  } else if (hostname.includes("google")) {
+    return "google";
   } else if (hostname.endsWith("medium.com")) {
     return "medium";
   } else if (hostname.endsWith("reddit.com")) {
