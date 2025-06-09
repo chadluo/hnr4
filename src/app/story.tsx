@@ -34,7 +34,10 @@ export async function Story({ storyId, flags }: StoryProps) {
   let tweetId: string | undefined;
   if (url) {
     const { hostname, pathname } = new URL(url);
-    if (hostname === "twitter.com" || hostname === "x.com") {
+    if (
+      (hostname === "twitter.com" || hostname === "x.com") &&
+      pathname.match(/\/status\/\d+/)
+    ) {
       tweetId = pathname.split("/").slice(-1)[0];
     }
   }
