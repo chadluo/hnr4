@@ -128,7 +128,10 @@ function card({
           className="text-base font-bold"
           // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
           dangerouslySetInnerHTML={{
-            __html: title.replaceAll("/", "<wbr>/"),
+            __html: title
+              .replaceAll("/", "<wbr>/")
+              .replaceAll("<", "&lt;")
+              .replaceAll(">", "&gt;"),
           }}
         />
         <div
