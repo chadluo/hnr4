@@ -130,9 +130,9 @@ function card({
           // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
           dangerouslySetInnerHTML={{
             __html: title
-              .replaceAll("/", "<wbr>/")
               .replaceAll("<", "&lt;")
-              .replaceAll(">", "&gt;"),
+              .replaceAll(">", "&gt;")
+              .replaceAll("/", "<wbr>/"),
           }}
         />
         <div
