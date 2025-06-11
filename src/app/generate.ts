@@ -7,6 +7,7 @@ import { streamText } from "ai";
 import { createStreamableValue } from "ai/rsc";
 import { JSDOM } from "jsdom";
 import { getHtmlContent } from "./contents";
+import { model } from "./model";
 
 export async function generateSummary(
   storyId: number,
@@ -43,7 +44,7 @@ export async function generateSummary(
     }
 
     const { textStream } = streamText({
-      model: openai("gpt-4o-mini"),
+      model: openai(model),
       messages: [
         {
           role: "system",
