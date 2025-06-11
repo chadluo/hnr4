@@ -88,7 +88,12 @@ export const Dialog = ({
         onClick={openDialog}
         className="font-normal hover:cursor-pointer hover:bg-neutral-900/70 md:-mx-3 md:-my-2 md:px-3 md:py-2"
       >
-        {canSummarize && <>🤖 {" | "}</>}💬 {kids?.length ?? 0}
+        {canSummarize && (
+          <>
+            <i className="fa-solid fa-robot"></i> {" | "}
+          </>
+        )}
+        <i className="fa-solid fa-comments"></i> {kids?.length ?? 0}
       </a>
       <dialog
         ref={dialogRef}
@@ -112,9 +117,9 @@ export const Dialog = ({
             {hnLink}
             <a
               onClick={closeDialog}
-              className="-m-1 p-1 hover:cursor-pointer hover:bg-neutral-700"
+              className="-m-1.5 p-1.5 hover:cursor-pointer hover:bg-neutral-700"
             >
-              ❌
+              <i className="fa-solid fa-xmark"></i>
             </a>
           </h2>
           {canSummarize && (
