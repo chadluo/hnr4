@@ -90,10 +90,10 @@ export const Dialog = ({
       >
         {canSummarize && (
           <>
-            <i className="fa-solid fa-robot"></i> {" | "}
+            <i className="fa-solid fa-robot" /> {" | "}
           </>
         )}
-        <i className="fa-solid fa-comments"></i> {kids?.length ?? 0}
+        <i className="fa-solid fa-comments" /> {kids?.length ?? 0}
       </a>
       <dialog
         ref={dialogRef}
@@ -119,7 +119,7 @@ export const Dialog = ({
               onClick={closeDialog}
               className="-m-1.5 p-1.5 hover:cursor-pointer hover:bg-neutral-700"
             >
-              <i className="fa-solid fa-xmark"></i>
+              <i className="fa-solid fa-xmark" />
             </a>
           </h2>
           {canSummarize && (

@@ -1,4 +1,4 @@
-import { ApiData, verifyAccess } from "flags";
+import { type ApiData, verifyAccess } from "flags";
 import { createFlagsDiscoveryEndpoint } from "flags/next";
 
 export const GET = createFlagsDiscoveryEndpoint(async (request) => {
