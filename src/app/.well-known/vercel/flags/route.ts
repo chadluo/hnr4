@@ -1,11 +1,11 @@
-import { verifyAccess, type ApiData } from "flags";
-import { NextResponse, type NextRequest } from "next/server";
+import { ApiData, verifyAccess } from "flags";
+import { createFlagsDiscoveryEndpoint } from "flags/next";
 
-export async function GET(request: NextRequest) {
+export const GET = createFlagsDiscoveryEndpoint(async (request) => {
   const access = await verifyAccess(request.headers.get("Authorization"));
-  if (!access) return NextResponse.json(null, { status: 401 });
+  if (!access) return {};
 
-  return NextResponse.json<ApiData>({
+  return {
     definitions: {
       fakeSummary: {
         options: [
@@ -20,5 +20,5 @@ export async function GET(request: NextRequest) {
         ],
       },
     },
-  });
-}
+  } as ApiData;
+});
