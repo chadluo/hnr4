@@ -32,13 +32,16 @@ export async function Story({ storyId, flags }: StoryProps) {
   );
 
   let tweetId: string | undefined;
+  let youtubeId: string | undefined;
   if (url) {
-    const { hostname, pathname } = new URL(url);
+    const { hostname, pathname, searchParams } = new URL(url);
     if (
       (hostname === "twitter.com" || hostname === "x.com") &&
       pathname.match(/\/status\/\d+/)
     ) {
       tweetId = pathname.split("/").slice(-1)[0];
+    } else if (hostname.endsWith("youtube.com")) {
+      youtubeId = searchParams.get("v") ?? undefined;
     }
   }
 
@@ -55,6 +58,8 @@ export async function Story({ storyId, flags }: StoryProps) {
         {storyLink}
         {tweetId ? (
           <TweetPage id={tweetId} />
+        ) : youtubeId ? (
+          <YoutubePlayer title={title} youtubeId={youtubeId} />
         ) : (
           <Card
             storyId={storyId}
@@ -93,3 +98,20 @@ export const StoryPlaceholder = () => {
     </div>
   );
 };
+
+const YoutubePlayer = ({
+  title,
+  youtubeId,
+}: {
+  title: string;
+  youtubeId: string;
+}) => (
+  <div className="aspect-video max-w-2/3">
+    <iframe
+      title={title}
+      width="100%"
+      height="100%"
+      src={`https://www.youtube.com/embed/${youtubeId}`}
+    />
+  </div>
+);
