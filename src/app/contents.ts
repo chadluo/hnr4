@@ -2,10 +2,11 @@ const DEFAULT_TIMEOUT_MS = 5000;
 
 const noVisitWebsiteHostnames = [
   "bloomberg.com",
+  "ft.com",
   "reddit.com",
   "reuters.com",
   "washingtonpost.com",
-  "wsj.com"
+  "wsj.com",
 ];
 
 export const canVisit = (url: string) => {
