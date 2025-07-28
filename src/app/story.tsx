@@ -24,7 +24,7 @@ export async function Story({ storyId, flags }: StoryProps) {
   const hnLink = (
     <Link
       href={hnUrl}
-      className="text-base font-bold hover:text-[#f60]"
+      className="font-bold hover:text-[#f60]"
       target="_blank"
     >
       {title}
@@ -46,7 +46,7 @@ export async function Story({ storyId, flags }: StoryProps) {
   }
 
   const storyLink = (
-    <h2 className="flex flex-col justify-between gap-2 md:flex-row">
+    <h2 className="flex flex-col justify-between gap-2 text-sm md:flex-row md:text-base">
       {hnLink}
       <Dialog hnStory={hnStory} hnLink={hnLink} flags={flags} />
     </h2>

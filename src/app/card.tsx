@@ -126,7 +126,7 @@ function card({
           {source}
         </span>
         <h2
-          className="text-base font-bold"
+          className="font-bold"
           // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
           dangerouslySetInnerHTML={{
             __html: title

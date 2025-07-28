@@ -77,7 +77,7 @@ export default function RootLayout({
       </head>
       <body
         style={{ background }}
-        className={`${mono.variable} ${sans.variable} min-h-screen max-w-full overflow-x-hidden font-sans text-white`}
+        className={`${mono.variable} ${sans.variable} min-h-screen max-w-full overflow-x-hidden font-sans text-sm text-white md:text-base`}
       >
         {children}
         {process.env.NODE_ENV !== "production" && <VercelToolbar />}

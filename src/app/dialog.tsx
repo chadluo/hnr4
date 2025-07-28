@@ -98,7 +98,7 @@ export const Dialog = ({
       <dialog
         ref={dialogRef}
         className={classNames(
-          "m-auto h-dvh w-full bg-neutral-900 text-base text-white backdrop:bg-neutral-800/95 md:h-[90dvh]",
+          "m-auto h-dvh w-full bg-neutral-900 text-white backdrop:bg-neutral-800/95 md:h-[90dvh]",
           canSummarize ? "max-w-6xl" : "max-w-4xl",
         )}
       >
