@@ -98,13 +98,14 @@ export const Dialog = ({
       <dialog
         ref={dialogRef}
         className={classNames(
-          "m-auto h-dvh w-full bg-neutral-900 text-white backdrop:bg-neutral-800/95 md:h-[90dvh]",
+          "mt-auto mb-0 h-dvh w-full bg-neutral-900 text-white backdrop:bg-neutral-800/95 md:m-auto md:h-[90dvh]",
           canSummarize ? "max-w-6xl" : "max-w-4xl",
+          "overscroll-contain backdrop:overscroll-contain",
         )}
       >
         <div
           className={classNames(
-            "grid h-full grid-cols-1 grid-rows-[auto_1fr] gap-x-3 gap-y-4 overscroll-contain p-4 backdrop:overscroll-contain md:p-6",
+            "grid h-full grid-cols-1 grid-rows-[auto_1fr] gap-x-3 gap-y-4 p-4 md:p-6",
             { "md:grid-cols-3": canSummarize },
           )}
         >
@@ -122,18 +123,32 @@ export const Dialog = ({
               <i className="fa-solid fa-xmark" />
             </a>
           </h2>
-          {canSummarize && (
-            <div>
-              <Summary hnStory={hnStory} flags={flags} isShowing={isShowing} />
-            </div>
-          )}
           <div
             className={classNames(
-              "col-span-1 overflow-y-scroll overscroll-contain",
-              { "md:col-span-2": canSummarize },
+              "grid h-full overflow-y-auto",
+              "col-span-full grid-cols-subgrid",
+              "gap-y-4 max-md:grid-rows-[auto_1fr] md:row-span-1 md:grid-rows-subgrid",
             )}
           >
-            {discussions}
+            {canSummarize && (
+              <div className="col-span-1 row-span-1">
+                <Summary
+                  hnStory={hnStory}
+                  flags={flags}
+                  isShowing={isShowing}
+                />
+              </div>
+            )}
+            <div
+              className={classNames(
+                "col-span-1 row-span-1 md:overflow-y-auto",
+                {
+                  "md:col-span-2": canSummarize,
+                },
+              )}
+            >
+              {discussions}
+            </div>
           </div>
         </div>
       </dialog>
