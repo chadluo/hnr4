@@ -2,6 +2,7 @@ const DEFAULT_TIMEOUT_MS = 5000;
 
 const noVisitWebsiteHostnames = [
   "bloomberg.com",
+  "economist.com",
   "ft.com",
   "reddit.com",
   "reuters.com",
