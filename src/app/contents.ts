@@ -6,6 +6,7 @@ const noVisitWebsiteHostnames = [
   "ft.com",
   "reddit.com",
   "reuters.com",
+  "telegraph.co.uk",
   "washingtonpost.com",
   "wsj.com",
 ];
