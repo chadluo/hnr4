@@ -6,7 +6,7 @@ export type HNStory = {
   title: string;
   url?: string;
   text?: string;
-  kids: number[];
+  kids?: number[];
   type: "job" | "story" | "comment" | "poll" | "pollopt";
 };
 

@@ -2,7 +2,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import Comment from "./comment";
+import { Comment, EmptyComment } from "./comment";
 import { canVisit } from "./contents";
 import type { Flags } from "./flags";
 import type { HNStory } from "./hn";
@@ -53,7 +53,7 @@ export const Dialog = ({
     return true;
   }, [hnStory]);
 
-  const discussions = (text || kids) && (
+  const discussions = ((text || kids) && (
     <div>
       {text && (
         <div
@@ -78,9 +78,9 @@ export const Dialog = ({
           index={index}
           hasStoryText={text != null}
         />
-      ))}
+      )) || <EmptyComment />}
     </div>
-  );
+  )) || <EmptyComment />;
 
   return (
     <>

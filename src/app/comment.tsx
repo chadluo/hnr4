@@ -13,7 +13,9 @@ type Props = {
   hasStoryText?: boolean;
 };
 
-export default function Comment(props: Props) {
+export const EmptyComment = () => <span className="italic">No comments yet.</span>;
+
+export function Comment(props: Props) {
   const { commentId, index, isExpanded, isTop, isShowing, hasStoryText } =
     props;
 
