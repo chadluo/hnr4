@@ -1,10 +1,10 @@
 "use server";
 
 import { openai } from "@ai-sdk/openai";
+import { createStreamableValue } from "@ai-sdk/rsc";
 import { Readability } from "@mozilla/readability";
 import { kv } from "@vercel/kv";
 import { streamText } from "ai";
-import { createStreamableValue } from "ai/rsc";
 import { JSDOM } from "jsdom";
 import { getHtmlContent } from "./contents";
 import { model } from "./model";

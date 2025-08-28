@@ -1,1 +1,1 @@
-export const model = "gpt-4.1-nano";
+export const model = "gpt-5-nano";

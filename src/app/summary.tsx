@@ -1,6 +1,6 @@
 "use client";
 
-import { readStreamableValue } from "ai/rsc";
+import { readStreamableValue } from "@ai-sdk/rsc";
 import * as React from "react";
 import type { Flags } from "./flags";
 import { generateSummary } from "./generate";
