@@ -58,7 +58,7 @@ export async function generateSummary(
           content: article.textContent,
         },
       ],
-      maxTokens: 128,
+      maxOutputTokens: 128,
     });
 
     let completeResponse = "";
