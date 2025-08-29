@@ -50,7 +50,7 @@ export const Summary = ({ hnStory, isShowing, flags }: SummaryProps) => {
       setGenerating(false);
       setGeneration("");
     };
-  }, [hnStory, isShowing, forceRefreshSummary, fakeSummary]);
+  }, [hnStory, isShowing, forceRefreshSummary, fakeSummary, isGenerating]);
 
   return (
     <span

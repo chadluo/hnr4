@@ -1,3 +1,5 @@
+"use server";
+
 const DEFAULT_TIMEOUT_MS = 5000;
 
 const noVisitWebsiteHostnames = [
@@ -11,7 +13,7 @@ const noVisitWebsiteHostnames = [
   "wsj.com",
 ];
 
-export const canVisit = (url: string) => {
+export const canVisit = async (url: string) => {
   if (!URL.canParse(url)) {
     return false;
   }
@@ -29,7 +31,7 @@ export const canVisit = (url: string) => {
 };
 
 export const getHtmlContent = async (url: string) => {
-  if (!canVisit(url)) {
+  if (!(await canVisit(url))) {
     return null;
   }
 

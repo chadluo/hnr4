@@ -1,5 +1,6 @@
-/** @type {import('next').NextConfig} */
-let nextConfig = {
+import type { NextConfig } from "next";
+
+let nextConfig: NextConfig = {
   reactStrictMode: true,
   images: {
     formats: ["image/avif", "image/webp"],
@@ -9,7 +10,10 @@ let nextConfig = {
       },
     ],
   },
-  eslint: {}
+  eslint: {},
+  experimental: {
+    useCache: true,
+  },
 };
 
 const withVercelToolbar = require("@vercel/toolbar/plugins/next")();
