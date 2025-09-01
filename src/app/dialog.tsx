@@ -1,6 +1,7 @@
 "use client";
 
 import classNames from "classnames";
+import Link from "next/link";
 import * as React from "react";
 import { canVisit } from "./can_visit";
 import { Comment, EmptyComment } from "./comment";
@@ -11,17 +12,12 @@ import { Summary, type SummaryProps } from "./summary";
 // button & dialog body
 export const Dialog = ({
   hnStory,
-  hnLink,
   flags,
-}: {
-  hnStory: HNStory;
-  hnLink: React.JSX.Element;
-  flags: Flags;
-} & Omit<SummaryProps, "isShowing">) => {
+}: { hnStory: HNStory; flags: Flags } & Omit<SummaryProps, "isShowing">) => {
   const dialogRef = React.useRef(null);
   const [isShowing, setShowing] = React.useState(false);
 
-  const { id, by, text, kids } = hnStory;
+  const { by, id, kids, text, title, type, url } = hnStory;
 
   const openDialog = React.useCallback(() => {
     if (dialogRef.current == null) {
@@ -42,7 +38,6 @@ export const Dialog = ({
   }, []);
 
   const canSummarize = React.useMemo(() => {
-    const { type, url } = hnStory;
     if (type === "job" || url == null || !canVisit(url)) {
       return false;
     }
@@ -51,7 +46,7 @@ export const Dialog = ({
       return false;
     }
     return true;
-  }, [hnStory]);
+  }, [type, url]);
 
   const discussions = ((text || kids) && (
     <div>
@@ -115,7 +110,11 @@ export const Dialog = ({
               { "md:col-span-3": canSummarize },
             )}
           >
-            {hnLink}
+            {url != null && (
+              <Link className="hover:text-neutral-200" href={url}>
+                {title}
+              </Link>
+            )}
             <a
               onClick={closeDialog}
               className="-m-1.5 p-1.5 hover:cursor-pointer hover:bg-neutral-700"

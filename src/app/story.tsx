@@ -21,16 +21,6 @@ export async function Story({ storyId, flags }: StoryProps) {
 
   const hnUrl = `https://news.ycombinator.com/item?id=${storyId}`;
 
-  const hnLink = (
-    <Link
-      href={hnUrl}
-      className="font-bold hover:text-[#f60]"
-      target="_blank"
-    >
-      {title}
-    </Link>
-  );
-
   let tweetId: string | undefined;
   let youtubeId: string | undefined;
   if (url) {
@@ -47,8 +37,14 @@ export async function Story({ storyId, flags }: StoryProps) {
 
   const storyLink = (
     <h2 className="flex flex-col justify-between gap-2 text-sm md:flex-row md:text-base">
-      {hnLink}
-      <Dialog hnStory={hnStory} hnLink={hnLink} flags={flags} />
+      <Link
+        href={hnUrl}
+        className="font-bold hover:text-[#f60]"
+        target="_blank"
+      >
+        {title}
+      </Link>
+      <Dialog hnStory={hnStory} flags={flags} />
     </h2>
   );
 

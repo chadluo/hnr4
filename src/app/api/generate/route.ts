@@ -13,7 +13,7 @@ const DEFAULT_SUMMARY = "summary";
 
 export async function POST(request: Request) {
   if (await fakeSummary()) {
-    return new Response(DEFAULT_SUMMARY);
+    return new Response(JSON.stringify({ summary: DEFAULT_SUMMARY }));
   }
 
   const { id, url }: HNStory = await request.json();
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
   const key = `summary-${id}`;
   const existingSummary = (await kv.get(key)) as string;
   if (existingSummary && !(await forceRefreshSummary())) {
-    return new Response(existingSummary);
+    return new Response(JSON.stringify({ summary: existingSummary }));
   }
 
   const html = await getHtmlContent(url);
