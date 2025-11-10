@@ -1,3 +1,5 @@
+import { withSentryConfig } from "@sentry/nextjs";
+import createWithVercelToolbar from '@vercel/toolbar/plugins/next';
 import type { NextConfig } from "next";
 
 let nextConfig: NextConfig = {
@@ -10,18 +12,16 @@ let nextConfig: NextConfig = {
       },
     ],
   },
-  eslint: {},
   experimental: {
     useCache: true,
   },
 };
 
-const withVercelToolbar = require("@vercel/toolbar/plugins/next")();
+const withVercelToolbar = createWithVercelToolbar();
 nextConfig = withVercelToolbar(nextConfig);
 
 // Injected content via Sentry wizard below
 
-const { withSentryConfig } = require("@sentry/nextjs");
 nextConfig = withSentryConfig(nextConfig, {
   // For all available options, see:
   // https://www.npmjs.com/package/@sentry/webpack-plugin#options
