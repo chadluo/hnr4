@@ -102,7 +102,7 @@ const YoutubePlayer = ({
   title: string;
   youtubeId: string;
 }) => (
-  <div className="aspect-video max-w-2/3">
+  <div className="aspect-video max-w-2xl">
     <iframe
       title={title}
       width="100%"
