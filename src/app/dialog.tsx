@@ -54,7 +54,7 @@ export const Dialog = ({
         <div
           className={classNames(
             "pb-2",
-            "[&_a]:break-words [&_a]:text-[#f60] hover:[&_a]:text-[#f0a675]",
+            "[&_a]:wrap-break-word [&_a]:text-[#f60] hover:[&_a]:text-[#f0a675]",
             "[&_p]:mt-2",
             "[&_pre]:mb-2 [&_pre]:overflow-x-auto [&_pre]:text-sm [&_pre]:leading-6",
           )}
