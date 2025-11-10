@@ -1,9 +1,9 @@
 import { getHtmlContent } from "@/app/contents";
 import { fakeSummary, forceRefreshSummary } from "@/app/flags";
 import type { HNStory } from "@/app/hn";
-import { model } from "@/app/model";
-import { openai } from "@ai-sdk/openai";
+import { openrouterApiKey as apiKey, openrouterAuto } from "@/app/model";
 import { Readability } from "@mozilla/readability";
+import { createOpenRouter } from '@openrouter/ai-sdk-provider';
 import { kv } from "@vercel/kv";
 import { streamObject } from "ai";
 import { JSDOM } from "jsdom";
@@ -41,8 +41,11 @@ export async function POST(request: Request) {
     return Response.error();
   }
 
+  const openrouter = createOpenRouter({ apiKey });
+  const autoModel = openrouter(openrouterAuto);
+
   const result = streamObject({
-    model: openai(model),
+    model: autoModel,
     schema: messageSchema,
     messages: [
       {
