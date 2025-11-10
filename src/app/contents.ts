@@ -14,7 +14,11 @@ export const getHtmlContent = async (url: string) => {
   const controller = new AbortController();
   const abortTimeout = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT_MS);
 
-  return fetch(url, { signal: controller.signal, next: { revalidate: 3600 } })
+  return fetch(url, {
+    signal: controller.signal,
+    cache: 'force-cache',
+    next: { revalidate: 3600 }
+  })
     .then((response) => response.text())
     .catch((err) => {
       console.error({ message: "Cannot fetch html", url, err });

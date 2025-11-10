@@ -114,7 +114,6 @@ function card({
     >
       {imageUrl && (
         <div className="basis-1/3">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={imageUrl}
             alt={imageAlt ?? ""}
