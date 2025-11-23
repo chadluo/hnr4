@@ -5,6 +5,7 @@ import { VercelToolbar } from "@vercel/toolbar/next";
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import Script from "next/script";
+import * as React from 'react';
 
 const SITE_TITLE = "Hacker News Reader";
 const SITE_DESCRIPTION =
@@ -56,8 +57,8 @@ export default function RootLayout({
     deg2 = Math.random() * 360;
   } while (Math.abs(deg1 - deg2) < 90);
 
-  const l = 0.2 + Math.random() * 0.1;
-  const c = 0.1 + Math.random() * 0.1;
+  const l = 0.3 + Math.random() * 0.1;
+  const c = 0.2 + Math.random() * 0.1;
 
   const background = [
     `linear-gradient(${deg1}deg, oklch(${l} ${c} ${h1}deg), 20%, oklch(0 0 ${h1}deg / 0))`,

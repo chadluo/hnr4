@@ -109,7 +109,7 @@ function card({
     <Link
       href={url}
       title={url}
-      className="flex flex-col gap-3 rounded bg-neutral-900/60 p-3 hover:bg-neutral-800/60 md:flex-row-reverse"
+      className="flex flex-col gap-3 rounded bg-neutral-900/60 p-3 hover:bg-neutral-800/80 md:flex-row-reverse "
       target="_blank"
     >
       {imageUrl && (
@@ -137,7 +137,7 @@ function card({
           }}
         />
         <div
-          className="line-clamp-3 break-words text-neutral-400"
+          className="line-clamp-3 wrap-break-word text-neutral-400"
           // override for http://localhost:4000/story/39792136
           style={{ overflowWrap: "anywhere" }}
           title={description}
