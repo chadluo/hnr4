@@ -7,7 +7,7 @@ const DEFAULT_TIMEOUT_MS = 5000;
 export const getHtmlContent = async (url: string) => {
   "use cache";
 
-  if (!(await canVisit(url))) {
+  if (!canVisit(url)) {
     return null;
   }
 

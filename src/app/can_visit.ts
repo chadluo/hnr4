@@ -9,7 +9,7 @@ const noVisitWebsiteHostnames = [
   "wsj.com",
 ];
 
-export const canVisit = async (url: string) => {
+export const canVisit = (url: string) => {
   if (!URL.canParse(url)) {
     return false;
   }

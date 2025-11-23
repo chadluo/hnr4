@@ -19,25 +19,23 @@ export const Dialog = ({
 
   const { by, id, kids, text, title, type, url } = hnStory;
 
-  const openDialog = React.useCallback(() => {
+  const openDialog = () => {
     if (dialogRef.current == null) {
       return;
     }
     (dialogRef.current as HTMLDialogElement).showModal();
     setShowing(true);
-    // console.log("showing => true");
-  }, []);
+  };
 
-  const closeDialog = React.useCallback(() => {
+  const closeDialog = () => {
     if (dialogRef.current == null) {
       return;
     }
     (dialogRef.current as HTMLDialogElement).close();
     setShowing(false);
-    // console.log("showing => false");
-  }, []);
+  };
 
-  const canSummarize = React.useMemo(() => {
+  const canSummarize = (() => {
     if (type === "job" || url == null || !canVisit(url)) {
       return false;
     }
@@ -46,7 +44,7 @@ export const Dialog = ({
       return false;
     }
     return true;
-  }, [type, url]);
+  })();
 
   const discussions = ((text || kids) && (
     <div>

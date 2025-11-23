@@ -4,6 +4,7 @@ import type { NextConfig } from "next";
 
 let nextConfig: NextConfig = {
   reactStrictMode: true,
+  reactCompiler: true,
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
