@@ -1,6 +1,6 @@
 import { unstable_cache } from "next/cache";
 import Link from "next/link";
-import * as React from 'react';
+import * as React from "react";
 import { EmbeddedTweet, TweetNotFound } from "react-tweet";
 import { getTweet as _getTweet } from "react-tweet/api";
 import { Card } from "./card";
