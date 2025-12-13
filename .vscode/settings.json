@@ -1,4 +1,5 @@
 {
+    "editor.defaultFormatter": "prettier.prettier-vscode",
     "npm.packageManager": "pnpm",
     "typescript.enablePromptUseWorkspaceTsdk": true,
     "typescript.tsdk": "node_modules/typescript/lib"
