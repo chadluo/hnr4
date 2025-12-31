@@ -1,10 +1,9 @@
 import { getHtmlContent } from "@/app/contents";
-import { fakeSummary, forceRefreshSummary } from "@/app/flags";
+import { fakeSummary } from "@/app/flags";
 import type { HNStory } from "@/app/hn";
 import { openrouterApiKey as apiKey, openrouterAuto } from "@/app/model";
 import { Readability } from "@mozilla/readability";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
-import { kv } from "@vercel/kv";
 import { streamObject } from "ai";
 import { JSDOM } from "jsdom";
 import { messageSchema } from "./schema";
@@ -27,13 +26,13 @@ export async function POST(request: Request) {
     return new Response(JSON.stringify({ summary: DEFAULT_SUMMARY }));
   }
 
-  const key = `summary-${id}`;
-  const existingSummary = (await kv.get(key)) as string;
-  if (existingSummary && !(await forceRefreshSummary())) {
-    trace["existingSummary"] = existingSummary;
-    console.info({ ...trace, result: "existingSummary" });
-    return new Response(JSON.stringify({ summary: existingSummary }));
-  }
+  //  const key = `summary-${id}`;
+  //  const existingSummary = (await kv.get(key)) as string;
+  //  if (existingSummary && !(await forceRefreshSummary())) {
+  //    trace["existingSummary"] = existingSummary;
+  //    console.info({ ...trace, result: "existingSummary" });
+  //    return new Response(JSON.stringify({ summary: existingSummary }));
+  //  }
 
   const html = await getHtmlContent(url);
   if (!html) {
