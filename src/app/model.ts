@@ -1,3 +1,10 @@
-export const openrouterAuto = "google/gemini-2.5-flash-lite";
+import { z } from "zod";
 
-export const openrouterApiKey = process.env.OPENROUTER_API_KEY;
+export const openRouterConfig = {
+    model: "openrouter/auto",
+    apiKey: process.env.OPENROUTER_API_KEY,
+    schema: z.object({
+        summary: z.string(),
+        model: z.string(),
+    }),
+};

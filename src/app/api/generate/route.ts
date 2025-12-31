@@ -1,12 +1,11 @@
 import { getHtmlContent } from "@/app/contents";
 import { fakeSummary } from "@/app/flags";
 import type { HNStory } from "@/app/hn";
-import { openrouterApiKey as apiKey, openrouterAuto } from "@/app/model";
+import { openRouterConfig } from "@/app/model";
 import { Readability } from "@mozilla/readability";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { streamObject } from "ai";
 import { JSDOM } from "jsdom";
-import { messageSchema } from "./schema";
 
 const DEFAULT_SUMMARY = "summary";
 
@@ -55,13 +54,13 @@ export async function POST(request: Request) {
     trace["textContent"] = article.textContent;
   }
 
-  const openrouter = createOpenRouter({ apiKey });
-  const autoModel = openrouter(openrouterAuto);
-  trace["model"] = autoModel;
+  const openrouter = createOpenRouter({ apiKey: openRouterConfig.apiKey });
+  const model = openrouter(openRouterConfig.model);
+  trace["model"] = model;
 
   const result = streamObject({
-    model: autoModel,
-    schema: messageSchema,
+    model,
+    schema: openRouterConfig.schema,
     messages: [
       {
         role: "system",
