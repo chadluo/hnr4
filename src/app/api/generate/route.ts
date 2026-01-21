@@ -13,12 +13,13 @@ export async function POST(request: Request) {
   const trace: Record<string, unknown> = {};
 
   const { id, url }: HNStory = await request.json();
-  if (!url) {
-    return Response.error();
-  }
-
-  trace["url"] = url;
   trace["id"] = id;
+  if (!url) {
+    console.error({ ...trace, result: "no url" });
+    return Response.error();
+  } else {
+    trace["url"] = url;
+  }
 
   if (await fakeSummary()) {
     console.info({ ...trace, result: "fake summary" });

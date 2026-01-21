@@ -109,7 +109,7 @@ function card({
     <Link
       href={url}
       title={url}
-      className="flex flex-col gap-3 rounded bg-neutral-900/60 p-3 hover:bg-neutral-800/80 md:flex-row-reverse "
+      className="flex flex-col gap-3 rounded bg-neutral-900/60 p-3 hover:bg-neutral-800/80 md:flex-row-reverse"
       target="_blank"
     >
       {imageUrl && (
