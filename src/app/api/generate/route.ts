@@ -5,7 +5,11 @@ import { openRouterConfig } from "@/app/model";
 import { Readability } from "@mozilla/readability";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { streamObject } from "ai";
-import { JSDOM } from "jsdom";
+
+// due to no @types/jsdom mapping
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
 
 const DEFAULT_SUMMARY = "summary";
 

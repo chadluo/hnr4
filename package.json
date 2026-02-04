@@ -15,7 +15,6 @@
     "@openrouter/ai-sdk-provider": "^1.5.4",
     "@sentry/nextjs": "^10.32.1",
     "@tailwindcss/postcss": "^4.1.18",
-    "@types/jsdom": "^27.0.0",
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
     "@vercel/analytics": "^1.6.1",
@@ -24,7 +23,7 @@
     "ai": "^5.0.117",
     "classnames": "^2.5.1",
     "flags": "^4.0.2",
-    "jsdom": "^27.0.0",
+    "jsdom": "^27.4.0",
     "next": "16.0.10",
     "parse5": "^8.0.0",
     "react": "19.2.3",
@@ -51,7 +50,7 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.51.0"
   },
-  "packageManager": "pnpm@10.27.0",
+  "packageManager": "pnpm@10.28.2",
   "pnpm": {
     "overrides": {
       "@types/react": "19.2.2",
