@@ -4,6 +4,8 @@ import classNames from "classnames";
 import * as React from "react";
 import { type HNComment, getHNComment } from "./hn";
 
+const BATCH_SIZE = 10;
+
 type Props = {
   commentId: number;
   isExpanded: boolean;
@@ -12,6 +14,54 @@ type Props = {
   index?: number;
   hasStoryText?: boolean;
 };
+
+type CommentListProps = {
+  kids: number[];
+  isShowing: boolean;
+  isTop: boolean;
+  isExpanded?: boolean;
+  hasStoryText?: boolean;
+};
+
+export function CommentList({
+  kids,
+  isShowing,
+  isTop,
+  isExpanded,
+  hasStoryText,
+}: CommentListProps) {
+  const [visibleCount, setVisibleCount] = React.useState(BATCH_SIZE);
+  const visibleKids = kids.slice(0, visibleCount);
+  const hasMore = visibleCount < kids.length;
+
+  return (
+    <>
+      {visibleKids.map((kid, index) => (
+        <Comment
+          key={kid}
+          commentId={kid}
+          isExpanded={isExpanded ?? !isTop}
+          isTop={isTop}
+          isShowing={isShowing}
+          index={index}
+          hasStoryText={hasStoryText}
+        />
+      ))}
+      {hasMore && (
+        <button
+          type="button"
+          onClick={() => setVisibleCount((c) => c + BATCH_SIZE)}
+          className={classNames(
+            "my-2 cursor-pointer rounded bg-transparent px-3 py-1.5 text-sm text-neutral-200 hover:bg-neutral-700 active:bg-neutral-600",
+            { "ml-8": !isTop },
+          )}
+        >
+          Load more ({kids.length - visibleCount} remaining)
+        </button>
+      )}
+    </>
+  );
+}
 
 export const EmptyComment = () => <span className="italic">No comments yet.</span>;
 
@@ -75,16 +125,13 @@ export function Comment(props: Props) {
           __html: `${text} [<a target="_blank" href="https://news.ycombinator.com/item?id=${commentId}">${by}</a>]`,
         }}
       />
-      {isShowing &&
-        kids?.map((kid) => (
-          <Comment
-            key={kid}
-            commentId={kid}
-            isExpanded={true}
-            isTop={false}
-            isShowing={isLocalShowing}
-          />
-        ))}
+      {isShowing && kids && (
+        <CommentList
+          kids={kids}
+          isShowing={isLocalShowing}
+          isTop={false}
+        />
+      )}
     </details>
   ) : (
     <></>

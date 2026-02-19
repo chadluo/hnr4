@@ -4,7 +4,7 @@ import classNames from "classnames";
 import Link from "next/link";
 import * as React from "react";
 import { canVisit } from "./can_visit";
-import { Comment, EmptyComment } from "./comment";
+import { CommentList, EmptyComment } from "./comment";
 import type { Flags } from "./flags";
 import type { HNStory } from "./hn";
 import { Summary, type SummaryProps } from "./summary";
@@ -61,17 +61,17 @@ export const Dialog = ({
           }}
         />
       )}
-      {kids?.map((kid, index) => (
-        <Comment
-          key={kid}
-          commentId={kid}
-          isExpanded={false}
-          isTop={true}
+      {kids ? (
+        <CommentList
+          kids={kids}
           isShowing={isShowing}
-          index={index}
+          isTop={true}
+          isExpanded={false}
           hasStoryText={text != null}
         />
-      )) || <EmptyComment />}
+      ) : (
+        <EmptyComment />
+      )}
     </div>
   )) || <EmptyComment />;
 
