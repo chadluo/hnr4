@@ -38,26 +38,46 @@ export async function POST(request: Request) {
   //    return new Response(JSON.stringify({ summary: existingSummary }));
   //  }
 
-  const html = await getHtmlContent(url);
-  if (!html) {
-    console.error({ ...trace, result: "no html" });
-    return Response.error();
-  } else {
-    trace["html"] = html;
+  let content: string | null = null;
+
+  // Try Cloudflare markdown endpoint first
+  try {
+    const mdResponse = await fetch(url, {
+      headers: { Accept: "text/markdown" },
+      signal: AbortSignal.timeout(5000),
+    });
+    const contentType = mdResponse.headers.get("content-type") ?? "";
+    if (mdResponse.ok && contentType.includes("text/markdown")) {
+      content = await mdResponse.text();
+      trace["source"] = "markdown";
+    }
+  } catch {
+    // fall through to HTML parsing
   }
 
-  const {
-    window: { document },
-  } = new JSDOM(html, { url });
-  const article = new Readability(document).parse();
-  trace["article"] = article;
+  // Fallback: fetch HTML and extract with Readability
+  if (!content) {
+    const html = await getHtmlContent(url);
+    if (!html) {
+      console.error({ ...trace, result: "no html" });
+      return Response.error();
+    }
 
-  if (!article || !article.textContent) {
-    console.error({ ...trace, result: "no textContent" });
-    return Response.error();
-  } else {
-    trace["textContent"] = article.textContent;
+    const {
+      window: { document },
+    } = new JSDOM(html, { url });
+    const article = new Readability(document).parse();
+
+    if (!article || !article.textContent) {
+      console.error({ ...trace, result: "no textContent" });
+      return Response.error();
+    }
+
+    content = article.textContent;
+    trace["source"] = "readability";
   }
+
+  trace["content"] = content;
 
   const openrouter = createOpenRouter({ apiKey: openRouterConfig.apiKey });
   const model = openrouter(openRouterConfig.model);
@@ -76,7 +96,7 @@ export async function POST(request: Request) {
       },
       {
         role: "user",
-        content: article.textContent,
+        content,
       },
     ],
   });
