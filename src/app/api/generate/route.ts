@@ -57,16 +57,33 @@ export async function POST(request: Request) {
 
   // Fallback: fetch HTML and extract with Readability
   if (!content) {
+    performance.mark("content-start");
     const html = await getHtmlContent(url);
+    performance.mark("content-end");
+    const contentDuration = performance.measure(
+      "content",
+      "content-start",
+      "content-end",
+    );
+    trace["contentMs"] = Math.round(contentDuration.duration);
+
     if (!html) {
       console.error({ ...trace, result: "no html" });
       return Response.error();
     }
 
+    performance.mark("jsdom-start");
     const {
       window: { document },
     } = new JSDOM(html, { url });
     const article = new Readability(document).parse();
+    performance.mark("jsdom-end");
+    const jsdomDuration = performance.measure(
+      "jsdom",
+      "jsdom-start",
+      "jsdom-end",
+    );
+    trace["jsdomMs"] = Math.round(jsdomDuration.duration);
 
     if (!article || !article.textContent) {
       console.error({ ...trace, result: "no textContent" });
