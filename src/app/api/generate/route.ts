@@ -89,8 +89,19 @@ export async function POST(request: Request) {
     */
 
     content = html
-      .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, "")
-      .replace(/<svg\b[^>]*>[\s\S]*?<\/svg>/gi, "");
+      // Remove elements with irrelevant content
+      .replace(/<(script|noscript|style|svg|nav|footer|header|aside|form|button|select|textarea|iframe|canvas|video|audio|picture)\b[^>]*>[\s\S]*?<\/\1>/gi, "")
+      // Remove HTML comments
+      .replace(/<!--[\s\S]*?-->/g, "")
+      // Remove void/self-closing elements (img, input, link, meta, source, br, hr, wbr)
+      .replace(/<(img|input|link|source|br|hr|wbr)\b[^>]*\/?>/gi, "")
+      // Strip attributes except property, name, and content
+      .replace(/<([a-z][a-z0-9]*)\b([^>]*)>/gi, (_match, tag: string, attrs: string) => {
+        const kept = attrs.match(/\b(property|name|content)="[^"]*"/gi);
+        return kept ? `<${tag} ${kept.join(" ")}>` : `<${tag}>`;
+      })
+      // Collapse whitespace
+      .replace(/\s{2,}/g, " ");
     trace["source"] = "readability";
   }
 
