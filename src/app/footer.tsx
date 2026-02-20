@@ -1,4 +1,5 @@
 import Link from "next/link";
+import * as React from 'react';
 
 export default function Footer() {
   return (

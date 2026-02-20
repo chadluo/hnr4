@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@ai-sdk/react": "^3.0.96",
-    "@mozilla/readability": "^0.6.0",
     "@openrouter/ai-sdk-provider": "^2.2.3",
     "@sentry/nextjs": "^10.39.0",
     "@tailwindcss/postcss": "^4.2.0",
@@ -22,7 +21,6 @@
     "ai": "^6.0.94",
     "classnames": "^2.5.1",
     "flags": "^4.0.3",
-    "jsdom": "28.1.0",
     "next": "16.1.5",
     "parse5": "^8.0.0",
     "react": "19.2.3",
