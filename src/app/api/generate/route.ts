@@ -3,7 +3,7 @@ import { fakeSummary } from "@/app/flags";
 import type { HNStory } from "@/app/hn";
 import { openRouterConfig } from "@/app/model";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
-import { streamObject } from "ai";
+import { Output, streamText } from "ai";
 
 const DEFAULT_SUMMARY = "summary";
 
@@ -100,9 +100,9 @@ export async function POST(request: Request) {
   const model = openrouter(openRouterConfig.model);
   trace["model"] = model;
 
-  const result = streamObject({
+  const result = streamText({
     model,
-    schema: openRouterConfig.schema,
+    output: Output.object({ schema: openRouterConfig.schema }),
     messages: [
       {
         role: "system",
