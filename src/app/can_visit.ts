@@ -2,6 +2,7 @@ const noVisitWebsiteHostnames = [
   "bloomberg.com",
   "economist.com",
   "ft.com",
+  "nytimes.com",
   "reddit.com",
   "reuters.com",
   "telegraph.co.uk",
@@ -25,3 +26,4 @@ export const canVisit = (url: string) => {
 
   return true;
 };
+
