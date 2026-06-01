@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ai-sdk/react": "^3.0.96",
+    "@ai-sdk/react": "^3.0.195",
     "@openrouter/ai-sdk-provider": "^2.2.3",
     "@sentry/nextjs": "^10.39.0",
     "@tailwindcss/postcss": "^4.2.0",
