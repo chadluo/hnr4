@@ -22,7 +22,7 @@
     "classnames": "^2.5.1",
     "flags": "^4.0.3",
     "next": "16.2.3",
-    "parse5": "^8.0.0",
+    "parse5": "^8.0.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-tweet": "^3.3.0",
