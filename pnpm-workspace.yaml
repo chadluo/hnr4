@@ -9,3 +9,5 @@ onlyBuiltDependencies:
   - bufferutil
   - sharp
   - utf-8-validate
+
+minimumReleaseAge: 4320 # 3days
