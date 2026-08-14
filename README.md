@@ -1,5 +1,8 @@
 # HNR4
 
+> [!IMPORTANT]
+> Migrated to [HNR5](https://github.com/chadluo/hnr5), this version is deprecated
+
 ## What is this?
 
 Yet another Hacker News Reader with metadata cards and some summaries by `text-davinci-003` (hint: the italic monospace
